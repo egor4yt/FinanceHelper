@@ -1,7 +1,0 @@
-﻿dotnet ef migrations add INIT --project FinanceHelper.Persistence --startup-project FinanceHelper.Api
-
-dotnet ef database update --project SOLUTION_NAME.Persistence --startup-project SOLUTION_NAME.Api
-
-dotnet ef database drop --project SOLUTION_NAME.Persistence --startup-project SOLUTION_NAME.Api
-
-dotnet ef migrations remove --project SOLUTION_NAME.Persistence --startup-project SOLUTION_NAME.Api
