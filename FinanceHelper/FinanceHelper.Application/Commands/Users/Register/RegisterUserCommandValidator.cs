@@ -1,10 +1,12 @@
-﻿using FluentValidation;
+﻿using FinanceHelper.Shared;
+using FluentValidation;
+using Microsoft.Extensions.Configuration;
 
 namespace FinanceHelper.Application.Commands.Users.Register;
 
 public class RegisterUserCommandValidator : AbstractValidator<RegisterUserCommandRequest>
 {
-    public RegisterUserCommandValidator()
+    public RegisterUserCommandValidator(IConfiguration configuration)
     {
         RuleFor(v => v.Email)
             .NotEmpty()
@@ -12,8 +14,10 @@ public class RegisterUserCommandValidator : AbstractValidator<RegisterUserComman
 
         RuleFor(v => v.Password)
             .NotEmpty();
+       
+        var supportedLocalizations = configuration.GetSection(ConfigurationKeys.SupportedLocalization).Get<string[]>()!;
 
         RuleFor(v => v.PreferredLocalizationCode)
-            .Length(2);
+            .Matches($"^({string.Join('|', supportedLocalizations)})$");
     }
 }
