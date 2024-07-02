@@ -11,19 +11,21 @@
 
     <ItemGroup>
         <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.1.0"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.5">
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.6">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+        <PackageReference Include="Microsoft.Extensions.Localization" Version="8.0.6"/>
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
-        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.6.1"/>
-        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.6.1"/>
+        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.6.2" />
+        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.6.2" />
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1"/>
-        <PackageReference Include="MediatR" Version="12.2.0"/>
+        <PackageReference Include="MediatR" Version="12.3.0" />
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\FinanceHelper.Application\FinanceHelper.Application.csproj"/>
+        <ProjectReference Include="..\FinanceHelper.Persistence\FinanceHelper.Persistence.csproj"/>
     </ItemGroup>
 
 </Project>

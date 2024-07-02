@@ -11,8 +11,11 @@ builder.ConfigurePersistence();
 builder.ConfigureApplication();
 
 var app = builder.Build();
+
 app.UseSwagger();
 app.UseSwaggerUI();
+
+app.UseRequestLocalization();
 
 app.UseInitializeDatabase();
 

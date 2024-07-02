@@ -2,33 +2,12 @@
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using FinanceHelper.Api.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 
 namespace FinanceHelper.Api.Services;
-
-/// <summary>
-///     Service for interact with current user data
-/// </summary>
-public interface ICurrentUserService
-{
-    /// <summary>
-    ///     User Id
-    /// </summary>
-    public long? UserId { get; }
-
-    /// <summary>
-    ///     Authenticated user
-    /// </summary>
-    public bool IsAuthenticated { get; }
-
-    /// <summary>
-    ///     Authenticate user with cookie
-    /// </summary>
-    /// <param name="userId">User id</param>
-    public Task AuthenticateWithCookieAsync(long userId);
-}
 
 /// <inheritdoc />
 public class CurrentUserService(IHttpContextAccessor httpContextAccessor) : ICurrentUserService

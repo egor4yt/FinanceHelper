@@ -1,5 +1,5 @@
 ﻿using Asp.Versioning;
-using FinanceHelper.Api.Services;
+using FinanceHelper.Api.Services.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

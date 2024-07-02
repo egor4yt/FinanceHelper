@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Globalization;
+using System.Threading.Tasks;
 using FinanceHelper.Api.Contracts.Register;
 using FinanceHelper.Application.Commands.Users.Register;
 using Microsoft.AspNetCore.Http;
@@ -28,10 +29,7 @@ public class RegisterController : ApiControllerBase
             Password = body.Password.Trim()
         };
 
-
         var response = await Mediator.Send(command);
-
-        await CurrentUserService.AuthenticateWithCookieAsync(response.Id);
 
         return Ok(response);
     }

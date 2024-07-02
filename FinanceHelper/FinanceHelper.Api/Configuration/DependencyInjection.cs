@@ -1,12 +1,18 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using FinanceHelper.Api.Filters;
 using FinanceHelper.Api.HealthChecks;
 using FinanceHelper.Api.Services;
+using FinanceHelper.Api.Services.Interfaces;
 using FinanceHelper.Api.Swagger;
+using FinanceHelper.Shared;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -26,7 +32,7 @@ public static class DependencyInjection
     public static void ConfigureApi(this IHostApplicationBuilder builder)
     {
         ConfigureAuthorization(builder.Services);
-        ConfigureInfrastructure(builder.Services);
+        ConfigureInfrastructure(builder.Services, builder.Configuration);
         ConfigureSwagger(builder.Services, builder.Configuration);
     }
 
@@ -52,12 +58,22 @@ public static class DependencyInjection
             });
     }
 
-    private static void ConfigureInfrastructure(IServiceCollection services)
+    private static void ConfigureInfrastructure(IServiceCollection services, IConfiguration configuration)
     {
         services.AddHttpContextAccessor();
         services.AddScoped<ICurrentUserService, CurrentUserService>();
         services.AddHealthChecks().AddCheck<ApiHealthCheck>("API");
         services.AddControllers(options => options.Filters.Add<ApiExceptionFilterAttribute>());
+        services.Configure<RequestLocalizationOptions>(options =>
+            {
+                var supportedLocalizations = configuration.GetSection(ConfigurationKeys.SupportedLocalization).Get<string[]>()!;
+                var supportedCultures = supportedLocalizations.Select(x => new CultureInfo(x)).ToList();
+
+                options.DefaultRequestCulture = new RequestCulture("ru");
+                options.SupportedCultures = supportedCultures;
+                options.SupportedUICultures = supportedCultures;
+            }
+        );
     }
 
     private static void ConfigureSwagger(IServiceCollection services, IConfiguration configuration)
