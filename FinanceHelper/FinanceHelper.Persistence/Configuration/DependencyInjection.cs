@@ -1,10 +1,11 @@
-﻿using System;
-using FinanceHelper.Shared;
+﻿using FinanceHelper.Shared;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace FinanceHelper.Persistence.Configuration;
 
@@ -17,7 +18,7 @@ public static class DependencyInjection
         app.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseNpgsql(app.Configuration
                     .GetConnectionString(ConfigurationKeys.DatabaseConnection))
-                .LogTo(Console.WriteLine, LogLevel.Information)
+                .LogTo(Log.Information, LogLevel.Information, DbContextLoggerOptions.Id | DbContextLoggerOptions.Category)
         );
 
         return app;

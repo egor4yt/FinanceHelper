@@ -4,7 +4,7 @@ using FinanceHelper.Application.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace FinanceHelper.Api.Filters;
 
@@ -14,12 +14,11 @@ namespace FinanceHelper.Api.Filters;
 public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
 {
     private readonly Dictionary<Type, Action<ExceptionContext>> _exceptionHandlers;
-    private readonly ILogger<ApiExceptionFilterAttribute> _logger;
 
     /// <summary>
+    ///     Default constructor
     /// </summary>
-    /// <param name="logger"></param>
-    public ApiExceptionFilterAttribute(ILogger<ApiExceptionFilterAttribute> logger)
+    public ApiExceptionFilterAttribute()
     {
         _exceptionHandlers = new Dictionary<Type, Action<ExceptionContext>>
         {
@@ -30,8 +29,6 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
             { typeof(ValidationException), HandleValidationException },
             { typeof(ConflictException), HandleConflictException }
         };
-
-        _logger = logger;
     }
 
     /// <inheritdoc />
@@ -39,9 +36,6 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
     {
         HandleException(context);
         base.OnException(context);
-
-        // log the exception
-        _logger.LogError("An exception occurred while executing request: {Ex}", context.Exception);
     }
 
     private void HandleException(ExceptionContext context)
@@ -87,7 +81,7 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
             StatusCode = StatusCodes.Status500InternalServerError
         };
 
-        Console.WriteLine(context.Exception.Message);
+        Log.Error(context.Exception, "An exception occurred while executing request");
         context.ExceptionHandled = true;
     }
 

@@ -1,8 +1,8 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Serilog;
 
 namespace FinanceHelper.Persistence.Configuration;
 
@@ -21,7 +21,7 @@ public static class DbInitializer
         // // only call this method when there are pending migrations
         if (dbContext != null && dbContext.Database.GetPendingMigrations().Any())
         {
-            Console.WriteLine("Applying  Migrations...");
+            Log.Information("Applying  Migrations");
             dbContext.Database.Migrate();
         }
 
