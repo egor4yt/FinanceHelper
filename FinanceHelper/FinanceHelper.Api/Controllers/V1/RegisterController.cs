@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using FinanceHelper.Api.Contracts.Register;
 using FinanceHelper.Application.Commands.Users.Register;
 using Microsoft.AspNetCore.Http;

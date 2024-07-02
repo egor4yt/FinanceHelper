@@ -1,6 +1,4 @@
-﻿using System.Globalization;
-
-namespace FinanceHelper.Application.Services.Interfaces;
+﻿namespace FinanceHelper.Application.Services.Interfaces;
 
 internal interface IStringLocalizerFactory
 {

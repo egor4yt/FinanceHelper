@@ -1,12 +1,9 @@
 ﻿using System.Reflection;
 using FinanceHelper.Application.Behaviours;
-using FinanceHelper.Application.Models;
 using FinanceHelper.Application.Services;
 using FinanceHelper.Application.Services.Interfaces;
-using FinanceHelper.Shared;
 using FluentValidation;
 using MediatR;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -21,7 +18,7 @@ public static class DependencyInjection
         app.Services.AddValidatorsFromAssembly(assembly);
         app.Services.AddMediatR(config => { config.RegisterServicesFromAssembly(assembly); });
         app.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
-        
+
         app.Services.AddSingleton<IStringLocalizerFactory, StringLocalizerFactory>();
         app.Services.AddTransient(typeof(IStringLocalizer<>), typeof(StringLocalizer<>));
 

@@ -1,5 +1,4 @@
 using System.Globalization;
-using FinanceHelper.Application.Models;
 using FinanceHelper.Application.Services.Interfaces;
 
 namespace FinanceHelper.Application.Services;
