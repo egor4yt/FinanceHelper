@@ -14,7 +14,7 @@ public class RegisterUserCommandValidator : AbstractValidator<RegisterUserComman
 
         RuleFor(v => v.Password)
             .NotEmpty();
-       
+
         var supportedLocalizations = configuration.GetSection(ConfigurationKeys.SupportedLocalization).Get<string[]>()!;
 
         RuleFor(v => v.PreferredLocalizationCode)

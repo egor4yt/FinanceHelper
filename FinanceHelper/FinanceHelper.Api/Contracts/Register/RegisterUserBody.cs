@@ -9,13 +9,13 @@ public class RegisterUserBody
     ///     User email
     /// </summary>
     public string Email { get; set; } = string.Empty;
-    
+
     /// <summary>
     ///     User password
     /// </summary>
     public string Password { get; set; } = string.Empty;
-    
-    
+
+
     /// <summary>
     ///     Preferred localization code
     /// </summary>
