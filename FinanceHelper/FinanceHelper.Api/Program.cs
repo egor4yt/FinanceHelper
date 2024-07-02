@@ -37,7 +37,7 @@ try
     app.UseSerilogRequestLogging(options =>
     {
         options.MessageTemplate = "HTTP {RequestMethod} {RequestPath} {StatusCode} {Elapsed}";
-        options.GetLevel = (httpContext, elapsed, ex) => LogEventLevel.Information;
+        options.GetLevel = (httpContext, elapsed, ex) => LogEventLevel.Debug;
         options.EnrichDiagnosticContext = (diagnosticContext, httpContext) =>
         {
             diagnosticContext.Set("RequestHost", httpContext.Request.Host.Value);
