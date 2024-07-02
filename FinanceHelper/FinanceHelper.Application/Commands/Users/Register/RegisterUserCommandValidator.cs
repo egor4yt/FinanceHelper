@@ -12,5 +12,8 @@ public class RegisterUserCommandValidator : AbstractValidator<RegisterUserComman
 
         RuleFor(v => v.Password)
             .NotEmpty();
+
+        RuleFor(v => v.PreferredLocalizationCode)
+            .Length(2);
     }
 }
