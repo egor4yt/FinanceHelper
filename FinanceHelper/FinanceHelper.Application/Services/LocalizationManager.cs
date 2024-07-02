@@ -2,6 +2,7 @@ using System.Globalization;
 using System.Reflection;
 using System.Text.Json;
 using FinanceHelper.Application.Models;
+using Serilog;
 
 namespace FinanceHelper.Application.Services;
 
@@ -59,7 +60,11 @@ internal class LocalizationManager(Assembly assembly, string localizationFileDir
     private IList<LocalizedString>? ReadLocalizedStringsFromFile(CultureInfo culture)
     {
         var localizationFileLocation = GetLocalizationFileLocation(culture);
-        if (File.Exists(localizationFileLocation) == false) return null;
+        if (File.Exists(localizationFileLocation) == false)
+        {
+            Log.Warning("Localization file doesn't exists {@LocalizationFileLocation}", localizationFileLocation);
+            return null;
+        }
 
         var fileStream = File.OpenRead(localizationFileLocation);
         var jsonData = JsonSerializer.Deserialize<Dictionary<string, string>>(fileStream);
