@@ -17,7 +17,7 @@ public class RegisterUserCommandHandler(ApplicationDbContext applicationDbContex
 
         var newUser = new User
         {
-            Email = request.Email + "s",
+            Email = request.Email,
             PreferredLocalizationCode = request.PreferredLocalizationCode,
             PasswordHash = request.PasswordHash
         };
