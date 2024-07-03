@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FinanceHelper.Api.Contracts.Register;
 using FinanceHelper.Application.Commands.Users.Register;
+using FinanceHelper.Shared;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -33,7 +34,7 @@ public class RegisterController(IOptions<RequestLocalizationOptions> localizatio
         var command = new RegisterUserCommandRequest
         {
             Email = body.Email.Trim().ToLower(),
-            Password = body.Password.Trim(),
+            PasswordHash = SecurityHelper.ComputeSha256Hash(body.Password.Trim()),
             PreferredLocalizationCode = preferredLocalizationCode
         };
 

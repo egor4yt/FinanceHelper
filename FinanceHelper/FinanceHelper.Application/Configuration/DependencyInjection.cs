@@ -17,6 +17,7 @@ public static class DependencyInjection
 
         app.Services.AddValidatorsFromAssembly(assembly);
         app.Services.AddMediatR(config => { config.RegisterServicesFromAssembly(assembly); });
+        app.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehaviour<,>));
         app.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
 
         app.Services.AddSingleton<IStringLocalizerFactory, StringLocalizerFactory>();

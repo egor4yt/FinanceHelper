@@ -12,7 +12,7 @@ public class RegisterUserCommandValidator : AbstractValidator<RegisterUserComman
             .NotEmpty()
             .EmailAddress();
 
-        RuleFor(v => v.Password)
+        RuleFor(v => v.PasswordHash)
             .NotEmpty();
 
         var supportedLocalizations = configuration.GetSection(ConfigurationKeys.SupportedLocalization).Get<string[]>()!;

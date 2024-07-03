@@ -26,17 +26,10 @@ try
     builder.Services.AddSerilog();
 
     var app = builder.Build();
-
-    app.UseSwagger();
-    app.UseSwaggerUI();
-
-    app.UseRequestLocalization();
-
-    app.UseInitializeDatabase();
-
+    
     app.UseSerilogRequestLogging(options =>
     {
-        options.MessageTemplate = "HTTP {RequestMethod} {RequestPath} {StatusCode} {Elapsed}";
+        options.MessageTemplate = "HTTP {RequestMethod} {RequestPath} Status={StatusCode} Elapsed time={Elapsed} ms";
         options.GetLevel = (httpContext, elapsed, ex) => LogEventLevel.Debug;
         options.EnrichDiagnosticContext = (diagnosticContext, httpContext) =>
         {
@@ -44,6 +37,13 @@ try
             diagnosticContext.Set("RequestScheme", httpContext.Request.Scheme);
         };
     });
+    
+    app.UseSwagger();
+    app.UseSwaggerUI();
+
+    app.UseRequestLocalization();
+
+    app.UseInitializeDatabase();
 
     app.UseAuthentication();
     app.UseAuthorization();

@@ -20,7 +20,7 @@ public class RegisterUserCommandHandler(ApplicationDbContext applicationDbContex
         {
             Email = request.Email,
             PreferredLocalizationCode = request.PreferredLocalizationCode,
-            PasswordHash = SecurityHelper.ComputeSha256Hash(request.Password)
+            PasswordHash = request.PasswordHash
         };
 
         await applicationDbContext.Users.AddAsync(newUser, cancellationToken);
