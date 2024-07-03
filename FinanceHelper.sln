@@ -10,7 +10,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinanceHelper.Persistence",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinanceHelper.Shared", "FinanceHelper\FinanceHelper.Shared\FinanceHelper.Shared.csproj", "{33F70699-DD8B-4E2B-9B91-6A338950ACE3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinanceHelper.Application.UnitTesting", "FinanceHelper.Application.UnitTesting\FinanceHelper.Application.UnitTesting.csproj", "{E71C0F29-0730-4E9B-94FB-F0C44D38EF56}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinanceHelper.Application.UnitTesting", "FinanceHelper\FinanceHelper.Application.UnitTesting\FinanceHelper.Application.UnitTesting.csproj", "{E71C0F29-0730-4E9B-94FB-F0C44D38EF56}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
