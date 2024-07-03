@@ -26,7 +26,7 @@ try
     builder.Services.AddSerilog();
 
     var app = builder.Build();
-    
+
     app.UseSerilogRequestLogging(options =>
     {
         options.MessageTemplate = "HTTP {RequestMethod} {RequestPath} Status={StatusCode} Elapsed time={Elapsed} ms";
@@ -37,7 +37,7 @@ try
             diagnosticContext.Set("RequestScheme", httpContext.Request.Scheme);
         };
     });
-    
+
     app.UseSwagger();
     app.UseSwaggerUI();
 

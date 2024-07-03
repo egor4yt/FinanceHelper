@@ -2,7 +2,6 @@
 using FinanceHelper.Application.Services.Interfaces;
 using FinanceHelper.Domain.Entities;
 using FinanceHelper.Persistence;
-using FinanceHelper.Shared;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 

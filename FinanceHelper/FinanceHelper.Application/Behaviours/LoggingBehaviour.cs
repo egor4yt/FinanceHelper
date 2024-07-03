@@ -14,7 +14,7 @@ public class LoggingBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest,
         Log.Information("Handling {@RequestName} {@RequestId} {@RequestData}", requestName, requestGuid, request);
 
         TResponse response;
-        
+
         try
         {
             response = await next();
