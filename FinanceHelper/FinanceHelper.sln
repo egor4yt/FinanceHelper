@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinanceHelper.Domain", "Fin
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinanceHelper.Shared", "FinanceHelper.Shared\FinanceHelper.Shared.csproj", "{CC4D05DB-0C5D-46ED-BCD3-922F0D2F0EA4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinanceHelper.Application.UnitTesting", "FinanceHelper.Application.UnitTesting\FinanceHelper.Application.UnitTesting.csproj", "{87F62876-F0C0-401B-B44A-2340743D85BA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{CC4D05DB-0C5D-46ED-BCD3-922F0D2F0EA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC4D05DB-0C5D-46ED-BCD3-922F0D2F0EA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CC4D05DB-0C5D-46ED-BCD3-922F0D2F0EA4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87F62876-F0C0-401B-B44A-2340743D85BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87F62876-F0C0-401B-B44A-2340743D85BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87F62876-F0C0-401B-B44A-2340743D85BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87F62876-F0C0-401B-B44A-2340743D85BA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
