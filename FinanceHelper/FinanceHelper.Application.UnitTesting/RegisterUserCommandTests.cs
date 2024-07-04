@@ -6,13 +6,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FinanceHelper.Application.UnitTesting;
 
-public class RegisterUserCommandTests : TestBase<RegisterUserCommandHandler>
+public class RegisterUserCommandTests : TestBase
 {
     private readonly RegisterUserCommandHandler _handler;
 
     public RegisterUserCommandTests()
     {
-        _handler = new RegisterUserCommandHandler(ApplicationDbContext, StringLocalizer);
+        var handlerLocalizer = StringLocalizerFactory.Create<RegisterUserCommandHandler>();
+        _handler = new RegisterUserCommandHandler(ApplicationDbContext, handlerLocalizer);
     }
 
     [Fact]
