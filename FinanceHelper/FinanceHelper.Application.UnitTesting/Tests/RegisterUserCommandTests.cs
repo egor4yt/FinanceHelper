@@ -6,14 +6,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FinanceHelper.Application.UnitTesting.Tests;
 
-public class RegisterUserCommandTests : TestBase
+public class RegisterUserCommandTests : TestBase<RegisterUserCommandHandler>
 {
     private readonly RegisterUserCommandHandler _handler;
 
     public RegisterUserCommandTests()
     {
-        var handlerLocalizer = StringLocalizerFactory.Create<RegisterUserCommandHandler>();
-        _handler = new RegisterUserCommandHandler(ApplicationDbContext, handlerLocalizer);
+        _handler = new RegisterUserCommandHandler(ApplicationDbContext, Localizer);
     }
 
     [Fact]
@@ -46,16 +45,14 @@ public class RegisterUserCommandTests : TestBase
     public async Task Duplicate()
     {
         // Arrange
+        var user = await UserGenerator.SeedOneRandomUserAsync();
         var request = new RegisterUserCommandRequest
         {
             PreferredLocalizationCode = "ru",
-            Email = "RegisterUserCommandTests_Duplicate@gmail.com",
-            PasswordHash = SecurityHelper.ComputeSha256Hash("password"),
+            Email = user.Email,
+            PasswordHash = SecurityHelper.ComputeSha256Hash("password2"),
             JwtDescriptorDetails = JwtDescriptorDetails
         };
-
-        // Act
-        await _handler.Handle(request, CancellationToken.None);
 
         // Assert
         await Assert.ThrowsAsync<ConflictException>(() => _handler.Handle(request, CancellationToken.None));
@@ -69,7 +66,7 @@ public class RegisterUserCommandTests : TestBase
         var request = new RegisterUserCommandRequest
         {
             PreferredLocalizationCode = "test",
-            Email = "RegisterUserCommandTests_ValidationTestgmail.com",
+            Email = "RegisterUserCommandTests_ValidationTest",
             PasswordHash = "",
             JwtDescriptorDetails = null!
         };

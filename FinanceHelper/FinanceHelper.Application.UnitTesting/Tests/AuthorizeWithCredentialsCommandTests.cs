@@ -1,48 +1,33 @@
 using FinanceHelper.Application.Commands.Authorize.WithCredentials;
-using FinanceHelper.Application.Commands.Users.Register;
 using FinanceHelper.Application.Exceptions;
 using FinanceHelper.Application.UnitTesting.Common;
 using FinanceHelper.Shared;
 
 namespace FinanceHelper.Application.UnitTesting.Tests;
 
-public class AuthorizeWithCredentialsCommandTests : TestBase
+public class AuthorizeWithCredentialsCommandTests : TestBase<AuthorizeWithCredentialsCommandHandler>
 {
     private readonly AuthorizeWithCredentialsCommandHandler _authorizeHandler;
-    private readonly RegisterUserCommandHandler _registerHandler;
 
     public AuthorizeWithCredentialsCommandTests()
     {
-        var authorizeHandlerLocalizer = StringLocalizerFactory.Create<AuthorizeWithCredentialsCommandHandler>();
-        var registerHandlerLocalizer = StringLocalizerFactory.Create<RegisterUserCommandHandler>();
-
-        _authorizeHandler = new AuthorizeWithCredentialsCommandHandler(ApplicationDbContext, authorizeHandlerLocalizer);
-        _registerHandler = new RegisterUserCommandHandler(ApplicationDbContext, registerHandlerLocalizer);
+        _authorizeHandler = new AuthorizeWithCredentialsCommandHandler(ApplicationDbContext, Localizer);
     }
 
     [Fact]
     public async Task Success()
     {
         // Arrange
-        var userEmail = "AuthorizeWithCredentialsCommandTests_Success@mail.com";
-        var userPasswordHash = SecurityHelper.ComputeSha256Hash("password");
-        var registerRequest = new RegisterUserCommandRequest
+        var user = await UserGenerator.SeedOneRandomUserAsync();
+        var request = new AuthorizeWithCredentialsCommandRequest
         {
-            PreferredLocalizationCode = "ru",
-            Email = userEmail,
-            PasswordHash = userPasswordHash,
-            JwtDescriptorDetails = JwtDescriptorDetails
-        };
-        var authorizeRequest = new AuthorizeWithCredentialsCommandRequest
-        {
-            Email = userEmail,
-            PasswordHash = userPasswordHash,
+            Email = user.Email,
+            PasswordHash = user.PasswordHash,
             JwtDescriptorDetails = JwtDescriptorDetails
         };
 
         // Act
-        await _registerHandler.Handle(registerRequest, CancellationToken.None);
-        var response = await _authorizeHandler.Handle(authorizeRequest, CancellationToken.None);
+        var response = await _authorizeHandler.Handle(request, CancellationToken.None);
 
         // Assert
         Assert.NotNull(response);
@@ -52,25 +37,15 @@ public class AuthorizeWithCredentialsCommandTests : TestBase
     public async Task WrongCredentials()
     {
         // Arrange
-        var userPasswordHash = SecurityHelper.ComputeSha256Hash("password");
-        var registerRequest = new RegisterUserCommandRequest
+        var user = await UserGenerator.SeedOneRandomUserAsync();
+        var request = new AuthorizeWithCredentialsCommandRequest
         {
-            PreferredLocalizationCode = "ru",
-            Email = "AuthorizeWithCredentialsCommandTests_WrongCredentials1@mail.com",
-            PasswordHash = userPasswordHash,
+            Email = user.Email,
+            PasswordHash = SecurityHelper.ComputeSha256Hash(Guid.NewGuid().ToString()),
             JwtDescriptorDetails = JwtDescriptorDetails
         };
-        var authorizeRequest = new AuthorizeWithCredentialsCommandRequest
-        {
-            Email = "AuthorizeWithCredentialsCommandTests_WrongCredentials2@mail.com",
-            PasswordHash = userPasswordHash,
-            JwtDescriptorDetails = JwtDescriptorDetails
-        };
-
-        // Act
-        await _registerHandler.Handle(registerRequest, CancellationToken.None);
 
         // Assert
-        await Assert.ThrowsAsync<ForbiddenException>(() => _authorizeHandler.Handle(authorizeRequest, CancellationToken.None));
+        await Assert.ThrowsAsync<ForbiddenException>(() => _authorizeHandler.Handle(request, CancellationToken.None));
     }
 }

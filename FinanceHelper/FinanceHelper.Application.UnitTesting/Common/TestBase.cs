@@ -1,4 +1,6 @@
 ﻿using System.Globalization;
+using FinanceHelper.Application.Services.Interfaces;
+using FinanceHelper.Application.UnitTesting.Generators;
 using FinanceHelper.Persistence;
 using FinanceHelper.Shared;
 using Microsoft.AspNetCore.Builder;
@@ -6,7 +8,7 @@ using Microsoft.Extensions.Options;
 
 namespace FinanceHelper.Application.UnitTesting.Common;
 
-public class TestBase : IDisposable
+public class TestBase<TCommandHandler> : IDisposable
 {
     protected readonly ApplicationDbContext ApplicationDbContext = ApplicationContextFactory.Create();
     protected readonly JwtDescriptorDetails JwtDescriptorDetails = new JwtDescriptorDetails
@@ -24,9 +26,16 @@ public class TestBase : IDisposable
             new CultureInfo("en")
         }
     });
+    protected readonly UserGenerator UserGenerator;
+    protected IStringLocalizer<TCommandHandler> Localizer = new UnitTestStringLocalizer<TCommandHandler>();
 
-    public async void Dispose()
+    protected TestBase()
     {
-        ApplicationContextFactory.DestroyAsync(ApplicationDbContext);
+        UserGenerator = new UserGenerator(ApplicationDbContext);
+    }
+
+    public void Dispose()
+    {
+        ApplicationContextFactory.Destroy(ApplicationDbContext);
     }
 }

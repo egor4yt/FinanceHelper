@@ -17,7 +17,7 @@ public class ApplicationContextFactory
         return context;
     }
 
-    public static void DestroyAsync(ApplicationDbContext context)
+    public static void Destroy(ApplicationDbContext context)
     {
         context.Database.EnsureDeleted();
         context.Dispose();
