@@ -1,7 +1,7 @@
 ﻿namespace FinanceHelper.Api.Contracts.Register;
 
 /// <summary>
-///     Register user body
+///     New user details
 /// </summary>
 public class RegisterUserBody
 {

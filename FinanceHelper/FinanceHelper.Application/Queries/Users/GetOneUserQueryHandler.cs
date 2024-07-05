@@ -17,6 +17,7 @@ public class GetOneUserQueryHandler(ApplicationDbContext applicationDbContext) :
 
         response.Id = user.Id;
         response.Email = user.Email;
+        response.PreferredLocalizationCode = user.PreferredLocalizationCode;
 
         return response;
     }

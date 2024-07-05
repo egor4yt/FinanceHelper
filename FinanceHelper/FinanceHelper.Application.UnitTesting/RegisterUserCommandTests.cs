@@ -30,7 +30,7 @@ public class RegisterUserCommandTests : TestBase
         // Act
         var response = await _handler.Handle(request, CancellationToken.None);
         var dataBaseUser = await ApplicationDbContext.Users
-            .SingleOrDefaultAsync(x => x.Id == response.Id
+            .SingleOrDefaultAsync(x => x.Id == response.UserId
                                        && x.PasswordHash == request.PasswordHash
                                        && x.Email == request.Email
                                        && x.PreferredLocalizationCode == request.PreferredLocalizationCode);

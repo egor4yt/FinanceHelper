@@ -1,4 +1,4 @@
-﻿namespace FinanceHelper.Api.Swagger;
+﻿namespace FinanceHelper.Api.Configuration.Options;
 
 /// <summary>
 ///     Swagger documentation options
@@ -9,14 +9,17 @@ public class SwaggerDocOptions
     ///     Title
     /// </summary>
     public string Title { get; set; } = string.Empty;
+
     /// <summary>
     ///     Description
     /// </summary>
     public string Description { get; set; } = string.Empty;
+
     /// <summary>
     ///     Organization
     /// </summary>
     public string Organization { get; set; } = string.Empty;
+
     /// <summary>
     ///     Email
     /// </summary>

@@ -8,10 +8,16 @@ public interface ICurrentUserService
     /// <summary>
     ///     User Id
     /// </summary>
-    public long? UserId { get; }
+    public long UserId { get; }
 
     /// <summary>
-    ///     Authenticated user
+    ///     Preferred user localization
     /// </summary>
+    public string PreferredLocalizationCode { get; }
+
+    /// <summary>
+    ///     Is user authenticated or not
+    /// </summary>
+    /// <returns><see langword="true" /> if the user was authenticated, otherwise <see langword="false" /></returns>
     public bool IsAuthenticated { get; }
 }

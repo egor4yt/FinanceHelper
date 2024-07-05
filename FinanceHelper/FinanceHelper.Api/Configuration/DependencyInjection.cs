@@ -1,22 +1,21 @@
-﻿using System;
-using System.Globalization;
-using System.IO;
+﻿using System.Globalization;
 using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
+using System.Text;
+using FinanceHelper.Api.Configuration.Options;
 using FinanceHelper.Api.Filters;
 using FinanceHelper.Api.HealthChecks;
 using FinanceHelper.Api.Services;
 using FinanceHelper.Api.Services.Interfaces;
-using FinanceHelper.Api.Swagger;
 using FinanceHelper.Shared;
-using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace FinanceHelper.Api.Configuration;
 
@@ -28,34 +27,45 @@ public static class DependencyInjection
     /// <summary>
     ///     API configuration
     /// </summary>
-    /// <param name="builder">Api instance refference</param>
+    /// <param name="builder">Api instance reference</param>
     public static void ConfigureApi(this IHostApplicationBuilder builder)
     {
-        ConfigureAuthorization(builder.Services);
+        ConfigureAuthorization(builder.Services, builder.Configuration);
         ConfigureInfrastructure(builder.Services, builder.Configuration);
-        ConfigureSwagger(builder.Services, builder.Configuration);
+        ConfigureSwagger(builder.Services);
     }
 
-    private static void ConfigureAuthorization(IServiceCollection services)
+    private static void ConfigureAuthorization(IServiceCollection services, IConfiguration configuration)
     {
-        services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-            .AddCookie(options =>
+        var jwtOptions = new JwtOptions();
+        configuration.GetSection(nameof(JwtOptions)).Bind(jwtOptions);
+        services.Configure<JwtOptions>(x =>
+        {
+            x.Audience = jwtOptions.Audience;
+            x.Issuer = jwtOptions.Issuer;
+            x.Key = jwtOptions.Key;
+            x.TokenLifetimeInHours = jwtOptions.TokenLifetimeInHours;
+        });
+
+        services.AddAuthorization();
+        services.AddAuthentication(x =>
+        {
+            x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        }).AddJwtBearer(x =>
+        {
+            x.TokenValidationParameters = new TokenValidationParameters
             {
-                options.Cookie.Name = "id";
-                options.Events = new CookieAuthenticationEvents
-                {
-                    OnRedirectToLogin = context =>
-                    {
-                        context.Response.StatusCode = 401;
-                        return Task.CompletedTask;
-                    },
-                    OnRedirectToAccessDenied = context =>
-                    {
-                        context.Response.StatusCode = 401;
-                        return Task.CompletedTask;
-                    }
-                };
-            });
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = jwtOptions.Issuer,
+                ValidAudience = jwtOptions.Audience,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.Key))
+            };
+        });
     }
 
     private static void ConfigureInfrastructure(IServiceCollection services, IConfiguration configuration)
@@ -76,35 +86,10 @@ public static class DependencyInjection
         );
     }
 
-    private static void ConfigureSwagger(IServiceCollection services, IConfiguration configuration)
+    private static void ConfigureSwagger(IServiceCollection services)
     {
-        var swaggerDocOptions = new SwaggerDocOptions();
-        configuration.GetSection(nameof(SwaggerDocOptions)).Bind(swaggerDocOptions);
-
         services.AddEndpointsApiExplorer();
-        services.AddSwaggerGen(swagger =>
-        {
-            swagger.SwaggerDoc("v1", new OpenApiInfo
-            {
-                Title = swaggerDocOptions.Title,
-                Version = "v1",
-                Description = swaggerDocOptions.Description,
-                TermsOfService = new Uri("https://github.com"),
-                Contact = new OpenApiContact
-                {
-                    Name = swaggerDocOptions.Organization,
-                    Email = swaggerDocOptions.Email
-                },
-                License = new OpenApiLicense
-                {
-                    Name = "MIT",
-                    Url = new Uri("https://github.com/")
-                }
-            });
-
-            var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-            var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-            swagger.IncludeXmlComments(xmlPath);
-        });
+        services.AddSwaggerGen();
+        services.AddTransient<IConfigureOptions<SwaggerGenOptions>, SwaggerConfiguration>();
     }
 }

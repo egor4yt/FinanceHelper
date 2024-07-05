@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Security.Claims;
-using System.Threading.Tasks;
+﻿using System.Security.Claims;
 using FinanceHelper.Api.Services.Interfaces;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
+using FinanceHelper.Application.Exceptions;
+using FinanceHelper.Shared;
 using Microsoft.AspNetCore.Http;
 
 namespace FinanceHelper.Api.Services;
@@ -12,33 +9,24 @@ namespace FinanceHelper.Api.Services;
 /// <inheritdoc />
 public class CurrentUserService(IHttpContextAccessor httpContextAccessor) : ICurrentUserService
 {
-    /// <inheritdoc />
-    public long? UserId { get; } = long.Parse(httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "-1");
+    private readonly ClaimsPrincipal? _user = httpContextAccessor.HttpContext?.User;
 
     /// <inheritdoc />
-    public bool IsAuthenticated => UserId != -1;
-
-    /// <inheritdoc />
-    public async Task AuthenticateWithCookieAsync(long userId)
+    public long UserId
     {
-        var claims = new List<Claim>
+        get
         {
-            new Claim(ClaimTypes.NameIdentifier, userId.ToString())
-        };
+            var stringUserId = _user?.FindFirstValue(UserJwtClaimNames.UserId);
+            if (string.IsNullOrWhiteSpace(stringUserId)) throw new ForbiddenException("User id was null");
 
-        var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
-        var authProperties = new AuthenticationProperties
-        {
-            ExpiresUtc = null,
-            IssuedUtc = DateTime.UtcNow
-        };
-
-        if (httpContextAccessor.HttpContext == null) return;
-
-        await httpContextAccessor.HttpContext.SignInAsync(
-            CookieAuthenticationDefaults.AuthenticationScheme,
-            new ClaimsPrincipal(claimsIdentity),
-            authProperties);
+            var longUserId = long.Parse(stringUserId);
+            return longUserId;
+        }
     }
+
+    /// <inheritdoc />
+    public string PreferredLocalizationCode => _user?.FindFirstValue(UserJwtClaimNames.PreferredLocalizationCode) ?? throw new ForbiddenException("User id was null");
+
+    /// <inheritdoc />
+    public bool IsAuthenticated => httpContextAccessor.HttpContext?.User.Identity?.IsAuthenticated ?? false;
 }

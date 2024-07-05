@@ -45,14 +45,14 @@ try
 
     app.UseInitializeDatabase();
 
-    app.UseAuthentication();
-    app.UseAuthorization();
-
     app.MapHealthChecks("/health", new HealthCheckOptions
     {
         ResponseWriter = HealthCheckService.WriterHealthCheckResponse,
         AllowCachingResponses = false
     });
+
+    app.UseAuthentication();
+    app.UseAuthorization();
 
     app.MapControllers();
     app.Run();
