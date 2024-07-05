@@ -11,7 +11,7 @@ public class GetOneUserQueryHandler(ApplicationDbContext applicationDbContext, I
     public async Task<GetOneUserQueryResponse> Handle(GetOneUserQueryRequest request, CancellationToken cancellationToken)
     {
         var response = new GetOneUserQueryResponse();
-        
+
         var user = await applicationDbContext.Users.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
         if (user == null) throw new NotFoundException(stringLocalizer["UserNotFound"], request.Id);
 

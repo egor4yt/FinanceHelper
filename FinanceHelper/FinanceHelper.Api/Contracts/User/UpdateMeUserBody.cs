@@ -1,7 +1,7 @@
 ﻿namespace FinanceHelper.Api.Contracts.User;
 
 /// <summary>
-/// Updated user details
+///     Updated user details
 /// </summary>
 public class UpdateMeUserBody
 {
@@ -9,7 +9,7 @@ public class UpdateMeUserBody
     ///     User email
     /// </summary>
     public string Email { get; set; }
-    
+
     /// <summary>
     ///     Preferred localization code
     /// </summary>

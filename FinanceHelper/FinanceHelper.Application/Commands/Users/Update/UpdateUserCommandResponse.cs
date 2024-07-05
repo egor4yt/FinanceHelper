@@ -1,6 +1,4 @@
-﻿using MediatR;
-
-namespace FinanceHelper.Application.Commands.Users.Update;
+﻿namespace FinanceHelper.Application.Commands.Users.Update;
 
 public class UpdateUserCommandResponse
 {

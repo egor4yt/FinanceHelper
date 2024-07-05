@@ -2,7 +2,6 @@
 using FinanceHelper.Api.Configuration.Options;
 using FinanceHelper.Api.Contracts.Authorization;
 using FinanceHelper.Application.Commands.Authorize.WithCredentials;
-using FinanceHelper.Application.Commands.Users.Register;
 using FinanceHelper.Shared;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
