@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using FinanceHelper.Application.Commands.Users.Register;
-using FinanceHelper.Application.Exceptions;
 using FinanceHelper.Application.Queries.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;

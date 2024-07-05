@@ -1,4 +1,3 @@
-using FinanceHelper.Application.Commands.Authorize.WithCredentials;
 using FinanceHelper.Application.Commands.Users.Register;
 using FinanceHelper.Application.Exceptions;
 using FinanceHelper.Application.Queries.Users;
@@ -9,8 +8,8 @@ namespace FinanceHelper.Application.UnitTesting.Tests;
 
 public class GetOneUserQueryTests : TestBase
 {
-    private readonly RegisterUserCommandHandler _registerHandler;
     private readonly GetOneUserQueryHandler _getOneUserHandler;
+    private readonly RegisterUserCommandHandler _registerHandler;
 
     public GetOneUserQueryTests()
     {

@@ -9,7 +9,7 @@ public class RegisterUserCommandValidator : AbstractValidator<RegisterUserComman
     public RegisterUserCommandValidator(IOptions<RequestLocalizationOptions> localizationOptions)
     {
         var supportedLocalizations = localizationOptions.Value.SupportedCultures!.Select(x => x.TwoLetterISOLanguageName).ToList();
-        
+
         RuleFor(x => x.Email)
             .NotEmpty()
             .EmailAddress();

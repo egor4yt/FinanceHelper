@@ -8,18 +8,18 @@ public class ApplicationContextFactory
     public static ApplicationDbContext Create()
     {
         var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-            .UseInMemoryDatabase("InMemoryDatabase")
+            .UseInMemoryDatabase(Guid.NewGuid().ToString())
             .Options;
 
         var context = new ApplicationDbContext(options);
-        context.Database.EnsureCreatedAsync();
+        context.Database.EnsureCreated();
 
         return context;
     }
 
-    public static async Task DestroyAsync(ApplicationDbContext context)
+    public static void DestroyAsync(ApplicationDbContext context)
     {
-        await context.Database.EnsureDeletedAsync();
-        await context.DisposeAsync();
+        context.Database.EnsureDeleted();
+        context.Dispose();
     }
 }

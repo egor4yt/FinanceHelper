@@ -27,7 +27,7 @@ public class SecurityHelper
             new Claim(UserJwtClaimNames.UserEmail, user.Email),
             new Claim(UserJwtClaimNames.UserId, user.Id.ToString()),
             new Claim(UserJwtClaimNames.PreferredLocalizationCode, user.PreferredLocalizationCode),
-            
+
             /* RFC claim types */
             new Claim(UserJwtClaimNames.JsonTokenIdentifier, Guid.NewGuid().ToString())
         };
