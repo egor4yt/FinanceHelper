@@ -4,7 +4,7 @@ using FinanceHelper.Application.UnitTesting.Common;
 using FinanceHelper.Shared;
 using Microsoft.EntityFrameworkCore;
 
-namespace FinanceHelper.Application.UnitTesting;
+namespace FinanceHelper.Application.UnitTesting.Tests;
 
 public class RegisterUserCommandTests : TestBase
 {
