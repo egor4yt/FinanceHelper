@@ -24,7 +24,7 @@ public class AuthorizeWithCredentialsCommandTests : TestBase
     public async Task Success()
     {
         // Arrange
-        var userEmail = "AuthorizeWithCredentialsCommandTests@mail.com";
+        var userEmail = "AuthorizeWithCredentialsCommandTests_Success@mail.com";
         var userPasswordHash = SecurityHelper.ComputeSha256Hash("password");
         var registerRequest = new RegisterUserCommandRequest
         {
@@ -56,13 +56,13 @@ public class AuthorizeWithCredentialsCommandTests : TestBase
         var registerRequest = new RegisterUserCommandRequest
         {
             PreferredLocalizationCode = "ru",
-            Email = "AuthorizeWithCredentialsCommandTests1@mail.com",
+            Email = "AuthorizeWithCredentialsCommandTests_WrongCredentials1@mail.com",
             PasswordHash = userPasswordHash,
             JwtDescriptorDetails = JwtDescriptorDetails
         };
         var authorizeRequest = new AuthorizeWithCredentialsCommandRequest
         {
-            Email = "AuthorizeWithCredentialsCommandTests2@mail.com",
+            Email = "AuthorizeWithCredentialsCommandTests_WrongCredentials2@mail.com",
             PasswordHash = userPasswordHash,
             JwtDescriptorDetails = JwtDescriptorDetails
         };

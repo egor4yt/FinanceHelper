@@ -23,7 +23,7 @@ public class RegisterUserCommandTests : TestBase
         var request = new RegisterUserCommandRequest
         {
             PreferredLocalizationCode = "ru",
-            Email = "test@mail.com",
+            Email = "RegisterUserCommandTests_Success@gmail.com",
             PasswordHash = SecurityHelper.ComputeSha256Hash("password"),
             JwtDescriptorDetails = JwtDescriptorDetails
         };
@@ -37,7 +37,9 @@ public class RegisterUserCommandTests : TestBase
                                        && x.PreferredLocalizationCode == request.PreferredLocalizationCode);
 
         // Assert
-        Assert.NotNull(databaseUser);
+        Assert.Multiple(
+            () => Assert.NotNull(databaseUser),
+            () => Assert.NotEmpty(response.BearerToken));
     }
 
     [Fact]
@@ -47,7 +49,7 @@ public class RegisterUserCommandTests : TestBase
         var request = new RegisterUserCommandRequest
         {
             PreferredLocalizationCode = "ru",
-            Email = "test@mail.com",
+            Email = "RegisterUserCommandTests_Duplicate@gmail.com",
             PasswordHash = SecurityHelper.ComputeSha256Hash("password"),
             JwtDescriptorDetails = JwtDescriptorDetails
         };
@@ -67,7 +69,7 @@ public class RegisterUserCommandTests : TestBase
         var request = new RegisterUserCommandRequest
         {
             PreferredLocalizationCode = "test",
-            Email = "test",
+            Email = "RegisterUserCommandTests_ValidationTestgmail.com",
             PasswordHash = "",
             JwtDescriptorDetails = null!
         };
@@ -76,7 +78,7 @@ public class RegisterUserCommandTests : TestBase
             nameof(request.PreferredLocalizationCode),
             nameof(request.Email),
             nameof(request.PasswordHash),
-            nameof(request.JwtDescriptorDetails),
+            nameof(request.JwtDescriptorDetails)
         }.Order();
 
         // Act
