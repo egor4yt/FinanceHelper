@@ -24,7 +24,7 @@ public class AuthorizationController(IOptions<JwtOptions> jwtOptions) : ApiContr
     /// <param name="body">User credentials</param>
     [HttpPost("credentials")]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    [ProducesResponseType(typeof(RegisterUserCommandResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(AuthorizeWithCredentialsCommandResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> Credentials([FromBody] AuthorizationLoginBody body)
     {
         var command = new AuthorizeWithCredentialsCommandRequest
