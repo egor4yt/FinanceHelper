@@ -12,5 +12,8 @@ public class AuthorizeWithCredentialsCommandValidator : AbstractValidator<Author
 
         RuleFor(v => v.PasswordHash)
             .NotEmpty();
+        
+        RuleFor(x => x.JwtDescriptorDetails)
+            .NotNull();
     }
 }

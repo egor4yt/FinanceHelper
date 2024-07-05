@@ -8,16 +8,19 @@ public class RegisterUserCommandValidator : AbstractValidator<RegisterUserComman
 {
     public RegisterUserCommandValidator(IOptions<RequestLocalizationOptions> localizationOptions)
     {
-        RuleFor(v => v.Email)
+        var supportedLocalizations = localizationOptions.Value.SupportedCultures!.Select(x => x.TwoLetterISOLanguageName).ToList();
+        
+        RuleFor(x => x.Email)
             .NotEmpty()
             .EmailAddress();
 
-        RuleFor(v => v.PasswordHash)
+        RuleFor(x => x.PasswordHash)
             .NotEmpty();
 
-        var supportedLocalizations = localizationOptions.Value.SupportedCultures!.Select(x => x.TwoLetterISOLanguageName).ToList();
-
-        RuleFor(v => v.PreferredLocalizationCode)
+        RuleFor(x => x.PreferredLocalizationCode)
             .Matches($"^({string.Join('|', supportedLocalizations)})$");
+
+        RuleFor(x => x.JwtDescriptorDetails)
+            .NotNull();
     }
 }
