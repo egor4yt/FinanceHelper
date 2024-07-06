@@ -1,6 +1,6 @@
 ﻿using FinanceHelper.Application.Services.Interfaces;
 
-namespace FinanceHelper.Application.Services;
+namespace FinanceHelper.Application.Services.Localization;
 
 internal class StringLocalizer<T>(IStringLocalizerFactory factory) : IStringLocalizer<T>
 {

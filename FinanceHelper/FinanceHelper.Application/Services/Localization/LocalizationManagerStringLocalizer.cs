@@ -1,7 +1,7 @@
 using System.Globalization;
 using FinanceHelper.Application.Services.Interfaces;
 
-namespace FinanceHelper.Application.Services;
+namespace FinanceHelper.Application.Services.Localization;
 
 internal class LocalizationManagerStringLocalizer(LocalizationManager localizationManager) : IStringLocalizer
 {

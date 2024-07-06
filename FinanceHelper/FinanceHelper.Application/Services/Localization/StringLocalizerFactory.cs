@@ -1,23 +1,24 @@
-﻿using System.Reflection;
+﻿using System.Collections.Concurrent;
+using System.Reflection;
 using FinanceHelper.Application.Services.Interfaces;
 
-namespace FinanceHelper.Application.Services;
+namespace FinanceHelper.Application.Services.Localization;
 
 internal class StringLocalizerFactory : IStringLocalizerFactory
 {
     private const string LocalizationFilesRelativePath = "Localization";
-    private readonly Dictionary<string, IStringLocalizer> _localizerCache = new Dictionary<string, IStringLocalizer>();
+    private readonly ConcurrentDictionary<string, IStringLocalizer> _localizerCache = new ConcurrentDictionary<string, IStringLocalizer>();
 
     public IStringLocalizer Create(Type objectToLocalizationType)
     {
-        if (!_localizerCache.TryGetValue(objectToLocalizationType.AssemblyQualifiedName!, out var localizer))
+        if (_localizerCache.TryGetValue(objectToLocalizationType.AssemblyQualifiedName!, out var localizer) == false)
         {
             var typeInfo = objectToLocalizationType.GetTypeInfo();
             var baseName = GetLocalizationFilePrefix(typeInfo);
 
             localizer = CreateLocalizationManagerStringLocalizer(typeInfo.Assembly, baseName);
 
-            _localizerCache[objectToLocalizationType.AssemblyQualifiedName!] = localizer;
+            _localizerCache.TryAdd(objectToLocalizationType.AssemblyQualifiedName!, localizer);
         }
 
 

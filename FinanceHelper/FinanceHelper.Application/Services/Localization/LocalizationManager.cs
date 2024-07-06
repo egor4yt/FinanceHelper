@@ -4,7 +4,7 @@ using System.Text.Json;
 using FinanceHelper.Application.Models;
 using Serilog;
 
-namespace FinanceHelper.Application.Services;
+namespace FinanceHelper.Application.Services.Localization;
 
 /// <summary>
 ///     Includes all localizations of the one object
