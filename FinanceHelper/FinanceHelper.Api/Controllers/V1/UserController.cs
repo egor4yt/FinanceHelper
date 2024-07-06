@@ -18,9 +18,9 @@ namespace FinanceHelper.Api.Controllers.V1;
 public class UserController(IOptions<JwtOptions> jwtOptions) : ApiControllerBase
 {
     /// <summary>
-    ///     Get user information
+    ///     Get authorized user information
     /// </summary>
-    /// <returns>Authorized user data</returns>
+    /// <returns>Authorized user information</returns>
     [HttpGet("me")]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -37,9 +37,9 @@ public class UserController(IOptions<JwtOptions> jwtOptions) : ApiControllerBase
     }
 
     /// <summary>
-    ///     Update user information
+    ///     Update authorized user information
     /// </summary>
-    /// <returns>new user data</returns>
+    /// <returns>Updated user information and new json web token</returns>
     [HttpPut("me")]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]

@@ -21,7 +21,7 @@ namespace FinanceHelper.Api.Controllers.V1;
 public class RegisterController(IOptions<RequestLocalizationOptions> localizationOptions, IOptions<JwtOptions> jwtOptions) : ApiControllerBase
 {
     /// <summary>
-    ///     Register user
+    ///     User registration
     /// </summary>
     /// <param name="body">Registration user data</param>
     /// <returns>Registered user data</returns>
