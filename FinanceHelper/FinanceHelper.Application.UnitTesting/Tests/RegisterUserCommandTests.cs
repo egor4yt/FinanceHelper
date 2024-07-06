@@ -21,9 +21,9 @@ public class RegisterUserCommandTests : TestBase<RegisterUserCommandHandler>
         // Arrange
         var request = new RegisterUserCommandRequest
         {
-            PreferredLocalizationCode = "ru",
-            Email = "RegisterUserCommandTests_Success@gmail.com",
-            PasswordHash = SecurityHelper.ComputeSha256Hash("password"),
+            PreferredLocalizationCode = new Guid().ToString(),
+            Email = new Guid().ToString(),
+            PasswordHash = SecurityHelper.ComputeSha256Hash(new Guid().ToString()),
             JwtDescriptorDetails = JwtDescriptorDetails
         };
 
@@ -48,9 +48,9 @@ public class RegisterUserCommandTests : TestBase<RegisterUserCommandHandler>
         var user = await UserGenerator.SeedOneRandomUserAsync();
         var request = new RegisterUserCommandRequest
         {
-            PreferredLocalizationCode = "ru",
+            PreferredLocalizationCode = new Guid().ToString(),
             Email = user.Email,
-            PasswordHash = SecurityHelper.ComputeSha256Hash("password2"),
+            PasswordHash = SecurityHelper.ComputeSha256Hash(new Guid().ToString()),
             JwtDescriptorDetails = JwtDescriptorDetails
         };
 
@@ -65,8 +65,8 @@ public class RegisterUserCommandTests : TestBase<RegisterUserCommandHandler>
         var validator = new RegisterUserCommandValidator(RequestLocalizationOptions);
         var request = new RegisterUserCommandRequest
         {
-            PreferredLocalizationCode = "test",
-            Email = "RegisterUserCommandTests_ValidationTest",
+            PreferredLocalizationCode = new Guid().ToString(),
+            Email = new Guid().ToString(),
             PasswordHash = "",
             JwtDescriptorDetails = null!
         };

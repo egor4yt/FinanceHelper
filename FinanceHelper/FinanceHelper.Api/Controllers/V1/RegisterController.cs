@@ -24,7 +24,7 @@ public class RegisterController(IOptions<RequestLocalizationOptions> localizatio
     ///     User registration
     /// </summary>
     /// <param name="body">Registration user data</param>
-    /// <returns>Registered user data</returns>
+    /// <returns>Registered user data and a JSON web token</returns>
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     [ProducesResponseType(typeof(RegisterUserCommandResponse), StatusCodes.Status200OK)]

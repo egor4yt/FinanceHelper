@@ -7,11 +7,11 @@ namespace FinanceHelper.Application.UnitTesting.Tests;
 
 public class AuthorizeWithCredentialsCommandTests : TestBase<AuthorizeWithCredentialsCommandHandler>
 {
-    private readonly AuthorizeWithCredentialsCommandHandler _authorizeHandler;
+    private readonly AuthorizeWithCredentialsCommandHandler _handler;
 
     public AuthorizeWithCredentialsCommandTests()
     {
-        _authorizeHandler = new AuthorizeWithCredentialsCommandHandler(ApplicationDbContext, Localizer);
+        _handler = new AuthorizeWithCredentialsCommandHandler(ApplicationDbContext, Localizer);
     }
 
     [Fact]
@@ -27,7 +27,7 @@ public class AuthorizeWithCredentialsCommandTests : TestBase<AuthorizeWithCreden
         };
 
         // Act
-        var response = await _authorizeHandler.Handle(request, CancellationToken.None);
+        var response = await _handler.Handle(request, CancellationToken.None);
 
         // Assert
         Assert.NotNull(response);
@@ -46,6 +46,6 @@ public class AuthorizeWithCredentialsCommandTests : TestBase<AuthorizeWithCreden
         };
 
         // Assert
-        await Assert.ThrowsAsync<ForbiddenException>(() => _authorizeHandler.Handle(request, CancellationToken.None));
+        await Assert.ThrowsAsync<ForbiddenException>(() => _handler.Handle(request, CancellationToken.None));
     }
 }

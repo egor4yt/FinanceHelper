@@ -6,11 +6,11 @@ namespace FinanceHelper.Application.UnitTesting.Tests;
 
 public class GetOneUserQueryTests : TestBase<GetOneUserQueryHandler>
 {
-    private readonly GetOneUserQueryHandler _getOneUserHandler;
+    private readonly GetOneUserQueryHandler _handler;
 
     public GetOneUserQueryTests()
     {
-        _getOneUserHandler = new GetOneUserQueryHandler(ApplicationDbContext, Localizer);
+        _handler = new GetOneUserQueryHandler(ApplicationDbContext, Localizer);
     }
 
     [Fact]
@@ -30,7 +30,7 @@ public class GetOneUserQueryTests : TestBase<GetOneUserQueryHandler>
         };
 
         // Act
-        var actualResponse = await _getOneUserHandler.Handle(request, CancellationToken.None);
+        var actualResponse = await _handler.Handle(request, CancellationToken.None);
 
         // Assert
         Assert.Equivalent(expectedResponse, actualResponse);
@@ -46,6 +46,6 @@ public class GetOneUserQueryTests : TestBase<GetOneUserQueryHandler>
         };
 
         // Assert
-        await Assert.ThrowsAsync<NotFoundException>(() => _getOneUserHandler.Handle(request, CancellationToken.None));
+        await Assert.ThrowsAsync<NotFoundException>(() => _handler.Handle(request, CancellationToken.None));
     }
 }

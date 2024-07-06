@@ -13,6 +13,12 @@ public class UpdateUserCommandHandler(ApplicationDbContext applicationDbContext,
     {
         var response = new UpdateUserCommandResponse();
 
+        var emailExists = await applicationDbContext.Users.AnyAsync(x =>
+                x.Id != request.Id
+                && x.Email == request.Email
+            , cancellationToken);
+        if (emailExists) throw new ConflictException(stringLocalizer["EmailAlreadyExists"]);
+
         var user = await applicationDbContext.Users.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
         if (user == null) throw new NotFoundException(stringLocalizer["UserNotFound"], request.Id);
 

@@ -18,10 +18,10 @@ namespace FinanceHelper.Api.Controllers.V1;
 public class AuthorizationController(IOptions<JwtOptions> jwtOptions) : ApiControllerBase
 {
     /// <summary>
-    ///     Authorize wit user credentials
+    ///     Authorize with user credentials
     /// </summary>
     /// <param name="body">User credentials</param>
-    /// <returns>Json web token</returns>
+    /// <returns>JSON web token</returns>
     [HttpPost("credentials")]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(AuthorizeWithCredentialsCommandResponse), StatusCodes.Status200OK)]

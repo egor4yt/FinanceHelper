@@ -22,7 +22,7 @@ public class UserController(IOptions<JwtOptions> jwtOptions) : ApiControllerBase
     /// </summary>
     /// <returns>Authorized user information</returns>
     [HttpGet("me")]
-    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(GetOneUserQueryResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetMe()
@@ -39,7 +39,7 @@ public class UserController(IOptions<JwtOptions> jwtOptions) : ApiControllerBase
     /// <summary>
     ///     Update authorized user information
     /// </summary>
-    /// <returns>Updated user information and new json web token</returns>
+    /// <returns>Updated user information and a new JSON web token</returns>
     [HttpPut("me")]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]

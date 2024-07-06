@@ -7,11 +7,11 @@ namespace FinanceHelper.Application.UnitTesting.Tests;
 
 public class UpdateUserCommandHandlerTests : TestBase<UpdateUserCommandHandler>
 {
-    private readonly UpdateUserCommandHandler _updateHandler;
+    private readonly UpdateUserCommandHandler _handler;
 
     public UpdateUserCommandHandlerTests()
     {
-        _updateHandler = new UpdateUserCommandHandler(ApplicationDbContext, Localizer);
+        _handler = new UpdateUserCommandHandler(ApplicationDbContext, Localizer);
     }
 
     [Fact]
@@ -28,7 +28,7 @@ public class UpdateUserCommandHandlerTests : TestBase<UpdateUserCommandHandler>
         };
 
         // Act
-        var response = await _updateHandler.Handle(request, CancellationToken.None);
+        var response = await _handler.Handle(request, CancellationToken.None);
         var updatedUser = await ApplicationDbContext.Users
             .SingleOrDefaultAsync(x => x.Id == newUser.Id
                                        && x.PasswordHash == newUser.PasswordHash
@@ -53,6 +53,24 @@ public class UpdateUserCommandHandlerTests : TestBase<UpdateUserCommandHandler>
         };
 
         // Assert
-        await Assert.ThrowsAsync<NotFoundException>(() => _updateHandler.Handle(request, CancellationToken.None));
+        await Assert.ThrowsAsync<NotFoundException>(() => _handler.Handle(request, CancellationToken.None));
+    }
+    
+    [Fact]
+    public async Task Duplicate()
+    {
+        // Arrange
+        var user1 = await UserGenerator.SeedOneRandomUserAsync();
+        var user2 = await UserGenerator.SeedOneRandomUserAsync();
+        var request = new UpdateUserCommandRequest
+        {
+            Id = user1.Id,
+            PreferredLocalizationCode = new Guid().ToString(),
+            Email = user2.Email,
+            JwtDescriptorDetails = JwtDescriptorDetails
+        };
+
+        // Assert
+        await Assert.ThrowsAsync<ConflictException>(() => _handler.Handle(request, CancellationToken.None));
     }
 }
