@@ -16,17 +16,14 @@ public static class DbInitializer
     public static IHost UseInitializeDatabase(this IHost application)
     {
         using var serviceScope = application.Services.CreateScope();
-        var dbContext = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
+        var dbContext = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
         // // only call this method when there are pending migrations
-        if (dbContext != null && dbContext.Database.GetPendingMigrations().Any())
+        if (dbContext.Database.GetPendingMigrations().Any())
         {
             Log.Information("Applying  Migrations");
             dbContext.Database.Migrate();
         }
-
-        // TODO: Add method for database seeding
-        // SeedData(dbContext);
 
         return application;
     }
