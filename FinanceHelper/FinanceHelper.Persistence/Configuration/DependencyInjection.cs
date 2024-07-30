@@ -19,6 +19,7 @@ public static class DependencyInjection
             options.UseNpgsql(app.Configuration
                     .GetConnectionString(ConfigurationKeys.DatabaseConnection))
                 .LogTo(Log.Information, LogLevel.Information, DbContextLoggerOptions.Id | DbContextLoggerOptions.Category)
+                .EnableSensitiveDataLogging()
         );
 
         return app;

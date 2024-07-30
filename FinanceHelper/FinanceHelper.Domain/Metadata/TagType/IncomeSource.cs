@@ -2,7 +2,7 @@
 
 public class TagType
 {
-    public static Entities.TagType IncomeSource = new Entities.TagType
+    public static readonly Entities.TagType IncomeSource = new Entities.TagType
     {
         Code = "income-source"
     };

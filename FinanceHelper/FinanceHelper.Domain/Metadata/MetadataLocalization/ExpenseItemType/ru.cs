@@ -2,8 +2,8 @@
 
 public partial class MetadataLocalization
 {
-    public static List<Entities.MetadataLocalization> ExpenseItemTypesRu = new List<Entities.MetadataLocalization>
-    {
+    public static readonly List<Entities.MetadataLocalization> ExpenseItemTypesRu =
+    [
         new Entities.MetadataLocalization
         {
             LocalizedValue = "Регулярные траты",
@@ -11,6 +11,7 @@ public partial class MetadataLocalization
             SupportedLanguageCode = SupportedLanguage.Russian.Code,
             MetadataTypeCode = MetadataType.ExpenseItemType.Code
         },
+
         new Entities.MetadataLocalization
         {
             LocalizedValue = "Инвестиции",
@@ -18,6 +19,7 @@ public partial class MetadataLocalization
             SupportedLanguageCode = SupportedLanguage.Russian.Code,
             MetadataTypeCode = MetadataType.ExpenseItemType.Code
         },
+
         new Entities.MetadataLocalization
         {
             LocalizedValue = "Долг",
@@ -25,6 +27,7 @@ public partial class MetadataLocalization
             SupportedLanguageCode = SupportedLanguage.Russian.Code,
             MetadataTypeCode = MetadataType.ExpenseItemType.Code
         },
+
         new Entities.MetadataLocalization
         {
             LocalizedValue = "Вклад",
@@ -32,6 +35,7 @@ public partial class MetadataLocalization
             SupportedLanguageCode = SupportedLanguage.Russian.Code,
             MetadataTypeCode = MetadataType.ExpenseItemType.Code
         },
+
         new Entities.MetadataLocalization
         {
             LocalizedValue = "Другое",
@@ -39,6 +43,7 @@ public partial class MetadataLocalization
             SupportedLanguageCode = SupportedLanguage.Russian.Code,
             MetadataTypeCode = MetadataType.ExpenseItemType.Code
         },
+
         new Entities.MetadataLocalization
         {
             LocalizedValue = "Благотворительность",
@@ -46,5 +51,5 @@ public partial class MetadataLocalization
             SupportedLanguageCode = SupportedLanguage.Russian.Code,
             MetadataTypeCode = MetadataType.ExpenseItemType.Code
         }
-    };
+    ];
 }

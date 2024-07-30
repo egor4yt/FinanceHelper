@@ -2,7 +2,7 @@
 
 public partial class IncomeSourceType
 {
-    public static Entities.IncomeSourceType DepositWithdraw = new Entities.IncomeSourceType
+    public static readonly Entities.IncomeSourceType DepositWithdraw = new Entities.IncomeSourceType
     {
         Code = "deposit-withdraw",
         LocalizationKeyword = "DepositWithdraw"

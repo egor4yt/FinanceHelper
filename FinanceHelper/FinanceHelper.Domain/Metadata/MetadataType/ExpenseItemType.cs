@@ -2,7 +2,7 @@
 
 public partial class MetadataType
 {
-    public static Entities.MetadataType ExpenseItemType = new Entities.MetadataType
+    public static readonly Entities.MetadataType ExpenseItemType = new Entities.MetadataType
     {
         Code = "expense-item-type"
     };

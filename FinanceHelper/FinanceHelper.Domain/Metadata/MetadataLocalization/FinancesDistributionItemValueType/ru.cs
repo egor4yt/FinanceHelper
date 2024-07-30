@@ -2,8 +2,8 @@
 
 public partial class MetadataLocalization
 {
-    public static List<Entities.MetadataLocalization> FinancesDistributionItemValueTypesRu = new List<Entities.MetadataLocalization>
-    {
+    public static readonly List<Entities.MetadataLocalization> FinancesDistributionItemValueTypesRu =
+    [
         new Entities.MetadataLocalization
         {
             LocalizedValue = "Процентный",
@@ -11,6 +11,7 @@ public partial class MetadataLocalization
             SupportedLanguageCode = SupportedLanguage.Russian.Code,
             MetadataTypeCode = MetadataType.FinancesDistributionItemValueType.Code
         },
+
         new Entities.MetadataLocalization
         {
             LocalizedValue = "Фиксированный",
@@ -18,5 +19,5 @@ public partial class MetadataLocalization
             SupportedLanguageCode = SupportedLanguage.Russian.Code,
             MetadataTypeCode = MetadataType.FinancesDistributionItemValueType.Code
         }
-    };
+    ];
 }

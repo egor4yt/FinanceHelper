@@ -2,8 +2,8 @@
 
 public partial class MetadataLocalization
 {
-    public static List<Entities.MetadataLocalization> IncomeSourceTypesRu = new List<Entities.MetadataLocalization>
-    {
+    public static readonly List<Entities.MetadataLocalization> IncomeSourceTypesRu =
+    [
         new Entities.MetadataLocalization
         {
             LocalizedValue = "Работа",
@@ -11,6 +11,7 @@ public partial class MetadataLocalization
             SupportedLanguageCode = SupportedLanguage.Russian.Code,
             MetadataTypeCode = MetadataType.IncomeSourceType.Code
         },
+
         new Entities.MetadataLocalization
         {
             LocalizedValue = "Инвестиции",
@@ -18,6 +19,7 @@ public partial class MetadataLocalization
             SupportedLanguageCode = SupportedLanguage.Russian.Code,
             MetadataTypeCode = MetadataType.IncomeSourceType.Code
         },
+
         new Entities.MetadataLocalization
         {
             LocalizedValue = "Долг",
@@ -25,6 +27,7 @@ public partial class MetadataLocalization
             SupportedLanguageCode = SupportedLanguage.Russian.Code,
             MetadataTypeCode = MetadataType.IncomeSourceType.Code
         },
+
         new Entities.MetadataLocalization
         {
             LocalizedValue = "Снятие со вклада",
@@ -32,6 +35,7 @@ public partial class MetadataLocalization
             SupportedLanguageCode = SupportedLanguage.Russian.Code,
             MetadataTypeCode = MetadataType.IncomeSourceType.Code
         },
+
         new Entities.MetadataLocalization
         {
             LocalizedValue = "Другое",
@@ -39,5 +43,5 @@ public partial class MetadataLocalization
             SupportedLanguageCode = SupportedLanguage.Russian.Code,
             MetadataTypeCode = MetadataType.IncomeSourceType.Code
         }
-    };
+    ];
 }

@@ -2,7 +2,7 @@
 
 public partial class ExpenseItemType
 {
-    public static Entities.ExpenseItemType Debt = new Entities.ExpenseItemType
+    public static readonly Entities.ExpenseItemType Debt = new Entities.ExpenseItemType
     {
         Code = "debt",
         LocalizationKeyword = "Debt"

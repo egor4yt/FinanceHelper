@@ -2,8 +2,8 @@
 
 public partial class MetadataLocalization
 {
-    public static List<Entities.MetadataLocalization> FinancesDistributionItemValueTypesEn = new List<Entities.MetadataLocalization>
-    {
+    public static readonly List<Entities.MetadataLocalization> FinancesDistributionItemValueTypesEn =
+    [
         new Entities.MetadataLocalization
         {
             LocalizedValue = "Floating",
@@ -11,6 +11,7 @@ public partial class MetadataLocalization
             SupportedLanguageCode = SupportedLanguage.English.Code,
             MetadataTypeCode = MetadataType.FinancesDistributionItemValueType.Code
         },
+
         new Entities.MetadataLocalization
         {
             LocalizedValue = "Fixed",
@@ -18,5 +19,5 @@ public partial class MetadataLocalization
             SupportedLanguageCode = SupportedLanguage.English.Code,
             MetadataTypeCode = MetadataType.FinancesDistributionItemValueType.Code
         }
-    };
+    ];
 }

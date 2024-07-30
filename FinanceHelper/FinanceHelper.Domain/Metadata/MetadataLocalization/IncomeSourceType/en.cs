@@ -2,8 +2,8 @@
 
 public partial class MetadataLocalization
 {
-    public static List<Entities.MetadataLocalization> IncomeSourceTypesEn = new List<Entities.MetadataLocalization>
-    {
+    public static readonly List<Entities.MetadataLocalization> IncomeSourceTypesEn =
+    [
         new Entities.MetadataLocalization
         {
             LocalizedValue = "Work",
@@ -11,6 +11,7 @@ public partial class MetadataLocalization
             SupportedLanguageCode = SupportedLanguage.English.Code,
             MetadataTypeCode = MetadataType.IncomeSourceType.Code
         },
+
         new Entities.MetadataLocalization
         {
             LocalizedValue = "Investment",
@@ -18,6 +19,7 @@ public partial class MetadataLocalization
             SupportedLanguageCode = SupportedLanguage.English.Code,
             MetadataTypeCode = MetadataType.IncomeSourceType.Code
         },
+
         new Entities.MetadataLocalization
         {
             LocalizedValue = "Debt",
@@ -25,6 +27,7 @@ public partial class MetadataLocalization
             SupportedLanguageCode = SupportedLanguage.English.Code,
             MetadataTypeCode = MetadataType.IncomeSourceType.Code
         },
+
         new Entities.MetadataLocalization
         {
             LocalizedValue = "Bank deposit withdraw",
@@ -32,6 +35,7 @@ public partial class MetadataLocalization
             SupportedLanguageCode = SupportedLanguage.English.Code,
             MetadataTypeCode = MetadataType.IncomeSourceType.Code
         },
+
         new Entities.MetadataLocalization
         {
             LocalizedValue = "Other",
@@ -39,5 +43,5 @@ public partial class MetadataLocalization
             SupportedLanguageCode = SupportedLanguage.English.Code,
             MetadataTypeCode = MetadataType.IncomeSourceType.Code
         }
-    };
+    ];
 }
