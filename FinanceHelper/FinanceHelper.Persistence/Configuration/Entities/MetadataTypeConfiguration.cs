@@ -13,7 +13,7 @@ public class MetadataTypeConfiguration : IEntityTypeConfiguration<MetadataType>
         builder.Property(x => x.Code)
             .HasColumnType("varchar(64)")
             .IsRequired();
-        
+
         SeedData(builder);
     }
 

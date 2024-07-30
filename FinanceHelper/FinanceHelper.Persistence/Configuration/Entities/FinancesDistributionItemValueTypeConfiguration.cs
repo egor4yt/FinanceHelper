@@ -16,11 +16,11 @@ public class FinancesDistributionItemValueTypeConfiguration : IEntityTypeConfigu
         builder.Property(x => x.Code)
             .HasColumnType("varchar(32)")
             .IsRequired();
-        
+
         builder.Property(x => x.LocalizationKeyword)
             .HasColumnType("varchar(32)")
             .IsRequired();
-        
+
         SeedData(builder);
     }
 

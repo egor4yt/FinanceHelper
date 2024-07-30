@@ -14,12 +14,12 @@ public class MetadataLocalizationConfiguration : IEntityTypeConfiguration<Metada
             .HasOne(x => x.SupportedLanguage)
             .WithMany(x => x.MetadataLocalizations)
             .HasConstraintName("FK_MetadataLocalization_SupportedLanguage");
-        
+
         builder
             .HasOne(x => x.MetadataType)
             .WithMany(x => x.MetadataLocalizations)
             .HasConstraintName("FK_MetadataLocalization_MetadataType");
-        
+
         builder.Property(x => x.SupportedLanguageCode)
             .HasColumnType("varchar(2)")
             .IsRequired();
@@ -35,7 +35,7 @@ public class MetadataLocalizationConfiguration : IEntityTypeConfiguration<Metada
         builder.Property(x => x.MetadataTypeCode)
             .HasColumnType("varchar(64)")
             .IsRequired();
-        
+
         SeedData(builder);
     }
 

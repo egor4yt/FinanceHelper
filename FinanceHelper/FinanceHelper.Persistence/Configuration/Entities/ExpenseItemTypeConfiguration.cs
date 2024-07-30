@@ -17,7 +17,7 @@ public class ExpenseItemTypeConfiguration : IEntityTypeConfiguration<ExpenseItem
         builder.Property(x => x.LocalizationKeyword)
             .HasColumnType("varchar(32)")
             .IsRequired();
-        
+
         SeedData(builder);
     }
 

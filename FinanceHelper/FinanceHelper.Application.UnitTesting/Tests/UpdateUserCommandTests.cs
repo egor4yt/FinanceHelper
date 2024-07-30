@@ -55,7 +55,7 @@ public class UpdateUserCommandHandlerTests : TestBase<UpdateUserCommandHandler>
         // Assert
         await Assert.ThrowsAsync<NotFoundException>(() => _handler.Handle(request, CancellationToken.None));
     }
-    
+
     [Fact]
     public async Task Duplicate()
     {

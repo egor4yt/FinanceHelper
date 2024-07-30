@@ -8,7 +8,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<User> Users { get; set; }
     public DbSet<ExpenseItemType> ExpenseItemTypes { get; set; }
     public DbSet<FinancesDistributionItemValueType> FinancesDistributionItemValueTypes { get; set; }
-    public DbSet<IncomeSourceType> IncomeSourceTypes{ get; set; }
+    public DbSet<IncomeSourceType> IncomeSourceTypes { get; set; }
     public DbSet<MetadataLocalization> MetadataLocalizations { get; set; }
     public DbSet<MetadataType> MetadataTypes { get; set; }
     public DbSet<SupportedLanguage> SupportedLanguages { get; set; }

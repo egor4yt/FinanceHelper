@@ -1,6 +1,6 @@
 ﻿namespace FinanceHelper.Domain.Metadata;
 
-public partial class TagType
+public class TagType
 {
     public static Entities.TagType IncomeSource = new Entities.TagType
     {
