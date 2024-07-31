@@ -15,12 +15,19 @@ public static class DependencyInjection
     {
         app.Services.AddHealthChecks().AddDbContextCheck<ApplicationDbContext>("Database");
 
-        app.Services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseNpgsql(app.Configuration
-                    .GetConnectionString(ConfigurationKeys.DatabaseConnection))
-                .LogTo(Log.Information, LogLevel.Information, DbContextLoggerOptions.Id | DbContextLoggerOptions.Category)
-                .EnableSensitiveDataLogging()
-        );
+        if (app.Environment.IsDevelopment())
+            app.Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseNpgsql(app.Configuration
+                        .GetConnectionString(ConfigurationKeys.DatabaseConnection))
+                    .LogTo(Log.Information, LogLevel.Information, DbContextLoggerOptions.Id | DbContextLoggerOptions.Category)
+                    .EnableSensitiveDataLogging()
+            );
+        else
+            app.Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseNpgsql(app.Configuration
+                        .GetConnectionString(ConfigurationKeys.DatabaseConnection))
+                    .LogTo(Log.Information, LogLevel.Information, DbContextLoggerOptions.Id | DbContextLoggerOptions.Category)
+            );
 
         return app;
     }
