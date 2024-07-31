@@ -5,6 +5,7 @@ using FinanceHelper.Application.Configuration;
 using FinanceHelper.Persistence.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Events;
@@ -57,7 +58,7 @@ try
     app.MapControllers();
     app.Run();
 }
-catch (Exception ex)
+catch (Exception ex) when (ex is not HostAbortedException && ex.Source != "Microsoft.EntityFrameworkCore.Design") // see https://github.com/dotnet/efcore/issues/29923
 {
     Log.Fatal(ex, "Application terminated unexpectedly");
 }
