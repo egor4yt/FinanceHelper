@@ -18,7 +18,7 @@ public class AuthorizeWithCredentialsCommandTests : TestBase<AuthorizeWithCreden
     public async Task Success()
     {
         // Arrange
-        var user = await UserGenerator.SeedOneRandomUserAsync();
+        var user = await UserGenerator.SeedOneAsync();
         var request = new AuthorizeWithCredentialsCommandRequest
         {
             Email = user.Email,
@@ -37,7 +37,7 @@ public class AuthorizeWithCredentialsCommandTests : TestBase<AuthorizeWithCreden
     public async Task WrongCredentials()
     {
         // Arrange
-        var user = await UserGenerator.SeedOneRandomUserAsync();
+        var user = await UserGenerator.SeedOneAsync();
         var request = new AuthorizeWithCredentialsCommandRequest
         {
             Email = user.Email,

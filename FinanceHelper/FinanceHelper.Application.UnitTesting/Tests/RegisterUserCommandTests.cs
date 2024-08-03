@@ -21,9 +21,9 @@ public class RegisterUserCommandTests : TestBase<RegisterUserCommandHandler>
         // Arrange
         var request = new RegisterUserCommandRequest
         {
-            PreferredLocalizationCode = new Guid().ToString(),
-            Email = new Guid().ToString(),
-            PasswordHash = SecurityHelper.ComputeSha256Hash(new Guid().ToString()),
+            PreferredLocalizationCode = Guid.NewGuid().ToString(),
+            Email = Guid.NewGuid().ToString(),
+            PasswordHash = SecurityHelper.ComputeSha256Hash(Guid.NewGuid().ToString()),
             JwtDescriptorDetails = JwtDescriptorDetails
         };
 
@@ -45,12 +45,12 @@ public class RegisterUserCommandTests : TestBase<RegisterUserCommandHandler>
     public async Task Duplicate()
     {
         // Arrange
-        var user = await UserGenerator.SeedOneRandomUserAsync();
+        var user = await UserGenerator.SeedOneAsync();
         var request = new RegisterUserCommandRequest
         {
-            PreferredLocalizationCode = new Guid().ToString(),
+            PreferredLocalizationCode = Guid.NewGuid().ToString(),
             Email = user.Email,
-            PasswordHash = SecurityHelper.ComputeSha256Hash(new Guid().ToString()),
+            PasswordHash = SecurityHelper.ComputeSha256Hash(Guid.NewGuid().ToString()),
             JwtDescriptorDetails = JwtDescriptorDetails
         };
 
@@ -65,8 +65,8 @@ public class RegisterUserCommandTests : TestBase<RegisterUserCommandHandler>
         var validator = new RegisterUserCommandValidator(RequestLocalizationOptions);
         var request = new RegisterUserCommandRequest
         {
-            PreferredLocalizationCode = new Guid().ToString(),
-            Email = new Guid().ToString(),
+            PreferredLocalizationCode = Guid.NewGuid().ToString(),
+            Email = Guid.NewGuid().ToString(),
             PasswordHash = "",
             JwtDescriptorDetails = null!
         };

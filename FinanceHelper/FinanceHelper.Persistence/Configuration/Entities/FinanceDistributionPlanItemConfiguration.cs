@@ -31,11 +31,6 @@ public class FinanceDistributionPlanItemConfiguration : IEntityTypeConfiguration
             .IsRequired();
 
         builder
-            .Property(x => x.FactValue)
-            .IsRequired()
-            .HasColumnType("money");
-
-        builder
             .Property(x => x.PlannedValue)
             .IsRequired()
             .HasColumnType("money");

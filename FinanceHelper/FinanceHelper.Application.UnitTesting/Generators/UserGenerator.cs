@@ -6,19 +6,18 @@ namespace FinanceHelper.Application.UnitTesting.Generators;
 
 public class UserGenerator(ApplicationDbContext applicationDbContext)
 {
-    public async Task<User> SeedOneRandomUserAsync()
+    public async Task<User> SeedOneAsync()
     {
-        var user = new User
+        var entity = new User
         {
-            Id = new Random().Next(),
             Email = Guid.NewGuid().ToString(),
             PasswordHash = SecurityHelper.ComputeSha256Hash(Guid.NewGuid().ToString()),
-            PreferredLocalizationCode = new Guid().ToString()
+            PreferredLocalizationCode = Guid.NewGuid().ToString()
         };
 
-        await applicationDbContext.AddAsync(user);
+        await applicationDbContext.AddAsync(entity);
         await applicationDbContext.SaveChangesAsync();
 
-        return user;
+        return entity;
     }
 }

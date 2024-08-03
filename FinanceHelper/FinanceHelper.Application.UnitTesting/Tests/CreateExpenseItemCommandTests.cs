@@ -18,16 +18,18 @@ public class CreateExpenseItemCommandTests : TestBase<CreateExpenseItemCommandHa
     public async Task Success()
     {
         // Arrange
+        var expenseType = await ExpenseItemTypeGenerator.SeedOneAsync();
         var request = new CreateExpenseItemCommandRequest
         {
             OwnerId = new Random().Next(),
-            Name = new Guid().ToString(),
-            Color = new Guid().ToString(),
-            ExpenseItemTypeCode = Domain.Metadata.ExpenseItemType.Investment.Code
+            Name = Guid.NewGuid().ToString(),
+            Color = Guid.NewGuid().ToString(),
+            ExpenseItemTypeCode = expenseType.Code
         };
 
         // Act
         var response = await _handler.Handle(request, CancellationToken.None);
+
         var databaseObject = await ApplicationDbContext.ExpenseItems
             .SingleOrDefaultAsync(x => x.Id == response.Id
                                        && x.ExpenseItemTypeCode == request.ExpenseItemTypeCode
@@ -46,9 +48,9 @@ public class CreateExpenseItemCommandTests : TestBase<CreateExpenseItemCommandHa
         var request = new CreateExpenseItemCommandRequest
         {
             OwnerId = new Random().Next(),
-            Name = new Guid().ToString(),
-            Color = new Guid().ToString(),
-            ExpenseItemTypeCode = new Guid().ToString()
+            Name = Guid.NewGuid().ToString(),
+            Color = Guid.NewGuid().ToString(),
+            ExpenseItemTypeCode = Guid.NewGuid().ToString()
         };
 
         // Assert

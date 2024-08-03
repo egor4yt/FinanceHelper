@@ -18,12 +18,12 @@ public class UpdateUserCommandHandlerTests : TestBase<UpdateUserCommandHandler>
     public async Task Success()
     {
         // Arrange
-        var newUser = await UserGenerator.SeedOneRandomUserAsync();
+        var newUser = await UserGenerator.SeedOneAsync();
         var request = new UpdateUserCommandRequest
         {
             Id = newUser.Id,
-            Email = new Guid().ToString(),
-            PreferredLocalizationCode = new Guid().ToString(),
+            Email = Guid.NewGuid().ToString(),
+            PreferredLocalizationCode = Guid.NewGuid().ToString(),
             JwtDescriptorDetails = JwtDescriptorDetails
         };
 
@@ -47,8 +47,8 @@ public class UpdateUserCommandHandlerTests : TestBase<UpdateUserCommandHandler>
         var request = new UpdateUserCommandRequest
         {
             Id = -1,
-            Email = new Guid().ToString(),
-            PreferredLocalizationCode = new Guid().ToString(),
+            Email = Guid.NewGuid().ToString(),
+            PreferredLocalizationCode = Guid.NewGuid().ToString(),
             JwtDescriptorDetails = JwtDescriptorDetails
         };
 
@@ -60,12 +60,12 @@ public class UpdateUserCommandHandlerTests : TestBase<UpdateUserCommandHandler>
     public async Task Duplicate()
     {
         // Arrange
-        var user1 = await UserGenerator.SeedOneRandomUserAsync();
-        var user2 = await UserGenerator.SeedOneRandomUserAsync();
+        var user1 = await UserGenerator.SeedOneAsync();
+        var user2 = await UserGenerator.SeedOneAsync();
         var request = new UpdateUserCommandRequest
         {
             Id = user1.Id,
-            PreferredLocalizationCode = new Guid().ToString(),
+            PreferredLocalizationCode = Guid.NewGuid().ToString(),
             Email = user2.Email,
             JwtDescriptorDetails = JwtDescriptorDetails
         };

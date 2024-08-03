@@ -11,6 +11,9 @@ namespace FinanceHelper.Application.UnitTesting.Common;
 public class TestBase<TCommandHandler> : IDisposable
 {
     protected readonly ApplicationDbContext ApplicationDbContext = ApplicationContextFactory.Create();
+    protected readonly ExpenseItemGenerator ExpenseItemGenerator;
+    protected readonly ExpenseItemTypeGenerator ExpenseItemTypeGenerator;
+    protected readonly IncomeSourceTypeGenerator IncomeSourceTypeGenerator;
     protected readonly JwtDescriptorDetails JwtDescriptorDetails = new JwtDescriptorDetails
     {
         Key = "a95e4695-db56-4301-93d1-64a255bb0945",
@@ -32,6 +35,9 @@ public class TestBase<TCommandHandler> : IDisposable
     protected TestBase()
     {
         UserGenerator = new UserGenerator(ApplicationDbContext);
+        ExpenseItemGenerator = new ExpenseItemGenerator(ApplicationDbContext);
+        IncomeSourceTypeGenerator = new IncomeSourceTypeGenerator(ApplicationDbContext);
+        ExpenseItemTypeGenerator = new ExpenseItemTypeGenerator(ApplicationDbContext);
     }
 
     public void Dispose()

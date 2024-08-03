@@ -17,7 +17,7 @@ public class GetOneUserQueryTests : TestBase<GetOneUserQueryHandler>
     public async Task Success()
     {
         // Arrange
-        var user = await UserGenerator.SeedOneRandomUserAsync();
+        var user = await UserGenerator.SeedOneAsync();
         var expectedResponse = new GetOneUserQueryResponse
         {
             Id = user.Id,

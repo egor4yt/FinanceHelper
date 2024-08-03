@@ -21,6 +21,7 @@ public static class DependencyInjection
                         .GetConnectionString(ConfigurationKeys.DatabaseConnection))
                     .LogTo(Log.Information, LogLevel.Information, DbContextLoggerOptions.Id | DbContextLoggerOptions.Category)
                     .EnableSensitiveDataLogging()
+                    .EnableDetailedErrors()
             );
         else
             app.Services.AddDbContext<ApplicationDbContext>(options =>

@@ -18,12 +18,13 @@ public class CreateIncomeSourceCommandTests : TestBase<CreateIncomeSourceCommand
     public async Task Success()
     {
         // Arrange
+        var incomeSourceType = await IncomeSourceTypeGenerator.SeedOneAsync();
         var request = new CreateIncomeSourceCommandRequest
         {
             OwnerId = new Random().Next(),
-            Name = new Guid().ToString(),
-            Color = new Guid().ToString(),
-            IncomeSourceTypeCode = Domain.Metadata.IncomeSourceType.Debt.Code
+            Name = Guid.NewGuid().ToString(),
+            Color = Guid.NewGuid().ToString(),
+            IncomeSourceTypeCode = incomeSourceType.Code
         };
 
         // Act
@@ -46,9 +47,9 @@ public class CreateIncomeSourceCommandTests : TestBase<CreateIncomeSourceCommand
         var request = new CreateIncomeSourceCommandRequest
         {
             OwnerId = new Random().Next(),
-            Name = new Guid().ToString(),
-            Color = new Guid().ToString(),
-            IncomeSourceTypeCode = new Guid().ToString()
+            Name = Guid.NewGuid().ToString(),
+            Color = Guid.NewGuid().ToString(),
+            IncomeSourceTypeCode = Guid.NewGuid().ToString()
         };
 
         // Assert

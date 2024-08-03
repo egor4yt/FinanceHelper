@@ -11,7 +11,7 @@ public class FinanceDistributionPlanConfiguration : IEntityTypeConfiguration<Fin
         builder
             .HasOne(x => x.Author)
             .WithMany(x => x.FinanceDistributionPlans)
-            .HasForeignKey(x => x.AuthorId)
+            .HasForeignKey(x => x.OwnerId)
             .HasConstraintName("FK_FinanceDistributionPlan_Author");
 
         builder
@@ -20,7 +20,7 @@ public class FinanceDistributionPlanConfiguration : IEntityTypeConfiguration<Fin
             .HasColumnType("timestamptz");
 
         builder
-            .Property(x => x.AuthorId)
+            .Property(x => x.OwnerId)
             .IsRequired();
 
         builder
