@@ -6,4 +6,6 @@ public class User
     public string Email { get; set; }
     public string PasswordHash { get; set; }
     public string PreferredLocalizationCode { get; set; }
+    
+    public virtual ICollection<FinanceDistributionPlan> FinanceDistributionPlans { get; set; }
 }
