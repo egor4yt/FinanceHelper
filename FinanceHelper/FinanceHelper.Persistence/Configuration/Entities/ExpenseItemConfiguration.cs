@@ -15,6 +15,12 @@ public class ExpenseItemConfiguration : IEntityTypeConfiguration<ExpenseItem>
             .HasConstraintName("FK_ExpenseItem_ExpenseItemType");
 
         builder
+            .HasOne(x => x.Owner)
+            .WithMany(x => x.ExpenseItems)
+            .HasForeignKey(x => x.OwnerId)
+            .HasConstraintName("FK_IncomeSource_User");
+
+        builder
             .Property(x => x.Color)
             .IsRequired()
             .HasComment("HEX-format color")

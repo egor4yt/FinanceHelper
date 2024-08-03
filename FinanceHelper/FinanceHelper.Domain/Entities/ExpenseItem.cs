@@ -8,7 +8,9 @@ public class ExpenseItem : ISoftDeletable
     public string Name { get; set; }
     public string ExpenseItemTypeCode { get; set; }
     public string Color { get; set; }
+    public long OwnerId { get; set; }
 
+    public virtual User Owner { get; set; }
     public virtual ExpenseItemType ExpenseItemType { get; set; }
     public virtual ICollection<FinanceDistributionPlanItem> FinanceDistributionPlanItems { get; set; }
     public DateTime? DeletedAt { get; set; }

@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
-using FinanceHelper.Api.Contracts.IncomeSource;
-using FinanceHelper.Application.Commands.IncomeSources.Create;
+using FinanceHelper.Api.Contracts.ExpenseItem;
+using FinanceHelper.Application.Commands.ExpenseItems.Create;
 using FinanceHelper.Application.Commands.Users.Update;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -9,26 +9,26 @@ using Microsoft.AspNetCore.Mvc;
 namespace FinanceHelper.Api.Controllers.V1;
 
 /// <summary>
-///     Income sources controller
+///     expense items controller
 /// </summary>
 [Authorize]
-[Route("income-sources")]
+[Route("expense-item")]
 [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-public class IncomeSourcesController : ApiControllerBase
+public class ExpenseItemController : ApiControllerBase
 {
     /// <summary>
-    ///     Create an income source
+    ///     Create an expense item
     /// </summary>
-    /// <returns>Created income source</returns>
+    /// <returns>Created expense item</returns>
     [HttpPost("create")]
     [ProducesResponseType(typeof(UpdateUserCommandResponse), StatusCodes.Status200OK)]
-    public async Task<IActionResult> Create([FromBody] CreateIncomeSourceBody body)
+    public async Task<IActionResult> Create([FromBody] CreateExpenseItemBody body)
     {
-        var command = new CreateIncomeSourceCommandRequest
+        var command = new CreateExpenseItemCommandRequest
         {
             Name = body.Name,
             Color = body.Color,
-            IncomeSourceTypeCode = body.IncomeSourceTypeCode,
+            ExpenseItemTypeCode = body.ExpenseItemTypeCode,
             OwnerId = CurrentUserService.UserId
         };
 
