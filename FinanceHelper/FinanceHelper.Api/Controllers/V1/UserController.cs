@@ -15,6 +15,7 @@ namespace FinanceHelper.Api.Controllers.V1;
 /// </summary>
 [Authorize]
 [Route("user")]
+[ProducesResponseType(StatusCodes.Status401Unauthorized)]
 public class UserController(IOptions<JwtOptions> jwtOptions) : ApiControllerBase
 {
     /// <summary>
@@ -23,7 +24,6 @@ public class UserController(IOptions<JwtOptions> jwtOptions) : ApiControllerBase
     /// <returns>Authorized user information</returns>
     [HttpGet("me")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(GetOneUserQueryResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetMe()
     {
@@ -42,7 +42,6 @@ public class UserController(IOptions<JwtOptions> jwtOptions) : ApiControllerBase
     /// <returns>Updated user information and a new JSON web token</returns>
     [HttpPut("me")]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(UpdateUserCommandResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> UpdateMe([FromBody] UpdateMeUserBody body)
     {

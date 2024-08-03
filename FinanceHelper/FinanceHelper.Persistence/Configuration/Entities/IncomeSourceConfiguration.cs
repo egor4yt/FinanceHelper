@@ -15,6 +15,12 @@ public class IncomeSourceConfiguration : IEntityTypeConfiguration<IncomeSource>
             .HasConstraintName("FK_IncomeSource_IncomeSourceType");
 
         builder
+            .HasOne(x => x.Owner)
+            .WithMany(x => x.IncomeSources)
+            .HasForeignKey(x => x.OwnerId)
+            .HasConstraintName("FK_IncomeSource_User");
+
+        builder
             .Property(x => x.Color)
             .IsRequired()
             .HasComment("HEX-format color")
@@ -33,5 +39,9 @@ public class IncomeSourceConfiguration : IEntityTypeConfiguration<IncomeSource>
             .Property(x => x.IncomeSourceTypeCode)
             .IsRequired()
             .HasColumnType("varchar(32)");
+
+        builder
+            .Property(x => x.OwnerId)
+            .IsRequired();
     }
 }

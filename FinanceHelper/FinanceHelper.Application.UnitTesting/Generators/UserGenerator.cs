@@ -15,8 +15,10 @@ public class UserGenerator(ApplicationDbContext applicationDbContext)
             PasswordHash = SecurityHelper.ComputeSha256Hash(Guid.NewGuid().ToString()),
             PreferredLocalizationCode = new Guid().ToString()
         };
+
         await applicationDbContext.AddAsync(user);
         await applicationDbContext.SaveChangesAsync();
+
         return user;
     }
 }

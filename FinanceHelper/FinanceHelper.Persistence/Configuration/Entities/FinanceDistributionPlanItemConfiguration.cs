@@ -13,13 +13,13 @@ public class FinanceDistributionPlanItemConfiguration : IEntityTypeConfiguration
             .WithMany(x => x.FinanceDistributionPlanItems)
             .HasForeignKey(x => x.ExpenseItemId)
             .HasConstraintName("FK_FinanceDistributionPlanItem_ExpenseItem");
-        
+
         builder
             .HasOne(x => x.ValueType)
             .WithMany(x => x.FinanceDistributionPlanItems)
             .HasForeignKey(x => x.ValueTypeCode)
             .HasConstraintName("FK_FinanceDistributionPlanItem_ValueType");
-        
+
         builder
             .HasOne(x => x.FinanceDistributionPlan)
             .WithMany(x => x.FinanceDistributionPlanItems)
@@ -34,7 +34,7 @@ public class FinanceDistributionPlanItemConfiguration : IEntityTypeConfiguration
             .Property(x => x.FactValue)
             .IsRequired()
             .HasColumnType("money");
-        
+
         builder
             .Property(x => x.PlannedValue)
             .IsRequired()
