@@ -13,11 +13,13 @@ public class MetadataLocalizationConfiguration : IEntityTypeConfiguration<Metada
         builder
             .HasOne(x => x.SupportedLanguage)
             .WithMany(x => x.MetadataLocalizations)
+            .HasForeignKey(x => x.SupportedLanguageCode)
             .HasConstraintName("FK_MetadataLocalization_SupportedLanguage");
 
         builder
             .HasOne(x => x.MetadataType)
             .WithMany(x => x.MetadataLocalizations)
+            .HasForeignKey(x => x.MetadataTypeCode)
             .HasConstraintName("FK_MetadataLocalization_MetadataType");
 
         builder.Property(x => x.SupportedLanguageCode)

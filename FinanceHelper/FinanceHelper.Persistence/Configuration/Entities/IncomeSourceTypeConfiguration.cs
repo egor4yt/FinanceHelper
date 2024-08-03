@@ -10,7 +10,8 @@ public class IncomeSourceTypeConfiguration : IEntityTypeConfiguration<IncomeSour
     {
         builder.HasKey(x => x.Code);
 
-        builder.HasIndex(x => new { x.Code, x.LocalizationKeyword }, "UX_Code_LocalizationKeyword")
+        builder
+            .HasIndex(x => new { x.Code, x.LocalizationKeyword }, "UX_Code_LocalizationKeyword")
             .IsUnique();
 
         builder.Property(x => x.Code)

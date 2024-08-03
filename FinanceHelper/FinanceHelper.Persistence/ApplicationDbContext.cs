@@ -13,6 +13,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<MetadataType> MetadataTypes { get; set; }
     public DbSet<SupportedLanguage> SupportedLanguages { get; set; }
     public DbSet<TagType> TagTypes { get; set; }
+    public DbSet<Tag> Tags { get; set; }
+    public DbSet<IncomeSource> IncomeSources { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

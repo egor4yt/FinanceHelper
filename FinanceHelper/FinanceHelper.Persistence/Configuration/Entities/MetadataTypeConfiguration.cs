@@ -10,7 +10,8 @@ public class MetadataTypeConfiguration : IEntityTypeConfiguration<MetadataType>
     {
         builder.HasKey(x => x.Code);
 
-        builder.Property(x => x.Code)
+        builder
+            .Property(x => x.Code)
             .HasColumnType("varchar(64)")
             .IsRequired();
 

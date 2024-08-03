@@ -8,15 +8,18 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)
     {
-        builder.Property(x => x.PreferredLocalizationCode)
+        builder
+            .Property(x => x.PreferredLocalizationCode)
             .IsRequired()
             .HasColumnType("varchar(2)");
 
-        builder.Property(x => x.Email)
+        builder
+            .Property(x => x.Email)
             .IsRequired()
             .HasColumnType("varchar(32)");
 
-        builder.Property(x => x.PasswordHash)
+        builder
+            .Property(x => x.PasswordHash)
             .IsRequired();
     }
 }

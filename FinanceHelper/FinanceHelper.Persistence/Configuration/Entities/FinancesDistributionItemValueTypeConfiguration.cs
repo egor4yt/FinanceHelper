@@ -10,14 +10,17 @@ public class FinancesDistributionItemValueTypeConfiguration : IEntityTypeConfigu
     {
         builder.HasKey(x => x.Code);
 
-        builder.HasIndex(x => new { x.Code, x.LocalizationKeyword }, "UX_Code_LocalizationKeyword")
+        builder
+            .HasIndex(x => new { x.Code, x.LocalizationKeyword }, "UX_Code_LocalizationKeyword")
             .IsUnique();
 
-        builder.Property(x => x.Code)
+        builder
+            .Property(x => x.Code)
             .HasColumnType("varchar(32)")
             .IsRequired();
 
-        builder.Property(x => x.LocalizationKeyword)
+        builder
+            .Property(x => x.LocalizationKeyword)
             .HasColumnType("varchar(32)")
             .IsRequired();
 

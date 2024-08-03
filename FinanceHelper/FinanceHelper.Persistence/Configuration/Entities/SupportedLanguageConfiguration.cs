@@ -10,11 +10,13 @@ public class SupportedLanguageConfiguration : IEntityTypeConfiguration<Supported
     {
         builder.HasKey(x => x.Code);
 
-        builder.Property(x => x.Code)
+        builder
+            .Property(x => x.Code)
             .HasColumnType("varchar(2)")
             .IsRequired();
 
-        builder.Property(x => x.LocalizedValue)
+        builder
+            .Property(x => x.LocalizedValue)
             .HasColumnType("varchar(32)")
             .IsRequired();
 
