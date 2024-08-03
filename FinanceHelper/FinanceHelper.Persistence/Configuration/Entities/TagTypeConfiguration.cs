@@ -21,5 +21,6 @@ public class TagTypeConfiguration : IEntityTypeConfiguration<TagType>
     private static void SeedData(EntityTypeBuilder<TagType> builder)
     {
         builder.HasData(Domain.Metadata.TagType.IncomeSource);
+        builder.HasData(Domain.Metadata.TagType.ExpenseItem);
     }
 }

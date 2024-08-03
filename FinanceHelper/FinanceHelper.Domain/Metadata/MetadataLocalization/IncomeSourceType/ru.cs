@@ -1,6 +1,6 @@
 ﻿namespace FinanceHelper.Domain.Metadata;
 
-public partial class MetadataLocalization
+public static partial class MetadataLocalization
 {
     public static readonly List<Entities.MetadataLocalization> IncomeSourceTypesRu =
     [

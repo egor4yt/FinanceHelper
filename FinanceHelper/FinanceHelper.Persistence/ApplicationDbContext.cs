@@ -15,6 +15,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<TagType> TagTypes { get; set; }
     public DbSet<Tag> Tags { get; set; }
     public DbSet<IncomeSource> IncomeSources { get; set; }
+    public DbSet<ExpenseItem> ExpenseItems { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

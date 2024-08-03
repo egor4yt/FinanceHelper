@@ -1,5 +1,13 @@
-﻿namespace FinanceHelper.Domain.Entities;
+﻿using FinanceHelper.Domain.Common;
 
-public class ExpenseItem
+namespace FinanceHelper.Domain.Entities;
+
+public class ExpenseItem : ISoftDeletable
 {
+    public long Id { get; set; }
+    public string Name { get; set; }
+    public string ExpenseItemTypeCode { get; set; }
+    public string Color { get; set; }
+    public DateTime? DeletedAt { get; set; }
+    public virtual ExpenseItemType ExpenseItemType { get; set; }
 }
