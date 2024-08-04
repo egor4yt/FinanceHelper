@@ -17,8 +17,9 @@ public class IncomeSource
 
 public class StepGroup
 {
-    public decimal StepFactBudget { get; set; }
     public int StepNumber { get; set; }
+    public decimal StepFixedExpenses { get; set; }
+    public decimal StepFloatedExpenses { get; set; }
     public List<StepItem> Items { get; set; }
 }
 

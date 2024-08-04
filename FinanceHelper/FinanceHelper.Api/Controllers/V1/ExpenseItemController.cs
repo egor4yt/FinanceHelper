@@ -21,7 +21,7 @@ public class ExpenseItemController : ApiControllerBase
     /// </summary>
     /// <returns>Created expense item</returns>
     [HttpPost("create")]
-    [ProducesResponseType(typeof(UpdateUserCommandResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(CreateExpenseItemCommandResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> Create([FromBody] CreateExpenseItemBody body)
     {
         var command = new CreateExpenseItemCommandRequest

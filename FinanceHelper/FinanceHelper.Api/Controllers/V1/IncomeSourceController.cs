@@ -21,7 +21,7 @@ public class IncomeSourceController : ApiControllerBase
     /// </summary>
     /// <returns>Created income source</returns>
     [HttpPost("create")]
-    [ProducesResponseType(typeof(UpdateUserCommandResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(CreateIncomeSourceCommandResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> Create([FromBody] CreateIncomeSourceBody body)
     {
         var command = new CreateIncomeSourceCommandRequest

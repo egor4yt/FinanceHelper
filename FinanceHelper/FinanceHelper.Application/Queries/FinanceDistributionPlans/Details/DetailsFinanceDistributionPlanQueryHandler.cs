@@ -43,7 +43,8 @@ public class DetailsFinanceDistributionPlanQueryHandler(ApplicationDbContext app
             var stepBudget = factBudgetRemaining;
             var stepFixedExpenses = 0M;
             responseStepGroup.StepNumber = grouping.Key;
-            responseStepGroup.StepFactBudget = stepBudget;
+            responseStepGroup.StepFixedExpenses = 0;
+            responseStepGroup.StepFloatedExpenses = 0;
             responseStepGroup.Items = [];
 
             // We need to calculate fixed values before floating values
@@ -57,13 +58,14 @@ public class DetailsFinanceDistributionPlanQueryHandler(ApplicationDbContext app
                     responseStepItem.FactFixedValue = stepItem.PlannedValue * budgetFactor;
                     factBudgetRemaining -= responseStepItem.FactFixedValue;
                     stepFixedExpenses += responseStepItem.FactFixedValue;
+                    responseStepGroup.StepFixedExpenses += responseStepItem.FactFixedValue;
                 }
 
                 if (stepItem.ValueTypeCode == Domain.Metadata.FinancesDistributionItemValueType.Floating.Code)
                 {
                     responseStepItem.FactFixedValue = stepItem.PlannedValue / 100 * (stepBudget - stepFixedExpenses);
                     factBudgetRemaining -= responseStepItem.FactFixedValue;
-
+                    responseStepGroup.StepFloatedExpenses += responseStepItem.FactFixedValue;
                     responseStepItem.PlannedValuePostfix = "%";
                 }
 
@@ -79,6 +81,9 @@ public class DetailsFinanceDistributionPlanQueryHandler(ApplicationDbContext app
             response.Steps.Add(responseStepGroup);
         }
 
+        response.Steps = response.Steps.OrderBy(x => x.StepNumber).ToList();
+        response.Steps.ForEach(x => x.Items = x.Items.OrderBy(y => y.ExpenseItem.Name).ToList());
+        
         return response;
     }
 }

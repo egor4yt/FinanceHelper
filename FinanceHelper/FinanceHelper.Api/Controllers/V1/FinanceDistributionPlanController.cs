@@ -23,7 +23,7 @@ public class FinanceDistributionPlanController : ApiControllerBase
     /// </summary>
     /// <returns>Created finance distribution plan</returns>
     [HttpPost("create")]
-    [ProducesResponseType(typeof(UpdateUserCommandResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(CreateFinanceDistributionPlanCommandResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> Create([FromBody] CreateFinanceDistributionPlanBody body)
     {
         var command = new CreateFinanceDistributionPlanCommandRequest
@@ -49,7 +49,7 @@ public class FinanceDistributionPlanController : ApiControllerBase
     /// </summary>
     /// <returns>Finance distribution plan details</returns>
     [HttpGet("details/{planId:long}")]
-    [ProducesResponseType(typeof(UpdateUserCommandResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(DetailsFinanceDistributionPlanQueryResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> Details([FromRoute] long planId)
     {
         var query = new DetailsFinanceDistributionPlanQueryRequest
