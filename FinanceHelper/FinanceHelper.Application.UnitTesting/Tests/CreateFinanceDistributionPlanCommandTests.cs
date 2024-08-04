@@ -49,9 +49,10 @@ public class CreateFinanceDistributionPlanCommandTests : TestBase<CreateFinanceD
         var plan = await ApplicationDbContext.FinanceDistributionPlans
             .Include(x => x.FinanceDistributionPlanItems)
             .SingleOrDefaultAsync(x => x.Id == response.Id
-                                       && x.OwnerId == request.OwnerId
+                                       && x.Owner.Id == request.OwnerId
                                        && x.PlannedBudget == request.PlannedBudget
-                                       && x.FactBudget == request.FactBudget);
+                                       && x.FactBudget == request.FactBudget
+                                       && x.IncomeSource.Id == request.IncomeSourceId);
 
         // Assert
         var planItemsAsserts = new List<Action>();

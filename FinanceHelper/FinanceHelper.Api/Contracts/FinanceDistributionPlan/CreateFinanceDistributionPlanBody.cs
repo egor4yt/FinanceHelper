@@ -13,6 +13,11 @@ public class CreateFinanceDistributionPlanBody
     public decimal PlannedBudget { get; set; }
     
     /// <summary>
+    ///     Income source id
+    /// </summary>
+    public long IncomeSourceId { get; set; }
+    
+    /// <summary>
     ///     Fact budget
     /// </summary>
     public decimal FactBudget { get; set; }

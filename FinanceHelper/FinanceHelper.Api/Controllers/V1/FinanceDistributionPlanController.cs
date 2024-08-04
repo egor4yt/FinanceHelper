@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using FinanceHelper.Api.Contracts.FinanceDistributionPlan;
 using FinanceHelper.Application.Commands.FinanceDistributionPlans.Create;
 using FinanceHelper.Application.Commands.Users.Update;
+using FinanceHelper.Application.Queries.FinanceDistributionPlans.Details;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -28,17 +29,36 @@ public class FinanceDistributionPlanController : ApiControllerBase
         var command = new CreateFinanceDistributionPlanCommandRequest
         {
             OwnerId = CurrentUserService.UserId,
+            IncomeSourceId = body.IncomeSourceId,
             PlannedBudget = body.PlannedBudget,
             FactBudget = body.FactBudget,
             PlanItems = body.PlanItems.Select(x => new PlanItem
             {
                 StepNumber = x.StepNumber,
                 PlannedValue = x.PlannedValue,
-                ExpenseItemId = x.ExpenseItemId,
+                ExpenseItemId = x.ExpenseItemId
             }).ToList()
         };
 
         var response = await Mediator.Send(command);
+        return Ok(response);
+    }
+
+    /// <summary>
+    ///     Get the finance distribution plan details
+    /// </summary>
+    /// <returns>Finance distribution plan details</returns>
+    [HttpGet("details/{planId:long}")]
+    [ProducesResponseType(typeof(UpdateUserCommandResponse), StatusCodes.Status200OK)]
+    public async Task<IActionResult> Details([FromRoute] long planId)
+    {
+        var query = new DetailsFinanceDistributionPlanQueryRequest
+        {
+            FinanceDistributionPlanId = planId,
+            OwnerId = CurrentUserService.UserId
+        };
+        
+        var response = await Mediator.Send(query);
         return Ok(response);
     }
 }

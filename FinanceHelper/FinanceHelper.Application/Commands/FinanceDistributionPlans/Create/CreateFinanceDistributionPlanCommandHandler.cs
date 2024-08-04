@@ -34,8 +34,9 @@ public class CreateFinanceDistributionPlanCommandHandler(ApplicationDbContext ap
         {
             PlannedBudget = request.PlannedBudget,
             FactBudget = request.FactBudget,
-            CreationDate = DateTime.UtcNow,
-            OwnerId = request.OwnerId
+            CreatedAt = DateTime.UtcNow,
+            OwnerId = request.OwnerId,
+            IncomeSourceId = request.IncomeSourceId
         };
         
         newFinanceDistributionPlan.FinanceDistributionPlanItems = request.PlanItems

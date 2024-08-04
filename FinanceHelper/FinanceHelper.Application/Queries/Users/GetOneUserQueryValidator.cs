@@ -6,7 +6,7 @@ public class GetOneUserQueryValidator : AbstractValidator<GetOneUserQueryRequest
 {
     public GetOneUserQueryValidator()
     {
-        RuleFor(v => v.Id)
+        RuleFor(x => x.Id)
             .GreaterThan(0);
     }
 }

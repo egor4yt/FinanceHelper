@@ -9,18 +9,28 @@ public class FinanceDistributionPlanConfiguration : IEntityTypeConfiguration<Fin
     public void Configure(EntityTypeBuilder<FinanceDistributionPlan> builder)
     {
         builder
-            .HasOne(x => x.Author)
+            .HasOne(x => x.Owner)
             .WithMany(x => x.FinanceDistributionPlans)
             .HasForeignKey(x => x.OwnerId)
-            .HasConstraintName("FK_FinanceDistributionPlan_Author");
+            .HasConstraintName("FK_FinanceDistributionPlan_User");
+        
+        builder
+            .HasOne(x => x.IncomeSource)
+            .WithMany(x => x.FinanceDistributionPlans)
+            .HasForeignKey(x => x.IncomeSourceId)
+            .HasConstraintName("FK_FinanceDistributionPlan_IncomeSource");
 
         builder
-            .Property(x => x.CreationDate)
+            .Property(x => x.CreatedAt)
             .IsRequired()
             .HasColumnType("timestamptz");
 
         builder
             .Property(x => x.OwnerId)
+            .IsRequired();
+        
+        builder
+            .Property(x => x.IncomeSourceId)
             .IsRequired();
 
         builder
