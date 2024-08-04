@@ -37,13 +37,14 @@ public class CreateFinanceDistributionPlanCommandHandler(ApplicationDbContext ap
             CreationDate = DateTime.UtcNow,
             OwnerId = request.OwnerId
         };
+        
         newFinanceDistributionPlan.FinanceDistributionPlanItems = request.PlanItems
             .Select(x => new FinanceDistributionPlanItem
             {
                 StepNumber = x.StepNumber,
-                PlannedValue = x.PlannedValue,
                 ExpenseItemId = x.ExpenseItemId,
-                ValueTypeCode = x.ValueTypeCode
+                PlannedValue = Domain.Metadata.FinancesDistributionItemValueType.GetValueFromStringValue(x.PlannedValue),
+                ValueTypeCode = Domain.Metadata.FinancesDistributionItemValueType.GetTypeFromStringValue(x.PlannedValue).Code
             })
             .ToList();
 

@@ -13,7 +13,6 @@ public class CreateFinanceDistributionPlanCommandRequest : IRequest<CreateFinanc
 public class PlanItem
 {
     public int StepNumber { get; set; }
-    public decimal PlannedValue { get; set; }
+    public string PlannedValue { get; set; }
     public long ExpenseItemId { get; set; }
-    public string ValueTypeCode { get; set; }
 }

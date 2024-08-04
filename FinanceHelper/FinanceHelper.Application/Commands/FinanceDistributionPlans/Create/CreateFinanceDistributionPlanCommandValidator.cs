@@ -22,13 +22,11 @@ public class CreateFinanceDistributionPlanCommandValidator : AbstractValidator<C
                         .GreaterThan(0);
 
                     c.RuleFor(x => x.PlannedValue)
-                        .GreaterThan(0);
+                        .NotEmpty()
+                        .Matches(@"^\d+\.?\d+\%?$");
 
                     c.RuleFor(x => x.StepNumber)
                         .GreaterThan(0);
-
-                    c.RuleFor(x => x.ValueTypeCode)
-                        .NotEmpty();
                 }
             );
     }

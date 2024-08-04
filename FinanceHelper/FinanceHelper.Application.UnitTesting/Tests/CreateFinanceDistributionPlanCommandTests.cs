@@ -31,16 +31,14 @@ public class CreateFinanceDistributionPlanCommandTests : TestBase<CreateFinanceD
                 new PlanItem
                 {
                     StepNumber = new Random().Next(),
-                    PlannedValue = new Random().Next(),
-                    ExpenseItemId = expenseItem1.Id,
-                    ValueTypeCode = Guid.NewGuid().ToString()
+                    PlannedValue = new Random().Next().ToString(),
+                    ExpenseItemId = expenseItem1.Id
                 },
                 new PlanItem
                 {
                     StepNumber = new Random().Next(),
-                    PlannedValue = new Random().Next(),
-                    ExpenseItemId = expenseItem2.Id,
-                    ValueTypeCode = Guid.NewGuid().ToString()
+                    PlannedValue = new Random().Next().ToString(),
+                    ExpenseItemId = expenseItem2.Id
                 }
             ]
         };
@@ -64,9 +62,9 @@ public class CreateFinanceDistributionPlanCommandTests : TestBase<CreateFinanceD
         {
             var storedPlanItems = plan?.FinanceDistributionPlanItems
                 .Where(x => x.StepNumber == requestPlanItem.StepNumber
-                            && x.PlannedValue == requestPlanItem.PlannedValue
+                            && x.PlannedValue == Domain.Metadata.FinancesDistributionItemValueType.GetValueFromStringValue(requestPlanItem.PlannedValue)
                             && x.ExpenseItemId == requestPlanItem.ExpenseItemId
-                            && x.ValueTypeCode == requestPlanItem.ValueTypeCode)
+                            && x.ValueTypeCode == Domain.Metadata.FinancesDistributionItemValueType.GetTypeFromStringValue(requestPlanItem.PlannedValue).Code)
                 .ToList();
 
             planItemsAsserts.Add(() => Assert.True(storedPlanItems?.Count == 1, "Plan item exception"));
@@ -89,16 +87,14 @@ public class CreateFinanceDistributionPlanCommandTests : TestBase<CreateFinanceD
                 new PlanItem
                 {
                     StepNumber = 1,
-                    PlannedValue = 1000,
-                    ExpenseItemId = 1,
-                    ValueTypeCode = Guid.NewGuid().ToString()
+                    PlannedValue = "1000",
+                    ExpenseItemId = 1
                 },
                 new PlanItem
                 {
                     StepNumber = 2,
-                    PlannedValue = 2000,
-                    ExpenseItemId = 1,
-                    ValueTypeCode = Guid.NewGuid().ToString()
+                    PlannedValue = "50%",
+                    ExpenseItemId = 1
                 }
             ]
         };
@@ -121,9 +117,8 @@ public class CreateFinanceDistributionPlanCommandTests : TestBase<CreateFinanceD
                 new PlanItem
                 {
                     StepNumber = new Random().Next(),
-                    PlannedValue = new Random().Next(),
-                    ExpenseItemId = new Random().Next(),
-                    ValueTypeCode = Guid.NewGuid().ToString()
+                    PlannedValue = new Random().Next().ToString(),
+                    ExpenseItemId = new Random().Next()
                 }
             ]
         };
@@ -149,16 +144,14 @@ public class CreateFinanceDistributionPlanCommandTests : TestBase<CreateFinanceD
                 new PlanItem
                 {
                     StepNumber = new Random().Next(),
-                    PlannedValue = new Random().Next(),
-                    ExpenseItemId = userExpenseItem.Id,
-                    ValueTypeCode = Guid.NewGuid().ToString()
+                    PlannedValue = new Random().Next().ToString(),
+                    ExpenseItemId = userExpenseItem.Id
                 },
                 new PlanItem
                 {
                     StepNumber = new Random().Next(),
-                    PlannedValue = new Random().Next(),
-                    ExpenseItemId = notUserExpenseItem.Id,
-                    ValueTypeCode = Guid.NewGuid().ToString()
+                    PlannedValue = new Random().Next().ToString(),
+                    ExpenseItemId = notUserExpenseItem.Id
                 }
             ]
         };
