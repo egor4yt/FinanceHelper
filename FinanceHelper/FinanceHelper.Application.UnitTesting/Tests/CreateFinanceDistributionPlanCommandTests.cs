@@ -32,13 +32,13 @@ public class CreateFinanceDistributionPlanCommandTests : TestBase<CreateFinanceD
             [
                 new PlanItem
                 {
-                    StepNumber = new Random().Next(),
+                    StepNumber = 1,
                     PlannedValue = new Random().Next().ToString(),
                     ExpenseItemId = expenseItem1.Id
                 },
                 new PlanItem
                 {
-                    StepNumber = new Random().Next(),
+                    StepNumber = 2,
                     PlannedValue = "100%",
                     ExpenseItemId = expenseItem2.Id
                 }
