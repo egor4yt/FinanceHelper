@@ -19,9 +19,10 @@ public class CreateExpenseItemCommandTests : TestBase<CreateExpenseItemCommandHa
     {
         // Arrange
         var expenseType = await ExpenseItemTypeGenerator.SeedOneAsync();
+        var owner = await UserGenerator.SeedOneAsync();
         var request = new CreateExpenseItemCommandRequest
         {
-            OwnerId = new Random().Next(),
+            OwnerId = owner.Id,
             Name = Guid.NewGuid().ToString(),
             Color = Guid.NewGuid().ToString(),
             ExpenseItemTypeCode = expenseType.Code
@@ -32,9 +33,9 @@ public class CreateExpenseItemCommandTests : TestBase<CreateExpenseItemCommandHa
 
         var databaseObject = await ApplicationDbContext.ExpenseItems
             .SingleOrDefaultAsync(x => x.Id == response.Id
-                                       && x.ExpenseItemTypeCode == request.ExpenseItemTypeCode
+                                       && x.ExpenseItemType.Code == request.ExpenseItemTypeCode
                                        && x.Color == request.Color
-                                       && x.OwnerId == request.OwnerId
+                                       && x.Owner.Id == request.OwnerId
                                        && x.Name == request.Name);
 
         // Assert

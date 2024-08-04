@@ -18,14 +18,16 @@ public class CreateFinanceDistributionPlanCommandTests : TestBase<CreateFinanceD
     public async Task Success()
     {
         // Arrange
-        var user = await UserGenerator.SeedOneAsync();
-        var expenseItem1 = await ExpenseItemGenerator.SeedOneAsync(user);
-        var expenseItem2 = await ExpenseItemGenerator.SeedOneAsync(user);
+        var owner = await UserGenerator.SeedOneAsync();
+        var expenseItem1 = await ExpenseItemGenerator.SeedOneAsync(owner);
+        var expenseItem2 = await ExpenseItemGenerator.SeedOneAsync(owner);
+        var incomeSource = await IncomeSourceGenerator.SeedOneAsync(owner);
         var request = new CreateFinanceDistributionPlanCommandRequest
         {
-            OwnerId = user.Id,
+            OwnerId = owner.Id,
             PlannedBudget = new Random().Next(),
             FactBudget = new Random().Next(),
+            IncomeSourceId = incomeSource.Id,
             PlanItems =
             [
                 new PlanItem
@@ -37,7 +39,7 @@ public class CreateFinanceDistributionPlanCommandTests : TestBase<CreateFinanceD
                 new PlanItem
                 {
                     StepNumber = new Random().Next(),
-                    PlannedValue = new Random().Next().ToString(),
+                    PlannedValue = "100%",
                     ExpenseItemId = expenseItem2.Id
                 }
             ]
@@ -47,7 +49,8 @@ public class CreateFinanceDistributionPlanCommandTests : TestBase<CreateFinanceD
         var response = await _handler.Handle(request, CancellationToken.None);
 
         var plan = await ApplicationDbContext.FinanceDistributionPlans
-            .Include(x => x.FinanceDistributionPlanItems)
+            .Include(x => x.FinanceDistributionPlanItems).ThenInclude(x => x.ExpenseItem)
+            .Include(x => x.FinanceDistributionPlanItems).ThenInclude(financeDistributionPlanItem => financeDistributionPlanItem.ValueType)
             .SingleOrDefaultAsync(x => x.Id == response.Id
                                        && x.Owner.Id == request.OwnerId
                                        && x.PlannedBudget == request.PlannedBudget
@@ -64,8 +67,8 @@ public class CreateFinanceDistributionPlanCommandTests : TestBase<CreateFinanceD
             var storedPlanItems = plan?.FinanceDistributionPlanItems
                 .Where(x => x.StepNumber == requestPlanItem.StepNumber
                             && x.PlannedValue == Domain.Metadata.FinancesDistributionItemValueType.GetValueFromStringValue(requestPlanItem.PlannedValue)
-                            && x.ExpenseItemId == requestPlanItem.ExpenseItemId
-                            && x.ValueTypeCode == Domain.Metadata.FinancesDistributionItemValueType.GetTypeFromStringValue(requestPlanItem.PlannedValue).Code)
+                            && x.ExpenseItem.Id == requestPlanItem.ExpenseItemId
+                            && x.ValueType.Code == Domain.Metadata.FinancesDistributionItemValueType.GetTypeFromStringValue(requestPlanItem.PlannedValue).Code)
                 .ToList();
 
             planItemsAsserts.Add(() => Assert.True(storedPlanItems?.Count == 1, "Plan item exception"));

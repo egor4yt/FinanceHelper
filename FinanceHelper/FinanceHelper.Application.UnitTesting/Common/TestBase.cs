@@ -12,6 +12,7 @@ public class TestBase<TCommandHandler> : IDisposable
 {
     protected readonly ApplicationDbContext ApplicationDbContext = ApplicationContextFactory.Create();
     protected readonly ExpenseItemGenerator ExpenseItemGenerator;
+    protected readonly IncomeSourceGenerator IncomeSourceGenerator;
     protected readonly ExpenseItemTypeGenerator ExpenseItemTypeGenerator;
     protected readonly IncomeSourceTypeGenerator IncomeSourceTypeGenerator;
     protected readonly JwtDescriptorDetails JwtDescriptorDetails = new JwtDescriptorDetails
@@ -38,6 +39,7 @@ public class TestBase<TCommandHandler> : IDisposable
         ExpenseItemGenerator = new ExpenseItemGenerator(ApplicationDbContext);
         IncomeSourceTypeGenerator = new IncomeSourceTypeGenerator(ApplicationDbContext);
         ExpenseItemTypeGenerator = new ExpenseItemTypeGenerator(ApplicationDbContext);
+        IncomeSourceGenerator = new IncomeSourceGenerator(ApplicationDbContext);
     }
 
     public void Dispose()

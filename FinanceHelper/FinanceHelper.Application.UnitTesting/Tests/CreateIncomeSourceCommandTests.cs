@@ -19,9 +19,10 @@ public class CreateIncomeSourceCommandTests : TestBase<CreateIncomeSourceCommand
     {
         // Arrange
         var incomeSourceType = await IncomeSourceTypeGenerator.SeedOneAsync();
+        var owner = await UserGenerator.SeedOneAsync();
         var request = new CreateIncomeSourceCommandRequest
         {
-            OwnerId = new Random().Next(),
+            OwnerId = owner.Id,
             Name = Guid.NewGuid().ToString(),
             Color = Guid.NewGuid().ToString(),
             IncomeSourceTypeCode = incomeSourceType.Code
@@ -31,9 +32,9 @@ public class CreateIncomeSourceCommandTests : TestBase<CreateIncomeSourceCommand
         var response = await _handler.Handle(request, CancellationToken.None);
         var databaseObject = await ApplicationDbContext.IncomeSources
             .SingleOrDefaultAsync(x => x.Id == response.Id
-                                       && x.IncomeSourceTypeCode == request.IncomeSourceTypeCode
+                                       && x.IncomeSourceType.Code == request.IncomeSourceTypeCode
                                        && x.Color == request.Color
-                                       && x.OwnerId == request.OwnerId
+                                       && x.Owner.Id == request.OwnerId
                                        && x.Name == request.Name);
 
         // Assert

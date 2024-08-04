@@ -35,7 +35,7 @@ public class CreateFinanceDistributionPlanCommandHandler(ApplicationDbContext ap
             }
 
             if ((sumFloatedValues > 90 && planItemsGroup.Key != maxStepNumber)
-                || (sumFloatedValues != 100 && planItemsGroup.Key == maxStepNumber)) throw new BadRequestException(stringLocalizer["MaxFloatingValueReached"]);
+                || (sumFloatedValues != 100 && planItemsGroup.Key == maxStepNumber)) throw new BadRequestException(stringLocalizer["InvalidFloatingValue"]);
         }
 
         var existsExpenseItemsIds = await applicationDbContext.ExpenseItems

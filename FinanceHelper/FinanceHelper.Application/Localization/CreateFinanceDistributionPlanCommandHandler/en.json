@@ -1,5 +1,5 @@
 {
   "DuplicatedExpenseItems": "Expense items with ids '{0}' have been added several times.",
   "ExpenseItemsDoesNotExists": "Expense items with ids '{0}' does not exists.",
-  "MaxFloatingValueReached": "Max floating values sum may equal 100 at last step or less than or equal to 90 at other steps."
+  "InvalidFloatingValue": "Max floating values sum may equal 100 at last step or less than or equal to 90 at other steps."
 }
