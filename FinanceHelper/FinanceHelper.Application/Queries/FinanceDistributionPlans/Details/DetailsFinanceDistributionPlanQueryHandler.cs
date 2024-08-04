@@ -21,8 +21,8 @@ public class DetailsFinanceDistributionPlanQueryHandler(ApplicationDbContext app
                 && x.OwnerId == request.OwnerId, cancellationToken);
         if (plan == null) throw new NotFoundException(stringLocalizer["NotFound", request.FinanceDistributionPlanId]);
 
-        response.FactBudget = plan.FactBudget;
-        response.PlannedBudget = plan.PlannedBudget;
+        response.FactBudget = Math.Round(plan.FactBudget, 2);
+        response.PlannedBudget = Math.Round(plan.PlannedBudget, 2);
         response.CreatedAt = plan.CreatedAt;
         response.IncomeSource = new IncomeSource
         {
@@ -42,30 +42,30 @@ public class DetailsFinanceDistributionPlanQueryHandler(ApplicationDbContext app
             var responseStepGroup = new StepGroup();
             var stepBudget = factBudgetRemaining;
             var stepFixedExpenses = 0M;
+            var stepFloatedExpenses = 0M;
             responseStepGroup.StepNumber = grouping.Key;
-            responseStepGroup.StepFixedExpenses = 0;
-            responseStepGroup.StepFloatedExpenses = 0;
             responseStepGroup.Items = [];
 
             // We need to calculate fixed values before floating values
             foreach (var stepItem in grouping.OrderByDescending(x => x.ValueTypeCode == Domain.Metadata.FinancesDistributionItemValueType.Fixed.Code))
             {
                 var responseStepItem = new StepItem();
-                responseStepItem.PlannedValue = stepItem.PlannedValue;
+                responseStepItem.PlannedValue = Math.Round(stepItem.PlannedValue, 2);
 
                 if (stepItem.ValueTypeCode == Domain.Metadata.FinancesDistributionItemValueType.Fixed.Code)
                 {
-                    responseStepItem.FactFixedValue = stepItem.PlannedValue * budgetFactor;
-                    factBudgetRemaining -= responseStepItem.FactFixedValue;
-                    stepFixedExpenses += responseStepItem.FactFixedValue;
-                    responseStepGroup.StepFixedExpenses += responseStepItem.FactFixedValue;
+                    var value = stepItem.PlannedValue * budgetFactor;
+                    responseStepItem.FactFixedValue = Math.Round(value, 2);
+                    factBudgetRemaining -= value;
+                    stepFixedExpenses += value;
                 }
 
                 if (stepItem.ValueTypeCode == Domain.Metadata.FinancesDistributionItemValueType.Floating.Code)
                 {
-                    responseStepItem.FactFixedValue = stepItem.PlannedValue / 100 * (stepBudget - stepFixedExpenses);
-                    factBudgetRemaining -= responseStepItem.FactFixedValue;
-                    responseStepGroup.StepFloatedExpenses += responseStepItem.FactFixedValue;
+                    var value = stepItem.PlannedValue / 100 * (stepBudget - stepFixedExpenses);
+                    responseStepItem.FactFixedValue = Math.Round(value, 2);
+                    factBudgetRemaining -= value;
+                    stepFloatedExpenses += value;
                     responseStepItem.PlannedValuePostfix = "%";
                 }
 
@@ -78,6 +78,8 @@ public class DetailsFinanceDistributionPlanQueryHandler(ApplicationDbContext app
                 responseStepGroup.Items.Add(responseStepItem);
             }
 
+            responseStepGroup.StepFixedExpenses = Math.Round(stepFixedExpenses, 2);
+            responseStepGroup.StepFloatedExpenses = Math.Round(stepFloatedExpenses, 2);;
             response.Steps.Add(responseStepGroup);
         }
 
