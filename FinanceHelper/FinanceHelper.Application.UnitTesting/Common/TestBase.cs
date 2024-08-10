@@ -12,8 +12,9 @@ public class TestBase<TCommandHandler> : IDisposable
 {
     protected readonly ApplicationDbContext ApplicationDbContext = ApplicationContextFactory.Create();
     protected readonly ExpenseItemGenerator ExpenseItemGenerator;
-    protected readonly IncomeSourceGenerator IncomeSourceGenerator;
     protected readonly ExpenseItemTypeGenerator ExpenseItemTypeGenerator;
+    protected readonly FinanceDistributionPlanGenerator FinanceDistributionPlanGenerator;
+    protected readonly IncomeSourceGenerator IncomeSourceGenerator;
     protected readonly IncomeSourceTypeGenerator IncomeSourceTypeGenerator;
     protected readonly JwtDescriptorDetails JwtDescriptorDetails = new JwtDescriptorDetails
     {
@@ -22,6 +23,7 @@ public class TestBase<TCommandHandler> : IDisposable
         Issuer = "test-issuer",
         TokenLifetimeInHours = 1
     };
+    protected readonly IStringLocalizer<TCommandHandler> Localizer = new UnitTestStringLocalizer<TCommandHandler>();
     protected readonly IOptions<RequestLocalizationOptions> RequestLocalizationOptions = new UnitTestOptions<RequestLocalizationOptions>(new RequestLocalizationOptions
     {
         SupportedCultures = new List<CultureInfo>
@@ -31,7 +33,6 @@ public class TestBase<TCommandHandler> : IDisposable
         }
     });
     protected readonly UserGenerator UserGenerator;
-    protected IStringLocalizer<TCommandHandler> Localizer = new UnitTestStringLocalizer<TCommandHandler>();
 
     protected TestBase()
     {
@@ -40,6 +41,7 @@ public class TestBase<TCommandHandler> : IDisposable
         IncomeSourceTypeGenerator = new IncomeSourceTypeGenerator(ApplicationDbContext);
         ExpenseItemTypeGenerator = new ExpenseItemTypeGenerator(ApplicationDbContext);
         IncomeSourceGenerator = new IncomeSourceGenerator(ApplicationDbContext);
+        FinanceDistributionPlanGenerator = new FinanceDistributionPlanGenerator(ApplicationDbContext);
     }
 
     public void Dispose()
