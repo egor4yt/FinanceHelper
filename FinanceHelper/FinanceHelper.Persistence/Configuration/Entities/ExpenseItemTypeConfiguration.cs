@@ -30,5 +30,6 @@ public class ExpenseItemTypeConfiguration : IEntityTypeConfiguration<ExpenseItem
         builder.HasData(Domain.Metadata.ExpenseItemType.Debt);
         builder.HasData(Domain.Metadata.ExpenseItemType.Investment);
         builder.HasData(Domain.Metadata.ExpenseItemType.Other);
+        builder.HasData(Domain.Metadata.ExpenseItemType.Deposit);
     }
 }

@@ -45,7 +45,7 @@ public class FinanceDistributionPlanController : ApiControllerBase
     }
 
     /// <summary>
-    ///     Get the finance distribution plan details
+    ///     Get a finance distribution plan details
     /// </summary>
     /// <returns>Finance distribution plan details</returns>
     [HttpGet("details/{planId:long}")]

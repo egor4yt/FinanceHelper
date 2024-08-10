@@ -7,7 +7,7 @@ public static partial class MetadataLocalization
         new Entities.MetadataLocalization
         {
             LocalizedValue = "Работа",
-            LocalizationKeyword = "Work",
+            LocalizationKeyword = IncomeSourceType.Work.LocalizationKeyword,
             SupportedLanguageCode = SupportedLanguage.Russian.Code,
             MetadataTypeCode = MetadataType.IncomeSourceType.Code
         },
@@ -15,7 +15,7 @@ public static partial class MetadataLocalization
         new Entities.MetadataLocalization
         {
             LocalizedValue = "Инвестиции",
-            LocalizationKeyword = "Investment",
+            LocalizationKeyword = IncomeSourceType.Investment.LocalizationKeyword,
             SupportedLanguageCode = SupportedLanguage.Russian.Code,
             MetadataTypeCode = MetadataType.IncomeSourceType.Code
         },
@@ -23,7 +23,7 @@ public static partial class MetadataLocalization
         new Entities.MetadataLocalization
         {
             LocalizedValue = "Долг",
-            LocalizationKeyword = "Debt",
+            LocalizationKeyword = IncomeSourceType.Debt.LocalizationKeyword,
             SupportedLanguageCode = SupportedLanguage.Russian.Code,
             MetadataTypeCode = MetadataType.IncomeSourceType.Code
         },
@@ -31,7 +31,7 @@ public static partial class MetadataLocalization
         new Entities.MetadataLocalization
         {
             LocalizedValue = "Снятие со вклада",
-            LocalizationKeyword = "DepositWithdraw",
+            LocalizationKeyword = IncomeSourceType.DepositWithdraw.LocalizationKeyword,
             SupportedLanguageCode = SupportedLanguage.Russian.Code,
             MetadataTypeCode = MetadataType.IncomeSourceType.Code
         },
@@ -39,7 +39,7 @@ public static partial class MetadataLocalization
         new Entities.MetadataLocalization
         {
             LocalizedValue = "Другое",
-            LocalizationKeyword = "Other",
+            LocalizationKeyword = IncomeSourceType.Other.LocalizationKeyword,
             SupportedLanguageCode = SupportedLanguage.Russian.Code,
             MetadataTypeCode = MetadataType.IncomeSourceType.Code
         }

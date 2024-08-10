@@ -7,7 +7,7 @@ public static partial class MetadataLocalization
         new Entities.MetadataLocalization
         {
             LocalizedValue = "Floating",
-            LocalizationKeyword = "Floating",
+            LocalizationKeyword = FinancesDistributionItemValueType.Floating.LocalizationKeyword,
             SupportedLanguageCode = SupportedLanguage.English.Code,
             MetadataTypeCode = MetadataType.FinancesDistributionItemValueType.Code
         },
@@ -15,7 +15,7 @@ public static partial class MetadataLocalization
         new Entities.MetadataLocalization
         {
             LocalizedValue = "Fixed",
-            LocalizationKeyword = "Fixed",
+            LocalizationKeyword = FinancesDistributionItemValueType.Fixed.LocalizationKeyword,
             SupportedLanguageCode = SupportedLanguage.English.Code,
             MetadataTypeCode = MetadataType.FinancesDistributionItemValueType.Code
         }

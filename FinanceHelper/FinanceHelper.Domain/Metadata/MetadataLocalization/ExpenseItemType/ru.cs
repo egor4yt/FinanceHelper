@@ -7,7 +7,7 @@ public static partial class MetadataLocalization
         new Entities.MetadataLocalization
         {
             LocalizedValue = "Регулярные траты",
-            LocalizationKeyword = "Expense",
+            LocalizationKeyword = ExpenseItemType.Expense.LocalizationKeyword,
             SupportedLanguageCode = SupportedLanguage.Russian.Code,
             MetadataTypeCode = MetadataType.ExpenseItemType.Code
         },
@@ -15,7 +15,7 @@ public static partial class MetadataLocalization
         new Entities.MetadataLocalization
         {
             LocalizedValue = "Инвестиции",
-            LocalizationKeyword = "Investment",
+            LocalizationKeyword = ExpenseItemType.Investment.LocalizationKeyword,
             SupportedLanguageCode = SupportedLanguage.Russian.Code,
             MetadataTypeCode = MetadataType.ExpenseItemType.Code
         },
@@ -23,15 +23,7 @@ public static partial class MetadataLocalization
         new Entities.MetadataLocalization
         {
             LocalizedValue = "Долг",
-            LocalizationKeyword = "Debt",
-            SupportedLanguageCode = SupportedLanguage.Russian.Code,
-            MetadataTypeCode = MetadataType.ExpenseItemType.Code
-        },
-
-        new Entities.MetadataLocalization
-        {
-            LocalizedValue = "Вклад",
-            LocalizationKeyword = "DepositWithdraw",
+            LocalizationKeyword = ExpenseItemType.Debt.LocalizationKeyword,
             SupportedLanguageCode = SupportedLanguage.Russian.Code,
             MetadataTypeCode = MetadataType.ExpenseItemType.Code
         },
@@ -39,7 +31,7 @@ public static partial class MetadataLocalization
         new Entities.MetadataLocalization
         {
             LocalizedValue = "Другое",
-            LocalizationKeyword = "Other",
+            LocalizationKeyword = ExpenseItemType.Other.LocalizationKeyword,
             SupportedLanguageCode = SupportedLanguage.Russian.Code,
             MetadataTypeCode = MetadataType.ExpenseItemType.Code
         },
@@ -47,7 +39,15 @@ public static partial class MetadataLocalization
         new Entities.MetadataLocalization
         {
             LocalizedValue = "Благотворительность",
-            LocalizationKeyword = "Charity",
+            LocalizationKeyword = ExpenseItemType.Charity.LocalizationKeyword,
+            SupportedLanguageCode = SupportedLanguage.Russian.Code,
+            MetadataTypeCode = MetadataType.ExpenseItemType.Code
+        },
+
+        new Entities.MetadataLocalization
+        {
+            LocalizedValue = "Вклад",
+            LocalizationKeyword = ExpenseItemType.Deposit.LocalizationKeyword,
             SupportedLanguageCode = SupportedLanguage.Russian.Code,
             MetadataTypeCode = MetadataType.ExpenseItemType.Code
         }
