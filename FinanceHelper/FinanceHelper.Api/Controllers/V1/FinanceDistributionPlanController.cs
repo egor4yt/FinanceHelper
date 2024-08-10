@@ -2,8 +2,8 @@
 using System.Threading.Tasks;
 using FinanceHelper.Api.Contracts.FinanceDistributionPlan;
 using FinanceHelper.Application.Commands.FinanceDistributionPlans.Create;
-using FinanceHelper.Application.Commands.Users.Update;
 using FinanceHelper.Application.Queries.FinanceDistributionPlans.Details;
+using FinanceHelper.Application.Queries.FinanceDistributionPlans.GetUser;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -45,9 +45,9 @@ public class FinanceDistributionPlanController : ApiControllerBase
     }
 
     /// <summary>
-    ///     Get a finance distribution plan details
+    ///     Get all user finance distribution plans
     /// </summary>
-    /// <returns>Finance distribution plan details</returns>
+    /// <returns>Finance distribution plans</returns>
     [HttpGet("details/{planId:long}")]
     [ProducesResponseType(typeof(DetailsFinanceDistributionPlanQueryResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> Details([FromRoute] long planId)
@@ -57,7 +57,24 @@ public class FinanceDistributionPlanController : ApiControllerBase
             FinanceDistributionPlanId = planId,
             OwnerId = CurrentUserService.UserId
         };
-        
+
+        var response = await Mediator.Send(query);
+        return Ok(response);
+    }
+
+    /// <summary>
+    ///     Get a finance distribution plan details
+    /// </summary>
+    /// <returns>Finance distribution plan details</returns>
+    [HttpGet("my")]
+    [ProducesResponseType(typeof(GetUserFinanceDistributionPlanQueryResponse), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetUserPlans()
+    {
+        var query = new GetUserFinanceDistributionPlanQueryRequest
+        {
+            OwnerId = CurrentUserService.UserId
+        };
+
         var response = await Mediator.Send(query);
         return Ok(response);
     }
