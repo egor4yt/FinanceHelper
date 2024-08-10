@@ -53,7 +53,6 @@ public class GetUserFinanceDistributionPlanQueryTests : TestBase<GetUserFinanceD
         var actualResponse = await _handler.Handle(request, CancellationToken.None);
 
         // Assert
-
         Assert.Multiple(
             () => Assert.NotNull(actualResponse),
             () => Assert.NotNull(actualResponse.Items),

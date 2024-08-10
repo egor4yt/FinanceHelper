@@ -1,4 +1,5 @@
-﻿using FinanceHelper.Application.Queries.FinanceDistributionPlans.Details;
+﻿using System.Text.Json;
+using FinanceHelper.Application.Queries.FinanceDistributionPlans.Details;
 using FinanceHelper.Application.UnitTesting.Common;
 using FinanceHelper.Domain.Entities;
 
@@ -59,7 +60,7 @@ public class DetailsFinanceDistributionPlanQueryTests : TestBase<DetailsFinanceD
                     ExpenseItemId = expenseItem3.Id,
                     ValueTypeCode = Domain.Metadata.FinancesDistributionItemValueType.Floating.Code
                 },
-                
+
                 // Available budget for next step = 26 000 - 6500 - 5460 = 14040
                 new FinanceDistributionPlanItem
                 {
@@ -75,7 +76,7 @@ public class DetailsFinanceDistributionPlanQueryTests : TestBase<DetailsFinanceD
                     ExpenseItemId = expenseItem5.Id,
                     ValueTypeCode = Domain.Metadata.FinancesDistributionItemValueType.Fixed.Code
                 },
-                
+
                 // Available budget for next step = 14040 - 325 - 3703.05 = 10 011.95
                 new FinanceDistributionPlanItem
                 {
@@ -233,7 +234,7 @@ public class DetailsFinanceDistributionPlanQueryTests : TestBase<DetailsFinanceD
                 }
             ]
         };
-        
+
         expectedResponse.Steps = expectedResponse.Steps.OrderBy(x => x.StepNumber).ToList();
         expectedResponse.Steps.ForEach(x => x.Items = x.Items.OrderBy(y => y.ExpenseItem.Name).ToList());
 
@@ -245,8 +246,8 @@ public class DetailsFinanceDistributionPlanQueryTests : TestBase<DetailsFinanceD
 
         // Act
         var actualResponse = await _handler.Handle(request, CancellationToken.None);
-        
+
         // Assert
-        Assert.Equivalent(expectedResponse, actualResponse);
+        Assert.Equal(expectedResponse.AsJsonString(), actualResponse.AsJsonString());
     }
 }
