@@ -25,6 +25,12 @@ public class ExpenseItemConfiguration : IEntityTypeConfiguration<ExpenseItem>
             .IsRequired()
             .HasComment("HEX-format color")
             .HasColumnType("varchar(7)");
+        
+        builder
+            .Property(x => x.OneTimeUsable)
+            .IsRequired()
+            .HasComment("Indicates that the expense item is using in one step of the finance distribution plan, no more")
+            .HasColumnType("boolean");
 
         builder
             .Property(x => x.Name)
