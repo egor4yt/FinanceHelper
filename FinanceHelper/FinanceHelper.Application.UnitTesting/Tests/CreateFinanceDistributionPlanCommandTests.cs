@@ -78,6 +78,62 @@ public class CreateFinanceDistributionPlanCommandTests : TestBase<CreateFinanceD
     }
 
     [Fact]
+    public async Task Success_NewExpenseItem()
+    {
+        // Arrange
+        var owner = await UserGenerator.SeedOneAsync();
+        var incomeSource = await IncomeSourceGenerator.SeedOneAsync(owner);
+        var request = new CreateFinanceDistributionPlanCommandRequest
+        {
+            OwnerId = owner.Id,
+            PlannedBudget = new Random().Next(),
+            FactBudget = new Random().Next(),
+            IncomeSourceId = incomeSource.Id,
+            PlanItems =
+            [
+                new PlanItem
+                {
+                    StepNumber = 1,
+                    PlannedValue = "100%",
+                    ExpenseItemId = null,
+                    NewExpenseItemName = Guid.NewGuid().ToString()
+                }
+            ]
+        };
+
+        // Act
+        var response = await _handler.Handle(request, CancellationToken.None);
+
+        var plan = await ApplicationDbContext.FinanceDistributionPlans
+            .Include(x => x.FinanceDistributionPlanItems).ThenInclude(x => x.ExpenseItem)
+            .Include(x => x.FinanceDistributionPlanItems).ThenInclude(financeDistributionPlanItem => financeDistributionPlanItem.ValueType)
+            .SingleOrDefaultAsync(x => x.Id == response.Id
+                                       && x.Owner.Id == request.OwnerId
+                                       && x.PlannedBudget == request.PlannedBudget
+                                       && x.FactBudget == request.FactBudget
+                                       && x.IncomeSource.Id == request.IncomeSourceId);
+
+        // Assert
+        var planItemsAsserts = new List<Action>();
+        planItemsAsserts.Add(() => Assert.NotNull(plan));
+        planItemsAsserts.Add(() => Assert.Equal(request.PlanItems.Count, plan!.FinanceDistributionPlanItems.Count));
+
+        foreach (var requestPlanItem in request.PlanItems)
+        {
+            var storedPlanItems = plan?.FinanceDistributionPlanItems
+                .Where(x => x.StepNumber == requestPlanItem.StepNumber
+                            && x.PlannedValue == Domain.Metadata.FinancesDistributionItemValueType.GetValueFromStringValue(requestPlanItem.PlannedValue)
+                            && x.ExpenseItem.Name == requestPlanItem.NewExpenseItemName
+                            && x.ValueType.Code == Domain.Metadata.FinancesDistributionItemValueType.GetTypeFromStringValue(requestPlanItem.PlannedValue).Code)
+                .ToList();
+
+            planItemsAsserts.Add(() => Assert.True(storedPlanItems?.Count == 1, "Plan item exception"));
+        }
+
+        Assert.Multiple(planItemsAsserts.ToArray());
+    }
+
+    [Fact]
     public async Task DuplicatedExpenseItems()
     {
         // Arrange

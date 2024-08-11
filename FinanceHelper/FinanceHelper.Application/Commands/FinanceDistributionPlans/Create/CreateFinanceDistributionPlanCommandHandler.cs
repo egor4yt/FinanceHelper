@@ -43,7 +43,8 @@ public class CreateFinanceDistributionPlanCommandHandler(ApplicationDbContext ap
             .Select(x => x.Id)
             .ToListAsync(cancellationToken);
         var notExistsExpenseItemsIds = request.PlanItems
-            .Select(x => x.ExpenseItemId)
+            .Where(x => x.ExpenseItemId.HasValue)
+            .Select(x => x.ExpenseItemId!.Value)
             .Except(existsExpenseItemsIds)
             .ToList();
         if (notExistsExpenseItemsIds.Count != 0) throw new BadRequestException(stringLocalizer["ExpenseItemsDoesNotExists", string.Join(", ", notExistsExpenseItemsIds)]);
@@ -54,18 +55,39 @@ public class CreateFinanceDistributionPlanCommandHandler(ApplicationDbContext ap
             FactBudget = request.FactBudget,
             CreatedAt = DateTime.UtcNow,
             OwnerId = request.OwnerId,
-            IncomeSourceId = request.IncomeSourceId
+            IncomeSourceId = request.IncomeSourceId,
+            FinanceDistributionPlanItems = new List<FinanceDistributionPlanItem>()
         };
 
-        newFinanceDistributionPlan.FinanceDistributionPlanItems = request.PlanItems
-            .Select(x => new FinanceDistributionPlanItem
+        foreach (var planItemWithNewExpenseItem in request.PlanItems.Where(x => x.ExpenseItemId.HasValue == false))
+        {
+            var newExpenseItem = new ExpenseItem
             {
-                StepNumber = x.StepNumber,
-                ExpenseItemId = x.ExpenseItemId,
-                PlannedValue = Domain.Metadata.FinancesDistributionItemValueType.GetValueFromStringValue(x.PlannedValue),
-                ValueTypeCode = Domain.Metadata.FinancesDistributionItemValueType.GetTypeFromStringValue(x.PlannedValue).Code
-            })
-            .ToList();
+                Name = planItemWithNewExpenseItem.NewExpenseItemName!,
+                ExpenseItemTypeCode = null,
+                Color = null,
+                OwnerId = request.OwnerId,
+                OneTimeUsable = true
+            };
+            newFinanceDistributionPlan.FinanceDistributionPlanItems.Add(new FinanceDistributionPlanItem
+            {
+                StepNumber = planItemWithNewExpenseItem.StepNumber,
+                PlannedValue = Domain.Metadata.FinancesDistributionItemValueType.GetValueFromStringValue(planItemWithNewExpenseItem.PlannedValue),
+                ValueTypeCode = Domain.Metadata.FinancesDistributionItemValueType.GetTypeFromStringValue(planItemWithNewExpenseItem.PlannedValue).Code,
+                ExpenseItem = newExpenseItem
+            });
+        }
+
+        foreach (var planItem in request.PlanItems.Where(x => x.ExpenseItemId.HasValue))
+        {
+            newFinanceDistributionPlan.FinanceDistributionPlanItems.Add(new FinanceDistributionPlanItem
+            {
+                StepNumber = planItem.StepNumber,
+                PlannedValue = Domain.Metadata.FinancesDistributionItemValueType.GetValueFromStringValue(planItem.PlannedValue),
+                ValueTypeCode = Domain.Metadata.FinancesDistributionItemValueType.GetTypeFromStringValue(planItem.PlannedValue).Code,
+                ExpenseItemId = planItem.ExpenseItemId!.Value
+            });
+        }
 
         await applicationDbContext.FinanceDistributionPlans.AddAsync(newFinanceDistributionPlan, cancellationToken);
         await applicationDbContext.SaveChangesAsync(cancellationToken);

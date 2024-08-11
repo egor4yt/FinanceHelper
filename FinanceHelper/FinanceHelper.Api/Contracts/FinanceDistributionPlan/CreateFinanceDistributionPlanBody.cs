@@ -43,8 +43,13 @@ public class CreateFinanceDistributionPlanBody
         public string PlannedValue { get; set; }
         
         /// <summary>
-        ///     Expense item id
+        ///     Expense item id or null if it is new expense item
         /// </summary>
-        public long ExpenseItemId { get; set; }
+        public long? ExpenseItemId { get; set; }
+        
+        /// <summary>
+        ///     If expense item doesn't exist, new expense item created with that name
+        /// </summary>
+        public string? NewExpenseItemName { get; set; }
     }
 }

@@ -22,7 +22,6 @@ public class ExpenseItemConfiguration : IEntityTypeConfiguration<ExpenseItem>
 
         builder
             .Property(x => x.Color)
-            .IsRequired()
             .HasComment("HEX-format color")
             .HasColumnType("varchar(7)");
         
@@ -43,7 +42,6 @@ public class ExpenseItemConfiguration : IEntityTypeConfiguration<ExpenseItem>
 
         builder
             .Property(x => x.ExpenseItemTypeCode)
-            .IsRequired()
             .HasColumnType("varchar(32)");
     }
 }

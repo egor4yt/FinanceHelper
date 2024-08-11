@@ -36,7 +36,8 @@ public class FinanceDistributionPlanController : ApiControllerBase
             {
                 StepNumber = x.StepNumber,
                 PlannedValue = x.PlannedValue,
-                ExpenseItemId = x.ExpenseItemId
+                ExpenseItemId = x.ExpenseItemId,
+                NewExpenseItemName = x.NewExpenseItemName
             }).ToList()
         };
 
