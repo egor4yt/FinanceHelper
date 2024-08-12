@@ -14,8 +14,16 @@ public static partial class MetadataLocalization
 
         new Entities.MetadataLocalization
         {
-            LocalizedValue = "Fixed",
+            LocalizedValue = "Fixed divisible",
             LocalizationKeyword = FinancesDistributionItemValueType.Fixed.LocalizationKeyword,
+            SupportedLanguageCode = SupportedLanguage.English.Code,
+            MetadataTypeCode = MetadataType.FinancesDistributionItemValueType.Code
+        },
+
+        new Entities.MetadataLocalization
+        {
+            LocalizedValue = "Fixed indivisible",
+            LocalizationKeyword = FinancesDistributionItemValueType.FixedIndivisible.LocalizationKeyword,
             SupportedLanguageCode = SupportedLanguage.English.Code,
             MetadataTypeCode = MetadataType.FinancesDistributionItemValueType.Code
         }

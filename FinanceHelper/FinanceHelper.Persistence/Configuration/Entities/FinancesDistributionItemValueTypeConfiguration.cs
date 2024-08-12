@@ -31,5 +31,6 @@ public class FinancesDistributionItemValueTypeConfiguration : IEntityTypeConfigu
     {
         builder.HasData(Domain.Metadata.FinancesDistributionItemValueType.Fixed);
         builder.HasData(Domain.Metadata.FinancesDistributionItemValueType.Floating);
+        builder.HasData(Domain.Metadata.FinancesDistributionItemValueType.FixedIndivisible);
     }
 }
