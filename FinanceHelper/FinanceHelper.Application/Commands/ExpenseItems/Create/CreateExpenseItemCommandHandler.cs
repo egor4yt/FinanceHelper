@@ -22,7 +22,7 @@ public class CreateExpenseItemCommandHandler(ApplicationDbContext applicationDbC
             ExpenseItemTypeCode = request.ExpenseItemTypeCode,
             Color = request.Color,
             OwnerId = request.OwnerId,
-            OneTimeUsable = false
+            Hidden = false
         };
 
         await applicationDbContext.ExpenseItems.AddAsync(newExpenseItem, cancellationToken);

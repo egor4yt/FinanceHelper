@@ -67,7 +67,7 @@ public class CreateFinanceDistributionPlanCommandHandler(ApplicationDbContext ap
                 ExpenseItemTypeCode = null,
                 Color = null,
                 OwnerId = request.OwnerId,
-                OneTimeUsable = true
+                Hidden = true
             };
             newFinanceDistributionPlan.FinanceDistributionPlanItems.Add(new FinanceDistributionPlanItem
             {

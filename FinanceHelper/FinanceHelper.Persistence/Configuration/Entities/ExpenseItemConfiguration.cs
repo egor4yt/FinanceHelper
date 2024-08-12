@@ -26,9 +26,9 @@ public class ExpenseItemConfiguration : IEntityTypeConfiguration<ExpenseItem>
             .HasColumnType("varchar(7)");
         
         builder
-            .Property(x => x.OneTimeUsable)
+            .Property(x => x.Hidden)
             .IsRequired()
-            .HasComment("Indicates that the expense item is using in one step of the finance distribution plan, no more")
+            .HasComment("Indicates that the expense item created while user creating a finance distribution plan or other automated way")
             .HasColumnType("boolean");
 
         builder
