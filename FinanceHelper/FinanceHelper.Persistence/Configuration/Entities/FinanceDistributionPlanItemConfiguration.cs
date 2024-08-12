@@ -42,5 +42,10 @@ public class FinanceDistributionPlanItemConfiguration : IEntityTypeConfiguration
         builder
             .Property(x => x.FinanceDistributionPlanId)
             .IsRequired();
+
+        builder
+            .Property(x => x.Indivisible)
+            .HasComment("Indicates that fact value must be calculated without any divides and strict equals to the planned value")
+            .IsRequired();
     }
 }
