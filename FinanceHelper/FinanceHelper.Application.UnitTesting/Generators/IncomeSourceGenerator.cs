@@ -12,7 +12,7 @@ public class IncomeSourceGenerator(ApplicationDbContext applicationDbContext)
             IncomeSourceTypeCode = incomeSourceType?.Code ?? Guid.NewGuid().ToString(),
             Name = Guid.NewGuid().ToString(),
             Color = Guid.NewGuid().ToString(),
-            OwnerId = user?.Id ?? new Random().NextInt64(),
+            OwnerId = user?.Id ?? new Random().NextInt64()
         };
 
         await applicationDbContext.AddAsync(entity);

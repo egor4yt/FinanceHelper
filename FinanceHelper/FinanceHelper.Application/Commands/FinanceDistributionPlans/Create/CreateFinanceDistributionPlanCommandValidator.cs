@@ -20,7 +20,7 @@ public class CreateFinanceDistributionPlanCommandValidator : AbstractValidator<C
                 {
                     c.RuleFor(x => x.ExpenseItemId)
                         .GreaterThan(0);
-                    
+
                     c.RuleFor(x => x.NewExpenseItemName)
                         .NotEmpty();
 

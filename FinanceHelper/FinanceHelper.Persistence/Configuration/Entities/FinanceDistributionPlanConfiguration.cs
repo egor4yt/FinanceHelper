@@ -13,7 +13,7 @@ public class FinanceDistributionPlanConfiguration : IEntityTypeConfiguration<Fin
             .WithMany(x => x.FinanceDistributionPlans)
             .HasForeignKey(x => x.OwnerId)
             .HasConstraintName("FK_FinanceDistributionPlan_User");
-        
+
         builder
             .HasOne(x => x.IncomeSource)
             .WithMany(x => x.FinanceDistributionPlans)
@@ -28,7 +28,7 @@ public class FinanceDistributionPlanConfiguration : IEntityTypeConfiguration<Fin
         builder
             .Property(x => x.OwnerId)
             .IsRequired();
-        
+
         builder
             .Property(x => x.IncomeSourceId)
             .IsRequired();

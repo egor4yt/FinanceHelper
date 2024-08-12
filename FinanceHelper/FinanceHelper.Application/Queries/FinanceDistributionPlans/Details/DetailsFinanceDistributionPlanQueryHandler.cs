@@ -79,13 +79,14 @@ public class DetailsFinanceDistributionPlanQueryHandler(ApplicationDbContext app
             }
 
             responseStepGroup.StepFixedExpenses = Math.Round(stepFixedExpenses, 2);
-            responseStepGroup.StepFloatedExpenses = Math.Round(stepFloatedExpenses, 2);;
+            responseStepGroup.StepFloatedExpenses = Math.Round(stepFloatedExpenses, 2);
+
             response.Steps.Add(responseStepGroup);
         }
 
         response.Steps = response.Steps.OrderBy(x => x.StepNumber).ToList();
         response.Steps.ForEach(x => x.Items = x.Items.OrderBy(y => y.ExpenseItem.Name).ToList());
-        
+
         return response;
     }
 }

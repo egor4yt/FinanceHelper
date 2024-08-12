@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using FinanceHelper.Api.Contracts.ExpenseItem;
 using FinanceHelper.Application.Commands.ExpenseItems.Create;
-using FinanceHelper.Application.Commands.Users.Update;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

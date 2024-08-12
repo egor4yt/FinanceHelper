@@ -11,17 +11,17 @@ public class CreateFinanceDistributionPlanBody
     ///     Planned budget
     /// </summary>
     public decimal PlannedBudget { get; set; }
-    
+
     /// <summary>
     ///     Income source id
     /// </summary>
     public long IncomeSourceId { get; set; }
-    
+
     /// <summary>
     ///     Fact budget
     /// </summary>
     public decimal FactBudget { get; set; }
-    
+
     /// <summary>
     ///     Planned items
     /// </summary>
@@ -36,17 +36,17 @@ public class CreateFinanceDistributionPlanBody
         ///     Step number id
         /// </summary>
         public int StepNumber { get; set; }
-        
+
         /// <summary>
         ///     Planned value as string. It must be number with optional '%' symbol as last character
         /// </summary>
         public string PlannedValue { get; set; }
-        
+
         /// <summary>
         ///     Expense item id or null if it is new expense item
         /// </summary>
         public long? ExpenseItemId { get; set; }
-        
+
         /// <summary>
         ///     If expense item doesn't exist, new expense item created with that name
         /// </summary>

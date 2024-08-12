@@ -1,5 +1,4 @@
-﻿using System.Text.Json;
-using FinanceHelper.Application.Queries.FinanceDistributionPlans.Details;
+﻿using FinanceHelper.Application.Queries.FinanceDistributionPlans.Details;
 using FinanceHelper.Application.UnitTesting.Common;
 using FinanceHelper.Domain.Entities;
 

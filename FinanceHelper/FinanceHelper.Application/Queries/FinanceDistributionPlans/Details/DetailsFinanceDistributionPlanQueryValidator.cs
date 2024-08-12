@@ -8,7 +8,7 @@ public class DetailsFinanceDistributionPlanQueryValidator : AbstractValidator<De
     {
         RuleFor(x => x.FinanceDistributionPlanId)
             .GreaterThan(0);
-        
+
         RuleFor(x => x.OwnerId)
             .GreaterThan(0);
     }
