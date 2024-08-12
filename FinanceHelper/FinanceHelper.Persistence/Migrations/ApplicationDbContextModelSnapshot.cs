@@ -57,7 +57,7 @@ namespace FinanceHelper.Persistence.Migrations
 
                     b.HasIndex("OwnerId");
 
-                    b.ToTable("ExpenseItems");
+                    b.ToTable("ExpenseItems", (string)null);
                 });
 
             modelBuilder.Entity("FinanceHelper.Domain.Entities.ExpenseItemType", b =>
@@ -71,7 +71,7 @@ namespace FinanceHelper.Persistence.Migrations
 
                     b.HasKey("Code");
 
-                    b.ToTable("ExpenseItemTypes");
+                    b.ToTable("ExpenseItemTypes", (string)null);
 
                     b.HasData(
                         new
@@ -135,7 +135,7 @@ namespace FinanceHelper.Persistence.Migrations
 
                     b.HasIndex("OwnerId");
 
-                    b.ToTable("FinanceDistributionPlans");
+                    b.ToTable("FinanceDistributionPlans", (string)null);
                 });
 
             modelBuilder.Entity("FinanceHelper.Domain.Entities.FinanceDistributionPlanItem", b =>
@@ -151,10 +151,6 @@ namespace FinanceHelper.Persistence.Migrations
 
                     b.Property<long>("FinanceDistributionPlanId")
                         .HasColumnType("bigint");
-
-                    b.Property<bool>("Indivisible")
-                        .HasColumnType("boolean")
-                        .HasComment("Indicates that fact value must be calculated without any divides and strict equals to the planned value");
 
                     b.Property<decimal>("PlannedValue")
                         .HasColumnType("money");
@@ -174,7 +170,7 @@ namespace FinanceHelper.Persistence.Migrations
 
                     b.HasIndex("ValueTypeCode");
 
-                    b.ToTable("FinanceDistributionPlanItems");
+                    b.ToTable("FinanceDistributionPlanItems", (string)null);
                 });
 
             modelBuilder.Entity("FinanceHelper.Domain.Entities.FinancesDistributionItemValueType", b =>
@@ -191,7 +187,7 @@ namespace FinanceHelper.Persistence.Migrations
                     b.HasIndex(new[] { "Code", "LocalizationKeyword" }, "UX_Code_LocalizationKeyword")
                         .IsUnique();
 
-                    b.ToTable("FinancesDistributionItemValueTypes");
+                    b.ToTable("FinancesDistributionItemValueTypes", (string)null);
 
                     b.HasData(
                         new
@@ -239,7 +235,7 @@ namespace FinanceHelper.Persistence.Migrations
 
                     b.HasIndex("OwnerId");
 
-                    b.ToTable("IncomeSources");
+                    b.ToTable("IncomeSources", (string)null);
                 });
 
             modelBuilder.Entity("FinanceHelper.Domain.Entities.IncomeSourceType", b =>
@@ -257,7 +253,7 @@ namespace FinanceHelper.Persistence.Migrations
                         .IsUnique()
                         .HasDatabaseName("UX_Code_LocalizationKeyword1");
 
-                    b.ToTable("IncomeSourceTypes");
+                    b.ToTable("IncomeSourceTypes", (string)null);
 
                     b.HasData(
                         new
@@ -306,7 +302,7 @@ namespace FinanceHelper.Persistence.Migrations
 
                     b.HasIndex("MetadataTypeCode");
 
-                    b.ToTable("MetadataLocalizations");
+                    b.ToTable("MetadataLocalizations", (string)null);
 
                     b.HasData(
                         new
@@ -500,7 +496,7 @@ namespace FinanceHelper.Persistence.Migrations
 
                     b.HasKey("Code");
 
-                    b.ToTable("MetadataTypes");
+                    b.ToTable("MetadataTypes", (string)null);
 
                     b.HasData(
                         new
@@ -528,7 +524,7 @@ namespace FinanceHelper.Persistence.Migrations
 
                     b.HasKey("Code");
 
-                    b.ToTable("SupportedLanguages");
+                    b.ToTable("SupportedLanguages", (string)null);
 
                     b.HasData(
                         new
@@ -562,7 +558,7 @@ namespace FinanceHelper.Persistence.Migrations
 
                     b.HasIndex("TagTypeCode");
 
-                    b.ToTable("Tags");
+                    b.ToTable("Tags", (string)null);
                 });
 
             modelBuilder.Entity("FinanceHelper.Domain.Entities.TagType", b =>
@@ -572,7 +568,7 @@ namespace FinanceHelper.Persistence.Migrations
 
                     b.HasKey("Code");
 
-                    b.ToTable("TagTypes");
+                    b.ToTable("TagTypes", (string)null);
 
                     b.HasData(
                         new
@@ -607,7 +603,7 @@ namespace FinanceHelper.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("FinanceHelper.Domain.Entities.ExpenseItem", b =>

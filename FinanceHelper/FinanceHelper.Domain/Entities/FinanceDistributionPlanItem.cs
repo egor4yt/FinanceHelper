@@ -8,7 +8,6 @@ public class FinanceDistributionPlanItem
     public decimal PlannedValue { get; set; }
     public long ExpenseItemId { get; set; }
     public string ValueTypeCode { get; set; }
-    public bool Indivisible { get; set; }
 
     public virtual FinanceDistributionPlan FinanceDistributionPlan { get; set; }
     public virtual FinancesDistributionItemValueType ValueType { get; set; }
