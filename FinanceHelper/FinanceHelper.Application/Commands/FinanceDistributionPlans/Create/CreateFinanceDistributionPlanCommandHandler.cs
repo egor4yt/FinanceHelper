@@ -25,14 +25,9 @@ public class CreateFinanceDistributionPlanCommandHandler(ApplicationDbContext ap
 
         foreach (var planItemsGroup in planItemsGroups)
         {
-            var sumFloatedValues = 0M;
-
-            foreach (var plaItem in planItemsGroup)
-            {
-                var typeCode = Domain.Metadata.FinancesDistributionItemValueType.GetTypeFromStringValue(plaItem.PlannedValue).Code;
-                var value = Domain.Metadata.FinancesDistributionItemValueType.GetValueFromStringValue(plaItem.PlannedValue);
-                if (typeCode == Domain.Metadata.FinancesDistributionItemValueType.Floating.Code) sumFloatedValues += value;
-            }
+            var sumFloatedValues = planItemsGroup
+                .Where(plaItem => plaItem.PlannedValueTypeCode == Domain.Metadata.FinancesDistributionItemValueType.Floating.Code)
+                .Sum(plaItem => plaItem.PlannedValue);
 
             if ((sumFloatedValues > 90 && planItemsGroup.Key != maxStepNumber)
                 || (sumFloatedValues != 100 && planItemsGroup.Key == maxStepNumber)) throw new BadRequestException(stringLocalizer["InvalidFloatingValue"]);
@@ -59,34 +54,26 @@ public class CreateFinanceDistributionPlanCommandHandler(ApplicationDbContext ap
             FinanceDistributionPlanItems = new List<FinanceDistributionPlanItem>()
         };
 
-        foreach (var planItemWithNewExpenseItem in request.PlanItems.Where(x => x.ExpenseItemId.HasValue == false))
+        foreach (var planItem in request.PlanItems)
         {
-            var newExpenseItem = new ExpenseItem
-            {
-                Name = planItemWithNewExpenseItem.NewExpenseItemName!,
-                ExpenseItemTypeCode = null,
-                Color = null,
-                OwnerId = request.OwnerId,
-                Hidden = true
-            };
-            newFinanceDistributionPlan.FinanceDistributionPlanItems.Add(new FinanceDistributionPlanItem
-            {
-                StepNumber = planItemWithNewExpenseItem.StepNumber,
-                PlannedValue = Domain.Metadata.FinancesDistributionItemValueType.GetValueFromStringValue(planItemWithNewExpenseItem.PlannedValue),
-                ValueTypeCode = Domain.Metadata.FinancesDistributionItemValueType.GetTypeFromStringValue(planItemWithNewExpenseItem.PlannedValue).Code,
-                ExpenseItem = newExpenseItem
-            });
-        }
-
-        foreach (var planItem in request.PlanItems.Where(x => x.ExpenseItemId.HasValue))
-        {
-            newFinanceDistributionPlan.FinanceDistributionPlanItems.Add(new FinanceDistributionPlanItem
+            var newPlanItem = new FinanceDistributionPlanItem
             {
                 StepNumber = planItem.StepNumber,
-                PlannedValue = Domain.Metadata.FinancesDistributionItemValueType.GetValueFromStringValue(planItem.PlannedValue),
-                ValueTypeCode = Domain.Metadata.FinancesDistributionItemValueType.GetTypeFromStringValue(planItem.PlannedValue).Code,
-                ExpenseItemId = planItem.ExpenseItemId!.Value
-            });
+                PlannedValue = planItem.PlannedValue,
+                ValueTypeCode = planItem.PlannedValueTypeCode
+            };
+            if (string.IsNullOrWhiteSpace(planItem.NewExpenseItemName)) newPlanItem.ExpenseItemId = planItem.ExpenseItemId!.Value;
+            else
+                newPlanItem.ExpenseItem = new ExpenseItem
+                {
+                    Name = planItem.NewExpenseItemName,
+                    ExpenseItemTypeCode = null,
+                    Color = null,
+                    OwnerId = request.OwnerId,
+                    Hidden = true
+                };
+
+            newFinanceDistributionPlan.FinanceDistributionPlanItems.Add(newPlanItem);
         }
 
         await applicationDbContext.FinanceDistributionPlans.AddAsync(newFinanceDistributionPlan, cancellationToken);

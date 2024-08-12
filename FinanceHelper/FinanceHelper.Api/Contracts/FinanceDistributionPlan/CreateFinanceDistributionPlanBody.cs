@@ -40,7 +40,7 @@ public class CreateFinanceDistributionPlanBody
         /// <summary>
         ///     Planned value as string. It must be number with optional '%' symbol as last character
         /// </summary>
-        public string PlannedValue { get; set; }
+        public decimal PlannedValue { get; set; }
 
         /// <summary>
         ///     Expense item id or null if it is new expense item

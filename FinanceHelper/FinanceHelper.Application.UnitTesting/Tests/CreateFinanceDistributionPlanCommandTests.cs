@@ -21,6 +21,7 @@ public class CreateFinanceDistributionPlanCommandTests : TestBase<CreateFinanceD
         var owner = await UserGenerator.SeedOneAsync();
         var expenseItem1 = await ExpenseItemGenerator.SeedOneAsync(owner);
         var expenseItem2 = await ExpenseItemGenerator.SeedOneAsync(owner);
+        var expenseItem3 = await ExpenseItemGenerator.SeedOneAsync(owner);
         var incomeSource = await IncomeSourceGenerator.SeedOneAsync(owner);
         var request = new CreateFinanceDistributionPlanCommandRequest
         {
@@ -33,14 +34,23 @@ public class CreateFinanceDistributionPlanCommandTests : TestBase<CreateFinanceD
                 new PlanItem
                 {
                     StepNumber = 1,
-                    PlannedValue = new Random().Next().ToString(),
-                    ExpenseItemId = expenseItem1.Id
+                    PlannedValue = new Random().Next(),
+                    ExpenseItemId = expenseItem1.Id,
+                    PlannedValueTypeCode = Domain.Metadata.FinancesDistributionItemValueType.Fixed.Code
                 },
                 new PlanItem
                 {
                     StepNumber = 2,
-                    PlannedValue = "100%",
-                    ExpenseItemId = expenseItem2.Id
+                    PlannedValue = new Random().Next(),
+                    ExpenseItemId = expenseItem2.Id,
+                    PlannedValueTypeCode = Domain.Metadata.FinancesDistributionItemValueType.FixedIndivisible.Code
+                },
+                new PlanItem
+                {
+                    StepNumber = 2,
+                    PlannedValue = 100,
+                    ExpenseItemId = expenseItem3.Id,
+                    PlannedValueTypeCode = Domain.Metadata.FinancesDistributionItemValueType.Floating.Code
                 }
             ]
         };
@@ -66,9 +76,9 @@ public class CreateFinanceDistributionPlanCommandTests : TestBase<CreateFinanceD
         {
             var storedPlanItems = plan?.FinanceDistributionPlanItems
                 .Where(x => x.StepNumber == requestPlanItem.StepNumber
-                            && x.PlannedValue == Domain.Metadata.FinancesDistributionItemValueType.GetValueFromStringValue(requestPlanItem.PlannedValue)
+                            && x.PlannedValue == requestPlanItem.PlannedValue
                             && x.ExpenseItem.Id == requestPlanItem.ExpenseItemId
-                            && x.ValueType.Code == Domain.Metadata.FinancesDistributionItemValueType.GetTypeFromStringValue(requestPlanItem.PlannedValue).Code)
+                            && x.ValueType.Code == requestPlanItem.PlannedValueTypeCode)
                 .ToList();
 
             planItemsAsserts.Add(() => Assert.True(storedPlanItems?.Count == 1, "Plan item exception"));
@@ -94,9 +104,10 @@ public class CreateFinanceDistributionPlanCommandTests : TestBase<CreateFinanceD
                 new PlanItem
                 {
                     StepNumber = 1,
-                    PlannedValue = "100%",
+                    PlannedValue = 100,
                     ExpenseItemId = null,
-                    NewExpenseItemName = Guid.NewGuid().ToString()
+                    NewExpenseItemName = Guid.NewGuid().ToString(),
+                    PlannedValueTypeCode = Domain.Metadata.FinancesDistributionItemValueType.Floating.Code
                 }
             ]
         };
@@ -122,9 +133,9 @@ public class CreateFinanceDistributionPlanCommandTests : TestBase<CreateFinanceD
         {
             var storedPlanItems = plan?.FinanceDistributionPlanItems
                 .Where(x => x.StepNumber == requestPlanItem.StepNumber
-                            && x.PlannedValue == Domain.Metadata.FinancesDistributionItemValueType.GetValueFromStringValue(requestPlanItem.PlannedValue)
+                            && x.PlannedValue == requestPlanItem.PlannedValue
                             && x.ExpenseItem.Name == requestPlanItem.NewExpenseItemName
-                            && x.ValueType.Code == Domain.Metadata.FinancesDistributionItemValueType.GetTypeFromStringValue(requestPlanItem.PlannedValue).Code)
+                            && x.ValueType.Code == requestPlanItem.PlannedValueTypeCode)
                 .ToList();
 
             planItemsAsserts.Add(() => Assert.True(storedPlanItems?.Count == 1, "Plan item exception"));
@@ -147,14 +158,16 @@ public class CreateFinanceDistributionPlanCommandTests : TestBase<CreateFinanceD
                 new PlanItem
                 {
                     StepNumber = 1,
-                    PlannedValue = "1000",
-                    ExpenseItemId = 1
+                    PlannedValue = 1000,
+                    ExpenseItemId = 1,
+                    PlannedValueTypeCode = Domain.Metadata.FinancesDistributionItemValueType.Fixed.Code
                 },
                 new PlanItem
                 {
                     StepNumber = 2,
-                    PlannedValue = "50%",
-                    ExpenseItemId = 1
+                    PlannedValue = 50,
+                    ExpenseItemId = 1,
+                    PlannedValueTypeCode = Domain.Metadata.FinancesDistributionItemValueType.Floating.Code
                 }
             ]
         };
@@ -177,8 +190,9 @@ public class CreateFinanceDistributionPlanCommandTests : TestBase<CreateFinanceD
                 new PlanItem
                 {
                     StepNumber = new Random().Next(),
-                    PlannedValue = new Random().Next().ToString(),
-                    ExpenseItemId = new Random().Next()
+                    PlannedValue = new Random().Next(),
+                    ExpenseItemId = new Random().Next(),
+                    PlannedValueTypeCode = Domain.Metadata.FinancesDistributionItemValueType.Fixed.Code
                 }
             ]
         };
@@ -196,7 +210,7 @@ public class CreateFinanceDistributionPlanCommandTests : TestBase<CreateFinanceD
         var notUserExpenseItem = await ExpenseItemGenerator.SeedOneAsync(user);
         var request = new CreateFinanceDistributionPlanCommandRequest
         {
-            OwnerId = new Random().Next(),
+            OwnerId = user.Id,
             PlannedBudget = new Random().Next(),
             FactBudget = new Random().Next(),
             PlanItems =
@@ -204,14 +218,16 @@ public class CreateFinanceDistributionPlanCommandTests : TestBase<CreateFinanceD
                 new PlanItem
                 {
                     StepNumber = new Random().Next(),
-                    PlannedValue = new Random().Next().ToString(),
-                    ExpenseItemId = userExpenseItem.Id
+                    PlannedValue = new Random().Next(),
+                    ExpenseItemId = userExpenseItem.Id,
+                    PlannedValueTypeCode = Domain.Metadata.FinancesDistributionItemValueType.Fixed.Code
                 },
                 new PlanItem
                 {
                     StepNumber = new Random().Next(),
-                    PlannedValue = new Random().Next().ToString(),
-                    ExpenseItemId = notUserExpenseItem.Id
+                    PlannedValue = new Random().Next(),
+                    ExpenseItemId = notUserExpenseItem.Id,
+                    PlannedValueTypeCode = Domain.Metadata.FinancesDistributionItemValueType.Fixed.Code
                 }
             ]
         };

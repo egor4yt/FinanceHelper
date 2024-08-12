@@ -42,12 +42,11 @@ public class DetailsFinanceDistributionPlanQueryHandler(ApplicationDbContext app
             var responseStepGroup = new StepGroup();
             var stepBudget = factBudgetRemaining;
             var stepFixedExpenses = 0M;
-            var stepFloatedExpenses = 0M;
             responseStepGroup.StepNumber = grouping.Key;
             responseStepGroup.Items = [];
 
             // We need to calculate fixed values before floating values
-            foreach (var stepItem in grouping.OrderByDescending(x => x.ValueTypeCode == Domain.Metadata.FinancesDistributionItemValueType.Fixed.Code))
+            foreach (var stepItem in grouping.OrderBy(x => x.ValueTypeCode == Domain.Metadata.FinancesDistributionItemValueType.Floating.Code))
             {
                 var responseStepItem = new StepItem();
                 responseStepItem.PlannedValue = Math.Round(stepItem.PlannedValue, 2);
@@ -59,15 +58,21 @@ public class DetailsFinanceDistributionPlanQueryHandler(ApplicationDbContext app
                     factBudgetRemaining -= value;
                     stepFixedExpenses += value;
                 }
-
-                if (stepItem.ValueTypeCode == Domain.Metadata.FinancesDistributionItemValueType.Floating.Code)
+                else if (stepItem.ValueTypeCode == Domain.Metadata.FinancesDistributionItemValueType.Floating.Code)
                 {
                     var value = stepItem.PlannedValue / 100 * (stepBudget - stepFixedExpenses);
                     responseStepItem.FactFixedValue = Math.Round(value, 2);
                     factBudgetRemaining -= value;
-                    stepFloatedExpenses += value;
                     responseStepItem.PlannedValuePostfix = "%";
                 }
+                else if (stepItem.ValueTypeCode == Domain.Metadata.FinancesDistributionItemValueType.FixedIndivisible.Code)
+                {
+                    var value = stepItem.PlannedValue;
+                    responseStepItem.FactFixedValue = Math.Round(value, 2);
+                    factBudgetRemaining -= value;
+                    stepFixedExpenses += value;
+                }
+                else throw new InvalidOperationException("Unknown finances distribution item value type");
 
                 responseStepItem.ExpenseItem = new ExpenseItem
                 {
@@ -77,9 +82,6 @@ public class DetailsFinanceDistributionPlanQueryHandler(ApplicationDbContext app
 
                 responseStepGroup.Items.Add(responseStepItem);
             }
-
-            responseStepGroup.StepFixedExpenses = Math.Round(stepFixedExpenses, 2);
-            responseStepGroup.StepFloatedExpenses = Math.Round(stepFloatedExpenses, 2);
 
             response.Steps.Add(responseStepGroup);
         }

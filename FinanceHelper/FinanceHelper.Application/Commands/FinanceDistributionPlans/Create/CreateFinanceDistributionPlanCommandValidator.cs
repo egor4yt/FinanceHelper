@@ -26,7 +26,7 @@ public class CreateFinanceDistributionPlanCommandValidator : AbstractValidator<C
 
                     c.RuleFor(x => x.PlannedValue)
                         .NotEmpty()
-                        .Matches(@"^\d+\.?\d+\%?$");
+                        .GreaterThan(0);
 
                     c.RuleFor(x => x.StepNumber)
                         .GreaterThan(0);

@@ -60,23 +60,23 @@ public class DetailsFinanceDistributionPlanQueryTests : TestBase<DetailsFinanceD
                     ValueTypeCode = Domain.Metadata.FinancesDistributionItemValueType.Floating.Code
                 },
 
-                // Available budget for next step = 26 000 - 6500 - 5460 = 14040
+                // Available budget for next step = 26 000 - 6500 - 5460 = 14 040
                 new FinanceDistributionPlanItem
                 {
                     StepNumber = 2,
-                    PlannedValue = 27, // FACT = (14 040 - 325) * 0.27 = 3 703.05
+                    PlannedValue = 27, // FACT = (14 040 - 500) * 0.27 = 3 655.8
                     ExpenseItemId = expenseItem4.Id,
                     ValueTypeCode = Domain.Metadata.FinancesDistributionItemValueType.Floating.Code
                 },
                 new FinanceDistributionPlanItem
                 {
                     StepNumber = 2,
-                    PlannedValue = 500, // FACT = 500 * 0.65 = 325
+                    PlannedValue = 500, // FACT = 500
                     ExpenseItemId = expenseItem5.Id,
-                    ValueTypeCode = Domain.Metadata.FinancesDistributionItemValueType.Fixed.Code
+                    ValueTypeCode = Domain.Metadata.FinancesDistributionItemValueType.FixedIndivisible.Code
                 },
 
-                // Available budget for next step = 14040 - 325 - 3703.05 = 10 011.95
+                // Available budget for next step = 14 040 - 500 - 3 655.8 = 9 884.2
                 new FinanceDistributionPlanItem
                 {
                     StepNumber = 3,
@@ -94,7 +94,7 @@ public class DetailsFinanceDistributionPlanQueryTests : TestBase<DetailsFinanceD
                 new FinanceDistributionPlanItem
                 {
                     StepNumber = 3,
-                    PlannedValue = 100, // FACT = (10 011.95 - 4225) * 1 = 5 786.95
+                    PlannedValue = 100, // FACT = (9 884.2 - 4225) * 1 = 5 659.2
                     ExpenseItemId = expenseItem8.Id,
                     ValueTypeCode = Domain.Metadata.FinancesDistributionItemValueType.Floating.Code
                 }
@@ -119,8 +119,6 @@ public class DetailsFinanceDistributionPlanQueryTests : TestBase<DetailsFinanceD
                 new StepGroup
                 {
                     StepNumber = 1,
-                    StepFixedExpenses = 6500.00M,
-                    StepFloatedExpenses = 5460.00M,
                     Items =
                     [
                         new StepItem
@@ -161,15 +159,13 @@ public class DetailsFinanceDistributionPlanQueryTests : TestBase<DetailsFinanceD
                 new StepGroup
                 {
                     StepNumber = 2,
-                    StepFixedExpenses = 325.00M,
-                    StepFloatedExpenses = 3703.05M,
                     Items =
                     [
                         new StepItem
                         {
                             PlannedValue = 27M,
                             PlannedValuePostfix = "%",
-                            FactFixedValue = 3703.05M,
+                            FactFixedValue = 3655.80M,
                             ExpenseItem = new Queries.FinanceDistributionPlans.Details.ExpenseItem
                             {
                                 Id = expenseItem4.Id,
@@ -180,7 +176,7 @@ public class DetailsFinanceDistributionPlanQueryTests : TestBase<DetailsFinanceD
                         {
                             PlannedValue = 500M,
                             PlannedValuePostfix = null!,
-                            FactFixedValue = 325.00M,
+                            FactFixedValue = 500M,
                             ExpenseItem = new Queries.FinanceDistributionPlans.Details.ExpenseItem
                             {
                                 Id = expenseItem5.Id,
@@ -192,8 +188,6 @@ public class DetailsFinanceDistributionPlanQueryTests : TestBase<DetailsFinanceD
                 new StepGroup
                 {
                     StepNumber = 3,
-                    StepFixedExpenses = 4225.00M,
-                    StepFloatedExpenses = 5786.95M,
                     Items =
                     [
                         new StepItem
@@ -222,7 +216,7 @@ public class DetailsFinanceDistributionPlanQueryTests : TestBase<DetailsFinanceD
                         {
                             PlannedValue = 100M,
                             PlannedValuePostfix = "%",
-                            FactFixedValue = 5786.95M,
+                            FactFixedValue = 5659.20M,
                             ExpenseItem = new Queries.FinanceDistributionPlans.Details.ExpenseItem
                             {
                                 Id = expenseItem8.Id,
