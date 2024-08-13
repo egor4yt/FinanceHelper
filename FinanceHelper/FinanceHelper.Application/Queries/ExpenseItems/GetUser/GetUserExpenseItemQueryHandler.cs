@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using FinanceHelper.Application.Services.Interfaces;
+﻿using FinanceHelper.Application.Services.Interfaces;
 using FinanceHelper.Persistence;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -13,7 +12,7 @@ public class GetUserExpenseItemQueryHandler(ApplicationDbContext applicationDbCo
         var response = new GetUserExpenseItemQueryResponse();
 
         var expenseItems = await applicationDbContext.ExpenseItems
-            .OrderByDescending(x => x.Name)
+            .OrderBy(x => x.Name)
             .Join(applicationDbContext.MetadataLocalizations,
                 x => x.ExpenseItemType!.LocalizationKeyword,
                 y => y.LocalizationKeyword,

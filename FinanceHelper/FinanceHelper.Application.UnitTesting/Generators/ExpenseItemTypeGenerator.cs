@@ -5,7 +5,7 @@ namespace FinanceHelper.Application.UnitTesting.Generators;
 
 public static class ExpenseItemTypeGenerator
 {
-    public static async Task<ExpenseItemType> SeedOneExpenseItemTypeAsync(this ApplicationDbContext applicationDbContext)
+    public static async Task<ExpenseItemType> SeedOneExpenseItemTypeAsync(this ApplicationDbContext applicationDbContext, SupportedLanguage? localizationLanguage = null)
     {
         var entity = new ExpenseItemType
         {
@@ -18,7 +18,7 @@ public static class ExpenseItemTypeGenerator
             LocalizedValue = Guid.NewGuid().ToString(),
             LocalizationKeyword = entity.LocalizationKeyword,
             MetadataTypeCode = Domain.Metadata.MetadataType.ExpenseItemType.Code,
-            SupportedLanguage = await applicationDbContext.SeedOneSupportedLanguageAsync()
+            SupportedLanguage = localizationLanguage ?? await applicationDbContext.SeedOneSupportedLanguageAsync()
         };
 
         await applicationDbContext.AddRangeAsync(entity, localizationEntity);
