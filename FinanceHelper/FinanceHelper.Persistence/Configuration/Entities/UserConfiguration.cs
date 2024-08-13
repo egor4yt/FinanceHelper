@@ -9,6 +9,12 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
     public void Configure(EntityTypeBuilder<User> builder)
     {
         builder
+            .HasOne(x => x.PreferredLocalization)
+            .WithMany(x => x.Users)
+            .HasForeignKey(x => x.PreferredLocalizationCode)
+            .HasConstraintName("FK_User_SupportedLocalization");
+        
+        builder
             .Property(x => x.PreferredLocalizationCode)
             .IsRequired()
             .HasColumnType("varchar(2)");

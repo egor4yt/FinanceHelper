@@ -6,13 +6,19 @@ namespace FinanceHelper.Application.UnitTesting.Generators;
 
 public static class UserGenerator
 {
-    public static async Task<User> SeedOneUserAsync(this ApplicationDbContext applicationDbContext)
+    /// <summary>
+    /// Generates user with some preferred localization code
+    /// </summary>
+    /// <param name="applicationDbContext"></param>
+    /// <param name="preferredLocalization"></param>
+    /// <returns></returns>
+    public static async Task<User> SeedOneUserAsync(this ApplicationDbContext applicationDbContext, SupportedLanguage? preferredLocalization = null)
     {
         var entity = new User
         {
             Email = Guid.NewGuid().ToString(),
             PasswordHash = SecurityHelper.ComputeSha256Hash(Guid.NewGuid().ToString()),
-            PreferredLocalizationCode = Guid.NewGuid().ToString() // TODO: must be reference to supported languages table
+            PreferredLocalization = preferredLocalization ?? await applicationDbContext.SeedOneSupportedLanguageAsync()
         };
 
         await applicationDbContext.AddAsync(entity);

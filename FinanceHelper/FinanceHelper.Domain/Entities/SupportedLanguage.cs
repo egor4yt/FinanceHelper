@@ -6,4 +6,5 @@ public class SupportedLanguage
     public string LocalizedValue { get; set; }
 
     public virtual ICollection<MetadataLocalization> MetadataLocalizations { get; set; }
+    public virtual ICollection<User> Users { get; set; }
 }
