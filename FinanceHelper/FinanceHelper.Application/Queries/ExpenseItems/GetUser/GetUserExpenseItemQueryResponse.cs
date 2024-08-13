@@ -7,7 +7,7 @@ public class GetUserExpenseItemQueryResponse
 
 public class GetUserExpenseItemQueryResponseItem
 {
-    public long ExpenseItemId { get; set; }
+    public long Id { get; set; }
     public string Name { get; set; }
     public string? Color { get; set; }
     public GetUserExpenseItemQueryResponseItemTypeDto? ExpenseItemType { get; set; }
@@ -15,6 +15,6 @@ public class GetUserExpenseItemQueryResponseItem
 
 public class GetUserExpenseItemQueryResponseItemTypeDto
 {
+    public string Code { get; set; }
     public string Name { get; set; }
-    public string TypeCode { get; set; }
 }

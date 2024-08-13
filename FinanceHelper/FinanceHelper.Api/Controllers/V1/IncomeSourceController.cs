@@ -1,6 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System.Globalization;
+using System.Threading.Tasks;
 using FinanceHelper.Api.Contracts.IncomeSource;
 using FinanceHelper.Application.Commands.IncomeSources.Create;
+using FinanceHelper.Application.Queries.IncomeSources.GetUser;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -32,6 +34,24 @@ public class IncomeSourceController : ApiControllerBase
         };
 
         var response = await Mediator.Send(command);
+        return Ok(response);
+    }
+
+    /// <summary>
+    ///     Get an authorized user's income sources
+    /// </summary>
+    /// <returns>Income sources</returns>
+    [HttpGet("my")]
+    [ProducesResponseType(typeof(GetUserIncomeSourceQueryResponse), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetUserExpenseItems()
+    {
+        var query = new GetUserIncomeSourceQueryRequest
+        {
+            OwnerId = CurrentUserService.UserId,
+            LocalizationCode = CultureInfo.CurrentCulture.TwoLetterISOLanguageName
+        };
+
+        var response = await Mediator.Send(query);
         return Ok(response);
     }
 }

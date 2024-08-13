@@ -35,24 +35,24 @@ public class GetUserExpenseItemQueryTests : TestBase<GetUserExpenseItemQueryHand
             [
                 new GetUserExpenseItemQueryResponseItem
                 {
-                    ExpenseItemId = userExpenseItems[0].Id,
+                    Id = userExpenseItems[0].Id,
                     Name = userExpenseItems[0].Name,
                     Color = userExpenseItems[0].Color,
                     ExpenseItemType = new GetUserExpenseItemQueryResponseItemTypeDto
                     {
                         Name = localizedUserExpenseItemType.LocalizedValue,
-                        TypeCode = userExpenseItems[0].ExpenseItemTypeCode!
+                        Code = userExpenseItems[0].ExpenseItemTypeCode!
                     }
                 },
                 new GetUserExpenseItemQueryResponseItem
                 {
-                    ExpenseItemId = userExpenseItems[1].Id,
+                    Id = userExpenseItems[1].Id,
                     Name = userExpenseItems[1].Name,
                     Color = userExpenseItems[1].Color,
                     ExpenseItemType = new GetUserExpenseItemQueryResponseItemTypeDto
                     {
                         Name = localizedUserExpenseItemType.LocalizedValue,
-                        TypeCode = userExpenseItems[1].ExpenseItemTypeCode!
+                        Code = userExpenseItems[1].ExpenseItemTypeCode!
                     }
                 }
             ]
