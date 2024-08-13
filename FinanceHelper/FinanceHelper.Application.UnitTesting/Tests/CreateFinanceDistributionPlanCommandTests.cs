@@ -1,6 +1,7 @@
 ﻿using FinanceHelper.Application.Commands.FinanceDistributionPlans.Create;
 using FinanceHelper.Application.Exceptions;
 using FinanceHelper.Application.UnitTesting.Common;
+using FinanceHelper.Application.UnitTesting.Generators;
 using Microsoft.EntityFrameworkCore;
 
 namespace FinanceHelper.Application.UnitTesting.Tests;
@@ -18,11 +19,11 @@ public class CreateFinanceDistributionPlanCommandTests : TestBase<CreateFinanceD
     public async Task Success()
     {
         // Arrange
-        var owner = await UserGenerator.SeedOneAsync();
-        var expenseItem1 = await ExpenseItemGenerator.SeedOneAsync(owner);
-        var expenseItem2 = await ExpenseItemGenerator.SeedOneAsync(owner);
-        var expenseItem3 = await ExpenseItemGenerator.SeedOneAsync(owner);
-        var incomeSource = await IncomeSourceGenerator.SeedOneAsync(owner);
+        var owner = await ApplicationDbContext.SeedOneUserAsync();
+        var expenseItem1 = await ApplicationDbContext.SeedOneExpenseItemAsync(owner);
+        var expenseItem2 = await ApplicationDbContext.SeedOneExpenseItemAsync(owner);
+        var expenseItem3 = await ApplicationDbContext.SeedOneExpenseItemAsync(owner);
+        var incomeSource = await ApplicationDbContext.SeedOneIncomeSourceAsync(owner);
         var request = new CreateFinanceDistributionPlanCommandRequest
         {
             OwnerId = owner.Id,
@@ -60,7 +61,7 @@ public class CreateFinanceDistributionPlanCommandTests : TestBase<CreateFinanceD
 
         var plan = await ApplicationDbContext.FinanceDistributionPlans
             .Include(x => x.FinanceDistributionPlanItems).ThenInclude(x => x.ExpenseItem)
-            .Include(x => x.FinanceDistributionPlanItems).ThenInclude(financeDistributionPlanItem => financeDistributionPlanItem.ValueType)
+            .Include(x => x.FinanceDistributionPlanItems).ThenInclude(x => x.ValueType)
             .SingleOrDefaultAsync(x => x.Id == response.Id
                                        && x.Owner.Id == request.OwnerId
                                        && x.PlannedBudget == request.PlannedBudget
@@ -91,11 +92,10 @@ public class CreateFinanceDistributionPlanCommandTests : TestBase<CreateFinanceD
     public async Task Success_NewExpenseItem()
     {
         // Arrange
-        var owner = await UserGenerator.SeedOneAsync();
-        var incomeSource = await IncomeSourceGenerator.SeedOneAsync(owner);
+        var incomeSource = await ApplicationDbContext.SeedOneIncomeSourceAsync();
         var request = new CreateFinanceDistributionPlanCommandRequest
         {
-            OwnerId = owner.Id,
+            OwnerId = incomeSource.OwnerId,
             PlannedBudget = new Random().Next(),
             FactBudget = new Random().Next(),
             IncomeSourceId = incomeSource.Id,
@@ -205,12 +205,11 @@ public class CreateFinanceDistributionPlanCommandTests : TestBase<CreateFinanceD
     public async Task OtherUserExpenseItem()
     {
         // Arrange
-        var user = await UserGenerator.SeedOneAsync();
-        var userExpenseItem = await ExpenseItemGenerator.SeedOneAsync();
-        var notUserExpenseItem = await ExpenseItemGenerator.SeedOneAsync(user);
+        var expenseItem1 = await ApplicationDbContext.SeedOneExpenseItemAsync();
+        var expenseItem2 = await ApplicationDbContext.SeedOneExpenseItemAsync();
         var request = new CreateFinanceDistributionPlanCommandRequest
         {
-            OwnerId = user.Id,
+            OwnerId = expenseItem1.OwnerId,
             PlannedBudget = new Random().Next(),
             FactBudget = new Random().Next(),
             PlanItems =
@@ -219,14 +218,14 @@ public class CreateFinanceDistributionPlanCommandTests : TestBase<CreateFinanceD
                 {
                     StepNumber = new Random().Next(),
                     PlannedValue = new Random().Next(),
-                    ExpenseItemId = userExpenseItem.Id,
+                    ExpenseItemId = expenseItem1.Id,
                     PlannedValueTypeCode = Domain.Metadata.FinancesDistributionItemValueType.Fixed.Code
                 },
                 new PlanItem
                 {
                     StepNumber = new Random().Next(),
                     PlannedValue = new Random().Next(),
-                    ExpenseItemId = notUserExpenseItem.Id,
+                    ExpenseItemId = expenseItem2.Id,
                     PlannedValueTypeCode = Domain.Metadata.FinancesDistributionItemValueType.Fixed.Code
                 }
             ]

@@ -1,6 +1,5 @@
 ﻿using System.Globalization;
 using FinanceHelper.Application.Services.Interfaces;
-using FinanceHelper.Application.UnitTesting.Generators;
 using FinanceHelper.Persistence;
 using FinanceHelper.Shared;
 using Microsoft.AspNetCore.Builder;
@@ -11,11 +10,6 @@ namespace FinanceHelper.Application.UnitTesting.Common;
 public class TestBase<TCommandHandler> : IDisposable
 {
     protected readonly ApplicationDbContext ApplicationDbContext = ApplicationContextFactory.Create();
-    protected readonly ExpenseItemGenerator ExpenseItemGenerator;
-    protected readonly ExpenseItemTypeGenerator ExpenseItemTypeGenerator;
-    protected readonly FinanceDistributionPlanGenerator FinanceDistributionPlanGenerator;
-    protected readonly IncomeSourceGenerator IncomeSourceGenerator;
-    protected readonly IncomeSourceTypeGenerator IncomeSourceTypeGenerator;
     protected readonly JwtDescriptorDetails JwtDescriptorDetails = new JwtDescriptorDetails
     {
         Key = "a95e4695-db56-4301-93d1-64a255bb0945",
@@ -32,16 +26,9 @@ public class TestBase<TCommandHandler> : IDisposable
             new CultureInfo("en")
         }
     });
-    protected readonly UserGenerator UserGenerator;
 
     protected TestBase()
     {
-        UserGenerator = new UserGenerator(ApplicationDbContext);
-        ExpenseItemGenerator = new ExpenseItemGenerator(ApplicationDbContext);
-        IncomeSourceTypeGenerator = new IncomeSourceTypeGenerator(ApplicationDbContext);
-        ExpenseItemTypeGenerator = new ExpenseItemTypeGenerator(ApplicationDbContext);
-        IncomeSourceGenerator = new IncomeSourceGenerator(ApplicationDbContext);
-        FinanceDistributionPlanGenerator = new FinanceDistributionPlanGenerator(ApplicationDbContext);
     }
 
     public void Dispose()

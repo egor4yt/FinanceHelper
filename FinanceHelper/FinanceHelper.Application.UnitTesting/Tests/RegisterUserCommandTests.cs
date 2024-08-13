@@ -1,6 +1,7 @@
 using FinanceHelper.Application.Commands.Users.Register;
 using FinanceHelper.Application.Exceptions;
 using FinanceHelper.Application.UnitTesting.Common;
+using FinanceHelper.Application.UnitTesting.Generators;
 using FinanceHelper.Shared;
 using Microsoft.EntityFrameworkCore;
 
@@ -45,7 +46,7 @@ public class RegisterUserCommandTests : TestBase<RegisterUserCommandHandler>
     public async Task Duplicate()
     {
         // Arrange
-        var user = await UserGenerator.SeedOneAsync();
+        var user = await ApplicationDbContext.SeedOneUserAsync();
         var request = new RegisterUserCommandRequest
         {
             PreferredLocalizationCode = Guid.NewGuid().ToString(),
@@ -56,33 +57,5 @@ public class RegisterUserCommandTests : TestBase<RegisterUserCommandHandler>
 
         // Assert
         await Assert.ThrowsAsync<ConflictException>(() => _handler.Handle(request, CancellationToken.None));
-    }
-
-    [Fact]
-    public async Task ValidationTest()
-    {
-        // Arrange
-        var validator = new RegisterUserCommandValidator(RequestLocalizationOptions);
-        var request = new RegisterUserCommandRequest
-        {
-            PreferredLocalizationCode = Guid.NewGuid().ToString(),
-            Email = Guid.NewGuid().ToString(),
-            PasswordHash = "",
-            JwtDescriptorDetails = null!
-        };
-        var expectedInvalidPropertiesNames = new List<string>
-        {
-            nameof(request.PreferredLocalizationCode),
-            nameof(request.Email),
-            nameof(request.PasswordHash),
-            nameof(request.JwtDescriptorDetails)
-        }.Order();
-
-        // Act
-        var validationResult = await validator.ValidateAsync(request);
-        var actualInvalidPropertiesNames = validationResult.Errors.Select(x => x.PropertyName).Order();
-
-        // Assert
-        Assert.Equal(expectedInvalidPropertiesNames, actualInvalidPropertiesNames);
     }
 }

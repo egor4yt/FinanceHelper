@@ -1,27 +1,21 @@
 ﻿using FinanceHelper.Domain.Entities;
 using FinanceHelper.Persistence;
-using FinanceHelper.Shared;
 
 namespace FinanceHelper.Application.UnitTesting.Generators;
 
-public class SupportedLanguageGenerator(ApplicationDbContext applicationDbContext)
+public static class SupportedLanguageGenerator
 {
-    public async Task<SupportedLanguage> SeedOneAsync()
+    public static async Task<SupportedLanguage> SeedOneSupportedLanguageAsync(this ApplicationDbContext applicationDbContext)
     {
-        var entity = GenerateEntity();
+        var entity = new SupportedLanguage
+        {
+            Code = Guid.NewGuid().ToString(),
+            LocalizedValue = Guid.NewGuid().ToString()
+        };
 
         await applicationDbContext.AddAsync(entity);
         await applicationDbContext.SaveChangesAsync();
 
         return entity;
-    }
-
-    public static SupportedLanguage GenerateEntity()
-    {
-        return new SupportedLanguage
-        {
-            Code = Guid.NewGuid().ToString(),
-            LocalizedValue = Guid.NewGuid().ToString()
-        };
     }
 }

@@ -1,6 +1,7 @@
 ﻿using FinanceHelper.Application.Commands.IncomeSources.Create;
 using FinanceHelper.Application.Exceptions;
 using FinanceHelper.Application.UnitTesting.Common;
+using FinanceHelper.Application.UnitTesting.Generators;
 using Microsoft.EntityFrameworkCore;
 
 namespace FinanceHelper.Application.UnitTesting.Tests;
@@ -18,8 +19,8 @@ public class CreateIncomeSourceCommandTests : TestBase<CreateIncomeSourceCommand
     public async Task Success()
     {
         // Arrange
-        var incomeSourceType = await IncomeSourceTypeGenerator.SeedOneAsync();
-        var owner = await UserGenerator.SeedOneAsync();
+        var incomeSourceType = await ApplicationDbContext.SeedOneIncomeSourceTypeAsync();
+        var owner = await ApplicationDbContext.SeedOneUserAsync();
         var request = new CreateIncomeSourceCommandRequest
         {
             OwnerId = owner.Id,

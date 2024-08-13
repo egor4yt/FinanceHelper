@@ -1,5 +1,6 @@
 using FinanceHelper.Application.Queries.FinanceDistributionPlans.GetUser;
 using FinanceHelper.Application.UnitTesting.Common;
+using FinanceHelper.Application.UnitTesting.Generators;
 
 namespace FinanceHelper.Application.UnitTesting.Tests;
 
@@ -16,17 +17,17 @@ public class GetUserFinanceDistributionPlanQueryTests : TestBase<GetUserFinanceD
     public async Task Success()
     {
         // Arrange
-        var user = await UserGenerator.SeedOneAsync();
-        var incomeSource1 = await IncomeSourceGenerator.SeedOneAsync();
-        var incomeSource2 = await IncomeSourceGenerator.SeedOneAsync();
-        var plan1 = await FinanceDistributionPlanGenerator.SeedOneAsync(user, incomeSource1);
-        var plan2 = await FinanceDistributionPlanGenerator.SeedOneAsync(user, incomeSource2);
+        var user = await ApplicationDbContext.SeedOneUserAsync();
+        var incomeSource1 = await ApplicationDbContext.SeedOneIncomeSourceAsync(user);
+        var incomeSource2 = await ApplicationDbContext.SeedOneIncomeSourceAsync(user);
+        var plan1 = await ApplicationDbContext.SeedOneFinanceDistributionPlanAsync(user, incomeSource1);
+        var plan2 = await ApplicationDbContext.SeedOneFinanceDistributionPlanAsync(user, incomeSource2);
 
         var expectedResponse = new GetUserFinanceDistributionPlanQueryResponse
         {
             Items =
             [
-                new ResponseItem
+                new GetUserFinanceDistributionPlanQueryResponseItem
                 {
                     PlanId = plan2.Id,
                     PlannedBudget = Math.Round(plan2.PlannedBudget, 2),
@@ -34,7 +35,7 @@ public class GetUserFinanceDistributionPlanQueryTests : TestBase<GetUserFinanceD
                     CreatedAt = plan2.CreatedAt,
                     IncomeSourceName = incomeSource2.Name
                 },
-                new ResponseItem
+                new GetUserFinanceDistributionPlanQueryResponseItem
                 {
                     PlanId = plan1.Id,
                     PlannedBudget = Math.Round(plan1.PlannedBudget, 2),

@@ -3,9 +3,9 @@ using FinanceHelper.Persistence;
 
 namespace FinanceHelper.Application.UnitTesting.Generators;
 
-public class ExpenseItemTypeGenerator(ApplicationDbContext applicationDbContext)
+public static class ExpenseItemTypeGenerator
 {
-    public async Task<ExpenseItemType> SeedOneAsync()
+    public static async Task<ExpenseItemType> SeedOneExpenseItemTypeAsync(this ApplicationDbContext applicationDbContext)
     {
         var entity = new ExpenseItemType
         {
@@ -13,7 +13,15 @@ public class ExpenseItemTypeGenerator(ApplicationDbContext applicationDbContext)
             LocalizationKeyword = Guid.NewGuid().ToString()
         };
 
-        await applicationDbContext.AddAsync(entity);
+        var localizationEntity = new MetadataLocalization
+        {
+            LocalizedValue = Guid.NewGuid().ToString(),
+            LocalizationKeyword = entity.LocalizationKeyword,
+            MetadataTypeCode = Domain.Metadata.MetadataType.ExpenseItemType.Code,
+            SupportedLanguage = await applicationDbContext.SeedOneSupportedLanguageAsync()
+        };
+
+        await applicationDbContext.AddRangeAsync(entity, localizationEntity);
         await applicationDbContext.SaveChangesAsync();
 
         return entity;

@@ -3,16 +3,16 @@ using FinanceHelper.Persistence;
 
 namespace FinanceHelper.Application.UnitTesting.Generators;
 
-public class IncomeSourceGenerator(ApplicationDbContext applicationDbContext)
+public static class IncomeSourceGenerator
 {
-    public async Task<IncomeSource> SeedOneAsync(User? user = null, IncomeSourceType? incomeSourceType = null)
+    public static async Task<IncomeSource> SeedOneIncomeSourceAsync(this ApplicationDbContext applicationDbContext, User? user = null, IncomeSourceType? incomeSourceType = null)
     {
         var entity = new IncomeSource
         {
-            IncomeSourceTypeCode = incomeSourceType?.Code ?? Guid.NewGuid().ToString(),
+            IncomeSourceType = incomeSourceType ?? await applicationDbContext.SeedOneIncomeSourceTypeAsync(),
             Name = Guid.NewGuid().ToString(),
             Color = Guid.NewGuid().ToString(),
-            OwnerId = user?.Id ?? new Random().NextInt64()
+            Owner = user ?? await applicationDbContext.SeedOneUserAsync()
         };
 
         await applicationDbContext.AddAsync(entity);

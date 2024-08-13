@@ -3,9 +3,9 @@ using FinanceHelper.Persistence;
 
 namespace FinanceHelper.Application.UnitTesting.Generators;
 
-public class IncomeSourceTypeGenerator(ApplicationDbContext applicationDbContext)
+public static class IncomeSourceTypeGenerator
 {
-    public async Task<IncomeSourceType> SeedOneAsync()
+    public static async Task<IncomeSourceType> SeedOneIncomeSourceTypeAsync(this ApplicationDbContext applicationDbContext)
     {
         var entity = new IncomeSourceType
         {
@@ -13,7 +13,15 @@ public class IncomeSourceTypeGenerator(ApplicationDbContext applicationDbContext
             LocalizationKeyword = Guid.NewGuid().ToString()
         };
 
-        await applicationDbContext.AddAsync(entity);
+        var localizationEntity = new MetadataLocalization
+        {
+            LocalizedValue = Guid.NewGuid().ToString(),
+            LocalizationKeyword = entity.LocalizationKeyword,
+            MetadataTypeCode = Domain.Metadata.MetadataType.IncomeSourceType.Code,
+            SupportedLanguage = await applicationDbContext.SeedOneSupportedLanguageAsync()
+        };
+
+        await applicationDbContext.AddRangeAsync(entity, localizationEntity);
         await applicationDbContext.SaveChangesAsync();
 
         return entity;

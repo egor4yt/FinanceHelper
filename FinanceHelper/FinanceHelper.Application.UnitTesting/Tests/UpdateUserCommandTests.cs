@@ -1,6 +1,7 @@
 using FinanceHelper.Application.Commands.Users.Update;
 using FinanceHelper.Application.Exceptions;
 using FinanceHelper.Application.UnitTesting.Common;
+using FinanceHelper.Application.UnitTesting.Generators;
 using Microsoft.EntityFrameworkCore;
 
 namespace FinanceHelper.Application.UnitTesting.Tests;
@@ -18,7 +19,7 @@ public class UpdateUserCommandHandlerTests : TestBase<UpdateUserCommandHandler>
     public async Task Success()
     {
         // Arrange
-        var newUser = await UserGenerator.SeedOneAsync();
+        var newUser = await ApplicationDbContext.SeedOneUserAsync();
         var request = new UpdateUserCommandRequest
         {
             Id = newUser.Id,
@@ -60,8 +61,8 @@ public class UpdateUserCommandHandlerTests : TestBase<UpdateUserCommandHandler>
     public async Task Duplicate()
     {
         // Arrange
-        var user1 = await UserGenerator.SeedOneAsync();
-        var user2 = await UserGenerator.SeedOneAsync();
+        var user1 = await ApplicationDbContext.SeedOneUserAsync();
+        var user2 = await ApplicationDbContext.SeedOneUserAsync();
         var request = new UpdateUserCommandRequest
         {
             Id = user1.Id,

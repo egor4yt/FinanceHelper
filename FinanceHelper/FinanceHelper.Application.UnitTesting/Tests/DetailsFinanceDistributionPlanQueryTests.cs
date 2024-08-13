@@ -1,5 +1,6 @@
 ﻿using FinanceHelper.Application.Queries.FinanceDistributionPlans.Details;
 using FinanceHelper.Application.UnitTesting.Common;
+using FinanceHelper.Application.UnitTesting.Generators;
 using FinanceHelper.Domain.Entities;
 
 namespace FinanceHelper.Application.UnitTesting.Tests;
@@ -17,16 +18,9 @@ public class DetailsFinanceDistributionPlanQueryTests : TestBase<DetailsFinanceD
     public async Task Success()
     {
         // Arrange
-        var owner = await UserGenerator.SeedOneAsync();
-        var incomeSource = await IncomeSourceGenerator.SeedOneAsync();
-        var expenseItem1 = await ExpenseItemGenerator.SeedOneAsync();
-        var expenseItem2 = await ExpenseItemGenerator.SeedOneAsync();
-        var expenseItem3 = await ExpenseItemGenerator.SeedOneAsync();
-        var expenseItem4 = await ExpenseItemGenerator.SeedOneAsync();
-        var expenseItem5 = await ExpenseItemGenerator.SeedOneAsync();
-        var expenseItem6 = await ExpenseItemGenerator.SeedOneAsync();
-        var expenseItem7 = await ExpenseItemGenerator.SeedOneAsync();
-        var expenseItem8 = await ExpenseItemGenerator.SeedOneAsync();
+        var owner = await ApplicationDbContext.SeedOneUserAsync();
+        var incomeSource = await ApplicationDbContext.SeedOneIncomeSourceAsync(owner);
+        var expenseItems = await ApplicationDbContext.SeedManyExpenseItemAsync(8, owner);
 
         var plan = new FinanceDistributionPlan
         {
@@ -42,21 +36,21 @@ public class DetailsFinanceDistributionPlanQueryTests : TestBase<DetailsFinanceD
                 {
                     StepNumber = 1,
                     PlannedValue = 10_000, // FACT = 10 000 * 0.65 = 6 500
-                    ExpenseItemId = expenseItem1.Id,
+                    ExpenseItemId = expenseItems[0].Id,
                     ValueTypeCode = Domain.Metadata.FinancesDistributionItemValueType.Fixed.Code
                 },
                 new FinanceDistributionPlanItem
                 {
                     StepNumber = 1,
                     PlannedValue = 11, // FACT = (26 000 - 6 500) * 0.11 = 2 145
-                    ExpenseItemId = expenseItem2.Id,
+                    ExpenseItemId = expenseItems[1].Id,
                     ValueTypeCode = Domain.Metadata.FinancesDistributionItemValueType.Floating.Code
                 },
                 new FinanceDistributionPlanItem
                 {
                     StepNumber = 1,
                     PlannedValue = 17, // FACT = (26 000 - 6 500) * 0.17 = 3 315
-                    ExpenseItemId = expenseItem3.Id,
+                    ExpenseItemId = expenseItems[2].Id,
                     ValueTypeCode = Domain.Metadata.FinancesDistributionItemValueType.Floating.Code
                 },
 
@@ -65,14 +59,14 @@ public class DetailsFinanceDistributionPlanQueryTests : TestBase<DetailsFinanceD
                 {
                     StepNumber = 2,
                     PlannedValue = 27, // FACT = (14 040 - 500) * 0.27 = 3 655.8
-                    ExpenseItemId = expenseItem4.Id,
+                    ExpenseItemId = expenseItems[3].Id,
                     ValueTypeCode = Domain.Metadata.FinancesDistributionItemValueType.Floating.Code
                 },
                 new FinanceDistributionPlanItem
                 {
                     StepNumber = 2,
                     PlannedValue = 500, // FACT = 500
-                    ExpenseItemId = expenseItem5.Id,
+                    ExpenseItemId = expenseItems[4].Id,
                     ValueTypeCode = Domain.Metadata.FinancesDistributionItemValueType.FixedIndivisible.Code
                 },
 
@@ -81,21 +75,21 @@ public class DetailsFinanceDistributionPlanQueryTests : TestBase<DetailsFinanceD
                 {
                     StepNumber = 3,
                     PlannedValue = 5000, // FACT = 5000 * 0.65 = 3250
-                    ExpenseItemId = expenseItem6.Id,
+                    ExpenseItemId = expenseItems[5].Id,
                     ValueTypeCode = Domain.Metadata.FinancesDistributionItemValueType.Fixed.Code
                 },
                 new FinanceDistributionPlanItem
                 {
                     StepNumber = 3,
                     PlannedValue = 1500, // FACT = 1500 * 0.65 = 975
-                    ExpenseItemId = expenseItem7.Id,
+                    ExpenseItemId = expenseItems[6].Id,
                     ValueTypeCode = Domain.Metadata.FinancesDistributionItemValueType.Fixed.Code
                 },
                 new FinanceDistributionPlanItem
                 {
                     StepNumber = 3,
                     PlannedValue = 100, // FACT = (9 884.2 - 4225) * 1 = 5 659.2
-                    ExpenseItemId = expenseItem8.Id,
+                    ExpenseItemId = expenseItems[7].Id,
                     ValueTypeCode = Domain.Metadata.FinancesDistributionItemValueType.Floating.Code
                 }
             }
@@ -128,8 +122,8 @@ public class DetailsFinanceDistributionPlanQueryTests : TestBase<DetailsFinanceD
                             FactFixedValue = 6500.00M,
                             ExpenseItem = new Queries.FinanceDistributionPlans.Details.ExpenseItem
                             {
-                                Id = expenseItem1.Id,
-                                Name = expenseItem1.Name
+                                Id = expenseItems[0].Id,
+                                Name = expenseItems[0].Name
                             }
                         },
                         new StepItem
@@ -139,8 +133,8 @@ public class DetailsFinanceDistributionPlanQueryTests : TestBase<DetailsFinanceD
                             FactFixedValue = 2145.00M,
                             ExpenseItem = new Queries.FinanceDistributionPlans.Details.ExpenseItem
                             {
-                                Id = expenseItem2.Id,
-                                Name = expenseItem2.Name
+                                Id = expenseItems[1].Id,
+                                Name = expenseItems[1].Name
                             }
                         },
                         new StepItem
@@ -150,8 +144,8 @@ public class DetailsFinanceDistributionPlanQueryTests : TestBase<DetailsFinanceD
                             FactFixedValue = 3315.00M,
                             ExpenseItem = new Queries.FinanceDistributionPlans.Details.ExpenseItem
                             {
-                                Id = expenseItem3.Id,
-                                Name = expenseItem3.Name
+                                Id = expenseItems[2].Id,
+                                Name = expenseItems[2].Name
                             }
                         }
                     ]
@@ -168,8 +162,8 @@ public class DetailsFinanceDistributionPlanQueryTests : TestBase<DetailsFinanceD
                             FactFixedValue = 3655.80M,
                             ExpenseItem = new Queries.FinanceDistributionPlans.Details.ExpenseItem
                             {
-                                Id = expenseItem4.Id,
-                                Name = expenseItem4.Name
+                                Id = expenseItems[3].Id,
+                                Name = expenseItems[3].Name
                             }
                         },
                         new StepItem
@@ -179,8 +173,8 @@ public class DetailsFinanceDistributionPlanQueryTests : TestBase<DetailsFinanceD
                             FactFixedValue = 500M,
                             ExpenseItem = new Queries.FinanceDistributionPlans.Details.ExpenseItem
                             {
-                                Id = expenseItem5.Id,
-                                Name = expenseItem5.Name
+                                Id = expenseItems[4].Id,
+                                Name = expenseItems[4].Name
                             }
                         }
                     ]
@@ -197,8 +191,8 @@ public class DetailsFinanceDistributionPlanQueryTests : TestBase<DetailsFinanceD
                             FactFixedValue = 3250.00M,
                             ExpenseItem = new Queries.FinanceDistributionPlans.Details.ExpenseItem
                             {
-                                Id = expenseItem6.Id,
-                                Name = expenseItem6.Name
+                                Id = expenseItems[5].Id,
+                                Name = expenseItems[5].Name
                             }
                         },
                         new StepItem
@@ -208,8 +202,8 @@ public class DetailsFinanceDistributionPlanQueryTests : TestBase<DetailsFinanceD
                             FactFixedValue = 975.00M,
                             ExpenseItem = new Queries.FinanceDistributionPlans.Details.ExpenseItem
                             {
-                                Id = expenseItem7.Id,
-                                Name = expenseItem7.Name
+                                Id = expenseItems[6].Id,
+                                Name = expenseItems[6].Name
                             }
                         },
                         new StepItem
@@ -219,8 +213,8 @@ public class DetailsFinanceDistributionPlanQueryTests : TestBase<DetailsFinanceD
                             FactFixedValue = 5659.20M,
                             ExpenseItem = new Queries.FinanceDistributionPlans.Details.ExpenseItem
                             {
-                                Id = expenseItem8.Id,
-                                Name = expenseItem8.Name
+                                Id = expenseItems[7].Id,
+                                Name = expenseItems[7].Name
                             }
                         }
                     ]

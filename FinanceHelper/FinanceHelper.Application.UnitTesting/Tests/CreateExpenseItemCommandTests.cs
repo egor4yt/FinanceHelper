@@ -1,6 +1,7 @@
 ﻿using FinanceHelper.Application.Commands.ExpenseItems.Create;
 using FinanceHelper.Application.Exceptions;
 using FinanceHelper.Application.UnitTesting.Common;
+using FinanceHelper.Application.UnitTesting.Generators;
 using Microsoft.EntityFrameworkCore;
 
 namespace FinanceHelper.Application.UnitTesting.Tests;
@@ -18,8 +19,8 @@ public class CreateExpenseItemCommandTests : TestBase<CreateExpenseItemCommandHa
     public async Task Success()
     {
         // Arrange
-        var expenseType = await ExpenseItemTypeGenerator.SeedOneAsync();
-        var owner = await UserGenerator.SeedOneAsync();
+        var expenseType = await ApplicationDbContext.SeedOneExpenseItemTypeAsync();
+        var owner = await ApplicationDbContext.SeedOneUserAsync();
         var request = new CreateExpenseItemCommandRequest
         {
             OwnerId = owner.Id,
@@ -33,7 +34,7 @@ public class CreateExpenseItemCommandTests : TestBase<CreateExpenseItemCommandHa
 
         var databaseObject = await ApplicationDbContext.ExpenseItems
             .SingleOrDefaultAsync(x => x.Id == response.Id
-                                       && x.ExpenseItemType.Code == request.ExpenseItemTypeCode
+                                       && x.ExpenseItemType!.Code == request.ExpenseItemTypeCode
                                        && x.Color == request.Color
                                        && x.Owner.Id == request.OwnerId
                                        && x.Name == request.Name

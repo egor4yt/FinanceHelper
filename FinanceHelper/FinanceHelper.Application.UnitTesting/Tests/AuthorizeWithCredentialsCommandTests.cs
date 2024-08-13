@@ -1,6 +1,7 @@
 using FinanceHelper.Application.Commands.Authorize.WithCredentials;
 using FinanceHelper.Application.Exceptions;
 using FinanceHelper.Application.UnitTesting.Common;
+using FinanceHelper.Application.UnitTesting.Generators;
 using FinanceHelper.Shared;
 
 namespace FinanceHelper.Application.UnitTesting.Tests;
@@ -18,7 +19,7 @@ public class AuthorizeWithCredentialsCommandTests : TestBase<AuthorizeWithCreden
     public async Task Success()
     {
         // Arrange
-        var user = await UserGenerator.SeedOneAsync();
+        var user = await ApplicationDbContext.SeedOneUserAsync();
         var request = new AuthorizeWithCredentialsCommandRequest
         {
             Email = user.Email,
@@ -37,7 +38,7 @@ public class AuthorizeWithCredentialsCommandTests : TestBase<AuthorizeWithCreden
     public async Task WrongCredentials()
     {
         // Arrange
-        var user = await UserGenerator.SeedOneAsync();
+        var user = await ApplicationDbContext.SeedOneUserAsync();
         var request = new AuthorizeWithCredentialsCommandRequest
         {
             Email = user.Email,
