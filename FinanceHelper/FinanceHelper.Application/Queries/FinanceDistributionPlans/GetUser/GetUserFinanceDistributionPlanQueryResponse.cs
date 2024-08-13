@@ -2,10 +2,10 @@
 
 public class GetUserFinanceDistributionPlanQueryResponse
 {
-    public List<ResponseItem> Items { get; set; }
+    public List<GetUserFinanceDistributionPlanQueryResponseItem> Items { get; set; }
 }
 
-public class ResponseItem
+public class GetUserFinanceDistributionPlanQueryResponseItem
 {
     public long PlanId { get; set; }
     public decimal PlannedBudget { get; set; }

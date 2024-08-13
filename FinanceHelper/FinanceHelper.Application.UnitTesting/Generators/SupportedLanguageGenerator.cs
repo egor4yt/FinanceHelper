@@ -4,9 +4,9 @@ using FinanceHelper.Shared;
 
 namespace FinanceHelper.Application.UnitTesting.Generators;
 
-public class UserGenerator(ApplicationDbContext applicationDbContext)
+public class SupportedLanguageGenerator(ApplicationDbContext applicationDbContext)
 {
-    public async Task<User> SeedOneAsync()
+    public async Task<SupportedLanguage> SeedOneAsync()
     {
         var entity = GenerateEntity();
 
@@ -16,13 +16,12 @@ public class UserGenerator(ApplicationDbContext applicationDbContext)
         return entity;
     }
 
-    public static User GenerateEntity()
+    public static SupportedLanguage GenerateEntity()
     {
-        return new User
+        return new SupportedLanguage
         {
-            Email = Guid.NewGuid().ToString(),
-            PasswordHash = SecurityHelper.ComputeSha256Hash(Guid.NewGuid().ToString()),
-            PreferredLocalizationCode = Guid.NewGuid().ToString()
+            Code = Guid.NewGuid().ToString(),
+            LocalizedValue = Guid.NewGuid().ToString()
         };
     }
 }

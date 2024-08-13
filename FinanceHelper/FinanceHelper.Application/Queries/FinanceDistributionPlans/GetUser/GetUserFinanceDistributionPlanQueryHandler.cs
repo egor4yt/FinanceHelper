@@ -17,7 +17,7 @@ public class GetUserFinanceDistributionPlanQueryHandler(ApplicationDbContext app
             .Where(x => x.OwnerId == request.OwnerId)
             .ToListAsync(cancellationToken);
 
-        response.Items = plans.Select(x => new ResponseItem
+        response.Items = plans.Select(x => new GetUserFinanceDistributionPlanQueryResponseItem
         {
             PlanId = x.Id,
             PlannedBudget = Math.Round(x.PlannedBudget, 2),
