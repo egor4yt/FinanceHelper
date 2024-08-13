@@ -20,9 +20,10 @@ public class RegisterUserCommandTests : TestBase<RegisterUserCommandHandler>
     public async Task Success()
     {
         // Arrange
+        var preferredLanguage = await ApplicationDbContext.SeedOneSupportedLanguageAsync();
         var request = new RegisterUserCommandRequest
         {
-            PreferredLocalizationCode = Guid.NewGuid().ToString(),
+            PreferredLocalizationCode = preferredLanguage.Code,
             Email = Guid.NewGuid().ToString(),
             PasswordHash = SecurityHelper.ComputeSha256Hash(Guid.NewGuid().ToString()),
             JwtDescriptorDetails = JwtDescriptorDetails
@@ -34,7 +35,7 @@ public class RegisterUserCommandTests : TestBase<RegisterUserCommandHandler>
             .SingleOrDefaultAsync(x => x.Id == response.UserId
                                        && x.PasswordHash == request.PasswordHash
                                        && x.Email == request.Email
-                                       && x.PreferredLocalizationCode == request.PreferredLocalizationCode);
+                                       && x.PreferredLocalization.Code == request.PreferredLocalizationCode);
 
         // Assert
         Assert.Multiple(
