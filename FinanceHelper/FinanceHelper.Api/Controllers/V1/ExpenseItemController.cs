@@ -38,7 +38,7 @@ public class ExpenseItemController : ApiControllerBase
     }
 
     /// <summary>
-    ///     Get an expanse items
+    ///     Get an authorized user's expense items
     /// </summary>
     /// <returns>Expense items</returns>
     [HttpGet("my")]

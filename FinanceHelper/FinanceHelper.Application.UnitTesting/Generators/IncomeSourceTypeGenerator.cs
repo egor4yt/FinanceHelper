@@ -5,7 +5,7 @@ namespace FinanceHelper.Application.UnitTesting.Generators;
 
 public static class IncomeSourceTypeGenerator
 {
-    public static async Task<IncomeSourceType> SeedOneIncomeSourceTypeAsync(this ApplicationDbContext applicationDbContext)
+    public static async Task<IncomeSourceType> SeedOneIncomeSourceTypeAsync(this ApplicationDbContext applicationDbContext, SupportedLanguage? localizationLanguage = null)
     {
         var entity = new IncomeSourceType
         {
@@ -18,7 +18,7 @@ public static class IncomeSourceTypeGenerator
             LocalizedValue = Guid.NewGuid().ToString(),
             LocalizationKeyword = entity.LocalizationKeyword,
             MetadataTypeCode = Domain.Metadata.MetadataType.IncomeSourceType.Code,
-            SupportedLanguage = await applicationDbContext.SeedOneSupportedLanguageAsync()
+            SupportedLanguage = localizationLanguage ?? await applicationDbContext.SeedOneSupportedLanguageAsync()
         };
 
         await applicationDbContext.AddRangeAsync(entity, localizationEntity);

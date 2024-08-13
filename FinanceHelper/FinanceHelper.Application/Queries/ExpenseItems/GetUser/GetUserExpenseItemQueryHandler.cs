@@ -35,7 +35,7 @@ public class GetUserExpenseItemQueryHandler(ApplicationDbContext applicationDbCo
 
         response.Items = expenseItems.Select(x => new GetUserExpenseItemQueryResponseItem
         {
-            ExpenseItemId = x.Id,
+            Id = x.Id,
             Name = x.Name,
             Color = x.Color,
             ExpenseItemType = x.ExpenseItemTypeCode == null
@@ -43,7 +43,7 @@ public class GetUserExpenseItemQueryHandler(ApplicationDbContext applicationDbCo
                 : new GetUserExpenseItemQueryResponseItemTypeDto
                 {
                     Name = x.LocalizedValue,
-                    TypeCode = x.ExpenseItemTypeCode!
+                    Code = x.ExpenseItemTypeCode!
                 }
         }).ToList();
 
