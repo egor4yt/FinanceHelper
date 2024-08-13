@@ -13,7 +13,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .WithMany(x => x.Users)
             .HasForeignKey(x => x.PreferredLocalizationCode)
             .HasConstraintName("FK_User_SupportedLocalization");
-        
+
         builder
             .Property(x => x.PreferredLocalizationCode)
             .IsRequired()

@@ -1,5 +1,4 @@
 using FinanceHelper.Application.Queries.IncomeSources.GetUser;
-using FinanceHelper.Application.Queries.IncomeSources.GetUser;
 using FinanceHelper.Application.UnitTesting.Common;
 using FinanceHelper.Application.UnitTesting.Generators;
 using Microsoft.EntityFrameworkCore;

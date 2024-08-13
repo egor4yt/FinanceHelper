@@ -12,7 +12,7 @@ public class GetUserExpenseItemQueryValidator : AbstractValidator<GetUserExpense
 
         RuleFor(x => x.OwnerId)
             .GreaterThan(0);
-        
+
         RuleFor(x => x.LocalizationCode)
             .Matches($"^({string.Join('|', supportedLocalizations)})$");
     }

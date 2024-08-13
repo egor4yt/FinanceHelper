@@ -7,7 +7,7 @@ namespace FinanceHelper.Application.UnitTesting.Generators;
 public static class UserGenerator
 {
     /// <summary>
-    /// Generates user with some preferred localization code
+    ///     Generates user with some preferred localization code
     /// </summary>
     /// <param name="applicationDbContext"></param>
     /// <param name="preferredLocalization"></param>

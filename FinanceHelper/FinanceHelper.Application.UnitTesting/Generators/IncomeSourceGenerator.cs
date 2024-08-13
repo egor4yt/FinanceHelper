@@ -20,8 +20,7 @@ public static class IncomeSourceGenerator
 
         return entity;
     }
-    
-    
+
 
     /// <summary>
     ///     Generates many income sources with some type for some user
