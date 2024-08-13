@@ -1,9 +1,6 @@
-﻿using System.Globalization;
-using FinanceHelper.Application.Services.Interfaces;
+﻿using FinanceHelper.Application.Services.Interfaces;
 using FinanceHelper.Persistence;
 using FinanceHelper.Shared;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Options;
 
 namespace FinanceHelper.Application.UnitTesting.Common;
 
@@ -18,14 +15,6 @@ public class TestBase<TCommandHandler> : IDisposable
         TokenLifetimeInHours = 1
     };
     protected readonly IStringLocalizer<TCommandHandler> Localizer = new UnitTestStringLocalizer<TCommandHandler>();
-    protected readonly IOptions<RequestLocalizationOptions> RequestLocalizationOptions = new UnitTestOptions<RequestLocalizationOptions>(new RequestLocalizationOptions
-    {
-        SupportedCultures = new List<CultureInfo>
-        {
-            new CultureInfo("ru"),
-            new CultureInfo("en")
-        }
-    });
 
     protected TestBase()
     {
