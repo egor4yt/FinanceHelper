@@ -43,7 +43,7 @@ public class IncomeSourceController : ApiControllerBase
     /// <returns>Income sources</returns>
     [HttpGet("my")]
     [ProducesResponseType(typeof(GetUserIncomeSourceQueryResponse), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetUserExpenseItems()
+    public async Task<IActionResult> GetUserIncomeSources()
     {
         var query = new GetUserIncomeSourceQueryRequest
         {

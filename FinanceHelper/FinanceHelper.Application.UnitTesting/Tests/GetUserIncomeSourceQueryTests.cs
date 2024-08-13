@@ -19,7 +19,7 @@ public class GetUserIncomeSourceQueryTests : TestBase<GetUserIncomeSourceQueryHa
     public async Task Success()
     {
         // Arrange
-        await ApplicationDbContext.SeedOneIncomeSourceAsync(); // Generate random expense item
+        await ApplicationDbContext.SeedOneIncomeSourceAsync(); // Generate random income source
 
         var owner = await ApplicationDbContext.SeedOneUserAsync();
         var userIncomeSourceType = await ApplicationDbContext.SeedOneIncomeSourceTypeAsync(owner.PreferredLocalization);
