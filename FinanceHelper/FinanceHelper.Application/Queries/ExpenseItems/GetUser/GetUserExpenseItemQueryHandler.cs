@@ -32,11 +32,35 @@ public class GetUserExpenseItemQueryHandler(ApplicationDbContext applicationDbCo
                         && x.MetadataTypeCode == Domain.Metadata.MetadataType.ExpenseItemType.Code)
             .ToListAsync(cancellationToken);
 
+        var expenseItemTags = await applicationDbContext.TagsMap
+            .Join(applicationDbContext.Tags,
+                x => x.TagId,
+                y => y.Id,
+                (map, tag) => new
+                {
+                    tag.Id,
+                    tag.Name,
+                    tag.OwnerId,
+                    map.EntityId,
+                    tag.TagTypeCode
+                })
+            .Where(x => x.OwnerId == request.OwnerId
+                        && x.TagTypeCode == Domain.Metadata.TagType.ExpenseItem.Code
+                        && expenseItems.Select(e => e.Id).Contains(x.EntityId))
+            .ToListAsync(cancellationToken);
+
         response.Items = expenseItems.Select(x => new GetUserExpenseItemQueryResponseItem
         {
             Id = x.Id,
             Name = x.Name,
             Color = x.Color,
+            Tags = expenseItemTags
+                .Where(tag => tag.EntityId == x.Id)
+                .Select(tag => new GetUserExpenseItemQueryResponseTagDto
+                {
+                    Id = tag.Id,
+                    Name = tag.Name
+                }).ToList(),
             ExpenseItemType = x.ExpenseItemTypeCode == null
                 ? null
                 : new GetUserExpenseItemQueryResponseItemTypeDto

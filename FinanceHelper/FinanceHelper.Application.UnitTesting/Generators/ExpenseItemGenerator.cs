@@ -8,7 +8,7 @@ public static class ExpenseItemGenerator
     /// <summary>
     ///     Generates expense item with some type for some user
     /// </summary>
-    public static async Task<ExpenseItem> SeedOneExpenseItemAsync(this ApplicationDbContext applicationDbContext, User? user = null, ExpenseItemType? expenseItemType = null)
+    public static async Task<ExpenseItem> SeedOneExpenseItemAsync(this ApplicationDbContext applicationDbContext, User? user = null, ExpenseItemType? expenseItemType = null, List<Tag>? tags = null)
     {
         var entity = new ExpenseItem
         {
@@ -19,6 +19,14 @@ public static class ExpenseItemGenerator
         };
 
         await applicationDbContext.AddAsync(entity);
+
+        var tagMap = tags?.Select(tag => new TagMap
+        {
+            TagId = tag.Id,
+            EntityId = entity.Id
+        }).ToList();
+        if (tagMap?.Count > 0) await applicationDbContext.AddRangeAsync(tagMap!);
+
         await applicationDbContext.SaveChangesAsync();
 
         return entity;
@@ -27,7 +35,7 @@ public static class ExpenseItemGenerator
     /// <summary>
     ///     Generates many expense items with some type for some user
     /// </summary>
-    public static async Task<List<ExpenseItem>> SeedManyExpenseItemAsync(this ApplicationDbContext applicationDbContext, int count, User? user = null, ExpenseItemType? expenseItemType = null)
+    public static async Task<List<ExpenseItem>> SeedManyExpenseItemAsync(this ApplicationDbContext applicationDbContext, int count, User? user = null, ExpenseItemType? expenseItemType = null, IEnumerable<Tag>? tags = null)
     {
         var owner = user ?? await applicationDbContext.SeedOneUserAsync();
         var targetExpenseItemType = expenseItemType ?? await applicationDbContext.SeedOneExpenseItemTypeAsync();
@@ -42,6 +50,15 @@ public static class ExpenseItemGenerator
             .ToList();
 
         await applicationDbContext.AddRangeAsync(entities);
+
+        var tagMap = tags?.SelectMany(tag => entities.Select(entity => new TagMap
+        {
+            TagId = tag.Id,
+            EntityId = entity.Id
+        })).ToList();
+
+        if (tagMap?.Count > 0) await applicationDbContext.AddRangeAsync(tagMap!);
+        
         await applicationDbContext.SaveChangesAsync();
 
         return entities;

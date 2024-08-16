@@ -21,8 +21,10 @@ public class GetUserExpenseItemQueryTests : TestBase<GetUserExpenseItemQueryHand
         await ApplicationDbContext.SeedOneExpenseItemAsync(); // Generate random expense item
 
         var owner = await ApplicationDbContext.SeedOneUserAsync();
+        var tags = await ApplicationDbContext.SeedManyTagsAsync(1, Domain.Metadata.TagType.ExpenseItem.Code, owner);
         var userExpenseItemType = await ApplicationDbContext.SeedOneExpenseItemTypeAsync(owner.PreferredLocalization);
-        var userExpenseItems = await ApplicationDbContext.SeedManyExpenseItemAsync(2, owner, userExpenseItemType);
+        var userExpenseWithTags = await ApplicationDbContext.SeedOneExpenseItemAsync(owner, userExpenseItemType, tags);
+        var userExpenseItemWithoutTags = await ApplicationDbContext.SeedOneExpenseItemAsync(owner, userExpenseItemType);
 
         var localizedUserExpenseItemType = await ApplicationDbContext.MetadataLocalizations
             .FirstAsync(x => x.MetadataTypeCode == Domain.Metadata.MetadataType.ExpenseItemType.Code
@@ -35,25 +37,34 @@ public class GetUserExpenseItemQueryTests : TestBase<GetUserExpenseItemQueryHand
             [
                 new GetUserExpenseItemQueryResponseItem
                 {
-                    Id = userExpenseItems[0].Id,
-                    Name = userExpenseItems[0].Name,
-                    Color = userExpenseItems[0].Color,
+                    Id = userExpenseWithTags.Id,
+                    Name = userExpenseWithTags.Name,
+                    Color = userExpenseWithTags.Color,
                     ExpenseItemType = new GetUserExpenseItemQueryResponseItemTypeDto
                     {
                         Name = localizedUserExpenseItemType.LocalizedValue,
-                        Code = userExpenseItems[0].ExpenseItemTypeCode!
-                    }
+                        Code = userExpenseWithTags.ExpenseItemTypeCode!
+                    },
+                    Tags =
+                    [
+                        new GetUserExpenseItemQueryResponseTagDto
+                        {
+                            Id = tags[0].Id,
+                            Name = tags[0].Name
+                        }
+                    ]
                 },
                 new GetUserExpenseItemQueryResponseItem
                 {
-                    Id = userExpenseItems[1].Id,
-                    Name = userExpenseItems[1].Name,
-                    Color = userExpenseItems[1].Color,
+                    Id = userExpenseItemWithoutTags.Id,
+                    Name = userExpenseItemWithoutTags.Name,
+                    Color = userExpenseItemWithoutTags.Color,
                     ExpenseItemType = new GetUserExpenseItemQueryResponseItemTypeDto
                     {
                         Name = localizedUserExpenseItemType.LocalizedValue,
-                        Code = userExpenseItems[1].ExpenseItemTypeCode!
-                    }
+                        Code = userExpenseItemWithoutTags.ExpenseItemTypeCode!
+                    },
+                    Tags = []
                 }
             ]
         };
