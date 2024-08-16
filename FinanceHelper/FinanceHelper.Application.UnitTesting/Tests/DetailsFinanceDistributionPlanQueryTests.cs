@@ -20,7 +20,9 @@ public class DetailsFinanceDistributionPlanQueryTests : TestBase<DetailsFinanceD
         // Arrange
         var owner = await ApplicationDbContext.SeedOneUserAsync();
         var incomeSource = await ApplicationDbContext.SeedOneIncomeSourceAsync(owner);
-        var expenseItems = await ApplicationDbContext.SeedManyExpenseItemAsync(8, owner);
+        var expenseItems = await ApplicationDbContext.SeedManyExpenseItemAsync(7, owner);
+        var expenseItemTags = await ApplicationDbContext.SeedManyTagsAsync(1, Domain.Metadata.TagType.ExpenseItem.Code, owner);
+        var expenseItemWithTag = await ApplicationDbContext.SeedOneExpenseItemAsync(owner, null, expenseItemTags);
 
         var plan = new FinanceDistributionPlan
         {
@@ -89,7 +91,7 @@ public class DetailsFinanceDistributionPlanQueryTests : TestBase<DetailsFinanceD
                 {
                     StepNumber = 3,
                     PlannedValue = 100, // FACT = (9 884.2 - 4225) * 1 = 5 659.2
-                    ExpenseItemId = expenseItems[7].Id,
+                    ExpenseItemId = expenseItemWithTag.Id,
                     ValueTypeCode = Domain.Metadata.FinancesDistributionItemValueType.Floating.Code
                 }
             }
@@ -123,7 +125,8 @@ public class DetailsFinanceDistributionPlanQueryTests : TestBase<DetailsFinanceD
                             ExpenseItem = new Queries.FinanceDistributionPlans.Details.ExpenseItem
                             {
                                 Id = expenseItems[0].Id,
-                                Name = expenseItems[0].Name
+                                Name = expenseItems[0].Name,
+                                Tags = []
                             }
                         },
                         new StepItem
@@ -134,7 +137,8 @@ public class DetailsFinanceDistributionPlanQueryTests : TestBase<DetailsFinanceD
                             ExpenseItem = new Queries.FinanceDistributionPlans.Details.ExpenseItem
                             {
                                 Id = expenseItems[1].Id,
-                                Name = expenseItems[1].Name
+                                Name = expenseItems[1].Name,
+                                Tags = []
                             }
                         },
                         new StepItem
@@ -145,7 +149,8 @@ public class DetailsFinanceDistributionPlanQueryTests : TestBase<DetailsFinanceD
                             ExpenseItem = new Queries.FinanceDistributionPlans.Details.ExpenseItem
                             {
                                 Id = expenseItems[2].Id,
-                                Name = expenseItems[2].Name
+                                Name = expenseItems[2].Name,
+                                Tags = []
                             }
                         }
                     ]
@@ -163,7 +168,8 @@ public class DetailsFinanceDistributionPlanQueryTests : TestBase<DetailsFinanceD
                             ExpenseItem = new Queries.FinanceDistributionPlans.Details.ExpenseItem
                             {
                                 Id = expenseItems[3].Id,
-                                Name = expenseItems[3].Name
+                                Name = expenseItems[3].Name,
+                                Tags = []
                             }
                         },
                         new StepItem
@@ -174,7 +180,8 @@ public class DetailsFinanceDistributionPlanQueryTests : TestBase<DetailsFinanceD
                             ExpenseItem = new Queries.FinanceDistributionPlans.Details.ExpenseItem
                             {
                                 Id = expenseItems[4].Id,
-                                Name = expenseItems[4].Name
+                                Name = expenseItems[4].Name,
+                                Tags = []
                             }
                         }
                     ]
@@ -192,7 +199,8 @@ public class DetailsFinanceDistributionPlanQueryTests : TestBase<DetailsFinanceD
                             ExpenseItem = new Queries.FinanceDistributionPlans.Details.ExpenseItem
                             {
                                 Id = expenseItems[5].Id,
-                                Name = expenseItems[5].Name
+                                Name = expenseItems[5].Name,
+                                Tags = []
                             }
                         },
                         new StepItem
@@ -203,7 +211,8 @@ public class DetailsFinanceDistributionPlanQueryTests : TestBase<DetailsFinanceD
                             ExpenseItem = new Queries.FinanceDistributionPlans.Details.ExpenseItem
                             {
                                 Id = expenseItems[6].Id,
-                                Name = expenseItems[6].Name
+                                Name = expenseItems[6].Name,
+                                Tags = []
                             }
                         },
                         new StepItem
@@ -213,8 +222,9 @@ public class DetailsFinanceDistributionPlanQueryTests : TestBase<DetailsFinanceD
                             FactFixedValue = 5659.20M,
                             ExpenseItem = new Queries.FinanceDistributionPlans.Details.ExpenseItem
                             {
-                                Id = expenseItems[7].Id,
-                                Name = expenseItems[7].Name
+                                Id = expenseItemWithTag.Id,
+                                Name = expenseItemWithTag.Name,
+                                Tags = expenseItemTags.Select(x => x.Name).Order().ToList()
                             }
                         }
                     ]

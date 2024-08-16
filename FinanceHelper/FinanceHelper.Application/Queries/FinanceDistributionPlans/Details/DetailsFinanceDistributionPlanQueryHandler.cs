@@ -21,6 +21,24 @@ public class DetailsFinanceDistributionPlanQueryHandler(ApplicationDbContext app
                 && x.OwnerId == request.OwnerId, cancellationToken);
         if (plan == null) throw new NotFoundException(stringLocalizer["NotFound", request.FinanceDistributionPlanId]);
 
+        var expenseItemsIds = plan.FinanceDistributionPlanItems.Select(e => e.ExpenseItemId).Distinct();
+        var expenseItemsTags = await applicationDbContext.TagsMap
+            .Join(applicationDbContext.Tags,
+                x => x.TagId,
+                y => y.Id,
+                (map, tag) => new
+                {
+                    tag.Id,
+                    tag.Name,
+                    tag.OwnerId,
+                    map.EntityId,
+                    tag.TagTypeCode
+                })
+            .Where(x => x.OwnerId == request.OwnerId
+                        && x.TagTypeCode == Domain.Metadata.TagType.ExpenseItem.Code
+                        && expenseItemsIds.Contains(x.EntityId))
+            .ToListAsync(cancellationToken);
+        
         response.FactBudget = Math.Round(plan.FactBudget, 2);
         response.PlannedBudget = Math.Round(plan.PlannedBudget, 2);
         response.CreatedAt = plan.CreatedAt;
@@ -77,7 +95,8 @@ public class DetailsFinanceDistributionPlanQueryHandler(ApplicationDbContext app
                 responseStepItem.ExpenseItem = new ExpenseItem
                 {
                     Id = stepItem.ExpenseItemId,
-                    Name = stepItem.ExpenseItem.Name
+                    Name = stepItem.ExpenseItem.Name,
+                    Tags = expenseItemsTags.Where(x => x.EntityId == stepItem.ExpenseItemId).Select(x => x.Name).Order().ToList()
                 };
 
                 responseStepGroup.Items.Add(responseStepItem);
