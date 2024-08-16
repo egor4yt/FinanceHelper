@@ -58,7 +58,7 @@ public static class ExpenseItemGenerator
         })).ToList();
 
         if (tagMap?.Count > 0) await applicationDbContext.AddRangeAsync(tagMap!);
-        
+
         await applicationDbContext.SaveChangesAsync();
 
         return entities;
