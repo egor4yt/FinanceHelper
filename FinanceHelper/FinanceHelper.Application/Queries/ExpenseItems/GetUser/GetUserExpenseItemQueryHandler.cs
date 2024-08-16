@@ -32,7 +32,7 @@ public class GetUserExpenseItemQueryHandler(ApplicationDbContext applicationDbCo
                         && x.MetadataTypeCode == Domain.Metadata.MetadataType.ExpenseItemType.Code)
             .ToListAsync(cancellationToken);
 
-        var expenseItemTags = await applicationDbContext.TagsMap
+        var expenseItemsTags = await applicationDbContext.TagsMap
             .Join(applicationDbContext.Tags,
                 x => x.TagId,
                 y => y.Id,
@@ -44,6 +44,7 @@ public class GetUserExpenseItemQueryHandler(ApplicationDbContext applicationDbCo
                     map.EntityId,
                     tag.TagTypeCode
                 })
+            .OrderBy(x => x.Name)
             .Where(x => x.OwnerId == request.OwnerId
                         && x.TagTypeCode == Domain.Metadata.TagType.ExpenseItem.Code
                         && expenseItems.Select(e => e.Id).Contains(x.EntityId))
@@ -54,7 +55,7 @@ public class GetUserExpenseItemQueryHandler(ApplicationDbContext applicationDbCo
             Id = x.Id,
             Name = x.Name,
             Color = x.Color,
-            Tags = expenseItemTags
+            Tags = expenseItemsTags
                 .Where(tag => tag.EntityId == x.Id)
                 .Select(tag => new GetUserExpenseItemQueryResponseTagDto
                 {

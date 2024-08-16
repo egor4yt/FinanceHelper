@@ -34,6 +34,7 @@ public class DetailsFinanceDistributionPlanQueryHandler(ApplicationDbContext app
                     map.EntityId,
                     tag.TagTypeCode
                 })
+            .OrderBy(x => x.Name)
             .Where(x => x.OwnerId == request.OwnerId
                         && x.TagTypeCode == Domain.Metadata.TagType.ExpenseItem.Code
                         && expenseItemsIds.Contains(x.EntityId))
@@ -96,7 +97,7 @@ public class DetailsFinanceDistributionPlanQueryHandler(ApplicationDbContext app
                 {
                     Id = stepItem.ExpenseItemId,
                     Name = stepItem.ExpenseItem.Name,
-                    Tags = expenseItemsTags.Where(x => x.EntityId == stepItem.ExpenseItemId).Select(x => x.Name).Order().ToList()
+                    Tags = expenseItemsTags.Where(x => x.EntityId == stepItem.ExpenseItemId).Select(x => x.Name).ToList()
                 };
 
                 responseStepGroup.Items.Add(responseStepItem);
