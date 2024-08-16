@@ -3,6 +3,7 @@ using System;
 using FinanceHelper.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FinanceHelper.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240816180632_AddedTagsMapTable")]
+    partial class AddedTagsMapTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -570,16 +573,11 @@ namespace FinanceHelper.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(32)");
 
-                    b.Property<long>("OwnerId")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("TagTypeCode")
                         .IsRequired()
                         .HasColumnType("varchar(32)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("OwnerId");
 
                     b.HasIndex("TagTypeCode");
 
@@ -760,21 +758,12 @@ namespace FinanceHelper.Persistence.Migrations
 
             modelBuilder.Entity("FinanceHelper.Domain.Entities.Tag", b =>
                 {
-                    b.HasOne("FinanceHelper.Domain.Entities.User", "Owner")
-                        .WithMany("Tags")
-                        .HasForeignKey("OwnerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_Tag_User");
-
                     b.HasOne("FinanceHelper.Domain.Entities.TagType", "TagType")
                         .WithMany("Tags")
                         .HasForeignKey("TagTypeCode")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("FK_Tag_TagType");
-
-                    b.Navigation("Owner");
 
                     b.Navigation("TagType");
                 });
@@ -845,8 +834,6 @@ namespace FinanceHelper.Persistence.Migrations
                     b.Navigation("FinanceDistributionPlans");
 
                     b.Navigation("IncomeSources");
-
-                    b.Navigation("Tags");
                 });
 #pragma warning restore 612, 618
         }

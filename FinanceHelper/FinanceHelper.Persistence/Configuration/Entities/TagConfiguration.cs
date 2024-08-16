@@ -15,7 +15,18 @@ public class TagConfiguration : IEntityTypeConfiguration<Tag>
             .HasConstraintName("FK_Tag_TagType");
 
         builder
+            .HasOne(x => x.Owner)
+            .WithMany(x => x.Tags)
+            .HasForeignKey(x => x.OwnerId)
+            .HasConstraintName("FK_Tag_User");
+
+        builder
             .Property(x => x.TagTypeCode)
+            .IsRequired()
+            .HasColumnType("varchar(32)");
+
+        builder
+            .Property(x => x.Name)
             .IsRequired()
             .HasColumnType("varchar(32)");
     }

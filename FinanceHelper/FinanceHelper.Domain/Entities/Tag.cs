@@ -3,8 +3,10 @@
 public class Tag
 {
     public long Id { get; set; }
-    public long EntityId { get; set; }
+    public string Name { get; set; }
     public string TagTypeCode { get; set; }
+    public long OwnerId { get; set; }
 
     public virtual TagType TagType { get; set; }
+    public virtual User Owner { get; set; }
 }

@@ -11,4 +11,5 @@ public class User
     public virtual ICollection<FinanceDistributionPlan> FinanceDistributionPlans { get; set; }
     public virtual ICollection<ExpenseItem> ExpenseItems { get; set; }
     public virtual ICollection<IncomeSource> IncomeSources { get; set; }
+    public virtual ICollection<Tag> Tags { get; set; }
 }

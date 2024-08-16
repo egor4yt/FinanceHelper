@@ -12,6 +12,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<MetadataLocalization> MetadataLocalizations { get; set; }
     public DbSet<MetadataType> MetadataTypes { get; set; }
     public DbSet<SupportedLanguage> SupportedLanguages { get; set; }
+    public DbSet<TagMap> TagsMap { get; set; }
     public DbSet<TagType> TagTypes { get; set; }
     public DbSet<Tag> Tags { get; set; }
     public DbSet<IncomeSource> IncomeSources { get; set; }

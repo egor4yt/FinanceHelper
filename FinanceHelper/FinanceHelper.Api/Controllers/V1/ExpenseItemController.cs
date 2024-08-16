@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using FinanceHelper.Api.Contracts.ExpenseItem;
 using FinanceHelper.Application.Commands.ExpenseItems.Create;
+using FinanceHelper.Application.Commands.Tags.Attach;
 using FinanceHelper.Application.Queries.ExpenseItems.GetUser;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -18,7 +19,7 @@ namespace FinanceHelper.Api.Controllers.V1;
 public class ExpenseItemController : ApiControllerBase
 {
     /// <summary>
-    ///     Create an expense item
+    ///     Create an expense item for authorized user
     /// </summary>
     /// <returns>Created expense item</returns>
     [HttpPost("create")]
@@ -35,6 +36,25 @@ public class ExpenseItemController : ApiControllerBase
 
         var response = await Mediator.Send(command);
         return Ok(response);
+    }
+
+    /// <summary>
+    ///     Attach tag to expense item for authorized user
+    /// </summary>
+    [HttpPost("{expenseItemId:long}/attach-tag/{tagId:long}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> AttachTag([FromRoute] long expenseItemId, [FromRoute] long tagId)
+    {
+        var query = new AttachTagCommandRequest
+        {
+            TagId = tagId,
+            EntityId = expenseItemId,
+            OwnerId = CurrentUserService.UserId,
+            TagTypeCode = Domain.Metadata.TagType.ExpenseItem.Code
+        };
+
+        await Mediator.Send(query);
+        return NoContent();
     }
 
     /// <summary>
