@@ -39,7 +39,7 @@ public class DetailsFinanceDistributionPlanQueryHandler(ApplicationDbContext app
                         && x.TagTypeCode == Domain.Metadata.TagType.ExpenseItem.Code
                         && expenseItemsIds.Contains(x.EntityId))
             .ToListAsync(cancellationToken);
-        
+
         response.FactBudget = Math.Round(plan.FactBudget, 2);
         response.PlannedBudget = Math.Round(plan.PlannedBudget, 2);
         response.CreatedAt = plan.CreatedAt;

@@ -50,6 +50,6 @@ public class CreateFinanceDistributionPlanBody
         /// <summary>
         ///     If expense item doesn't exist, new expense item created with that name
         /// </summary>
-        public required string? NewExpenseItemName { get; set; }
+        public string? NewExpenseItemName { get; set; }
     }
 }
