@@ -4,8 +4,8 @@ namespace FinanceHelper.Application.Commands.ExpenseItems.Create;
 
 public class CreateExpenseItemCommandRequest : IRequest<CreateExpenseItemCommandResponse>
 {
-    public string Name { get; set; } = string.Empty;
-    public string Color { get; set; } = string.Empty;
-    public string ExpenseItemTypeCode { get; set; } = string.Empty;
-    public long OwnerId { get; set; }
+    public required string Name { get; init; }
+    public required string Color { get; init; }
+    public required string ExpenseItemTypeCode { get; init; }
+    public long OwnerId { get; init; }
 }

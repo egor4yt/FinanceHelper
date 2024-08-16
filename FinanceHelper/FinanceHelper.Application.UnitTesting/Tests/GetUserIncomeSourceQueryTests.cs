@@ -11,7 +11,7 @@ public class GetUserIncomeSourceQueryTests : TestBase<GetUserIncomeSourceQueryHa
 
     public GetUserIncomeSourceQueryTests()
     {
-        _handler = new GetUserIncomeSourceQueryHandler(ApplicationDbContext, Localizer);
+        _handler = new GetUserIncomeSourceQueryHandler(ApplicationDbContext);
     }
 
     [Fact]
@@ -41,7 +41,7 @@ public class GetUserIncomeSourceQueryTests : TestBase<GetUserIncomeSourceQueryHa
                     IncomeSourceType = new GetUserIncomeSourceQueryResponseItemTypeDto
                     {
                         Name = localizedUserIncomeSourceType.LocalizedValue,
-                        Code = userIncomeSources[0].IncomeSourceTypeCode!
+                        Code = userIncomeSources[0].IncomeSourceTypeCode
                     }
                 },
                 new GetUserIncomeSourceQueryResponseItem
@@ -52,7 +52,7 @@ public class GetUserIncomeSourceQueryTests : TestBase<GetUserIncomeSourceQueryHa
                     IncomeSourceType = new GetUserIncomeSourceQueryResponseItemTypeDto
                     {
                         Name = localizedUserIncomeSourceType.LocalizedValue,
-                        Code = userIncomeSources[1].IncomeSourceTypeCode!
+                        Code = userIncomeSources[1].IncomeSourceTypeCode
                     }
                 }
             ]

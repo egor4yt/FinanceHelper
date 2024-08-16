@@ -5,8 +5,8 @@ namespace FinanceHelper.Application.Commands.Users.Register;
 
 public class RegisterUserCommandRequest : IRequest<RegisterUserCommandResponse>
 {
-    public string Email { get; set; } = string.Empty;
-    public string PasswordHash { get; set; } = string.Empty;
-    public string PreferredLocalizationCode { get; set; } = string.Empty;
-    public JwtDescriptorDetails JwtDescriptorDetails { get; set; } = null!;
+    public required string Email { get; init; } = string.Empty;
+    public required string PasswordHash { get; init; } = string.Empty;
+    public required string PreferredLocalizationCode { get; init; } = string.Empty;
+    public JwtDescriptorDetails JwtDescriptorDetails { get; init; } = null!;
 }

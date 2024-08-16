@@ -25,7 +25,7 @@ public class CreateFinanceDistributionPlanBody
     /// <summary>
     ///     Planned items
     /// </summary>
-    public List<PlanItem> PlanItems { get; set; }
+    public required List<PlanItem> PlanItems { get; init; } = [];
 
     /// <summary>
     ///     Plan item
@@ -50,6 +50,6 @@ public class CreateFinanceDistributionPlanBody
         /// <summary>
         ///     If expense item doesn't exist, new expense item created with that name
         /// </summary>
-        public string? NewExpenseItemName { get; set; }
+        public required string? NewExpenseItemName { get; set; }
     }
 }

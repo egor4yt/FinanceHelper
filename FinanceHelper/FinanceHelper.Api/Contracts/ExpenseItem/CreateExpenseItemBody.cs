@@ -8,15 +8,15 @@ public class CreateExpenseItemBody
     /// <summary>
     ///     Expense item name
     /// </summary>
-    public string Name { get; set; }
+    public required string Name { get; init; } = string.Empty!;
 
     /// <summary>
     ///     Expense item color in HEX-format
     /// </summary>
-    public string Color { get; set; }
+    public required string Color { get; init; } = string.Empty;
 
     /// <summary>
     ///     Expense item type code
     /// </summary>
-    public string ExpenseItemTypeCode { get; set; }
+    public required string ExpenseItemTypeCode { get; init; } = string.Empty;
 }

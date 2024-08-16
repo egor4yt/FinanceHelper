@@ -8,10 +8,10 @@ public class AuthorizationLoginBody
     /// <summary>
     ///     User email
     /// </summary>
-    public string Email { get; set; } = null!;
+    public required string Email { get; init; } = string.Empty;
 
     /// <summary>
     ///     User password
     /// </summary>
-    public string Password { get; set; } = null!;
+    public required string Password { get; init; } = string.Empty;
 }

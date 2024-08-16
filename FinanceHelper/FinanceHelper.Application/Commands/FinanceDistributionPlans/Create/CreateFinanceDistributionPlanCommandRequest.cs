@@ -4,18 +4,18 @@ namespace FinanceHelper.Application.Commands.FinanceDistributionPlans.Create;
 
 public class CreateFinanceDistributionPlanCommandRequest : IRequest<CreateFinanceDistributionPlanCommandResponse>
 {
-    public long OwnerId { get; set; }
-    public long IncomeSourceId { get; set; }
-    public decimal PlannedBudget { get; set; }
-    public decimal FactBudget { get; set; }
-    public List<PlanItem> PlanItems { get; set; }
+    public long OwnerId { get; init; }
+    public long IncomeSourceId { get; init; }
+    public decimal PlannedBudget { get; init; }
+    public decimal FactBudget { get; init; }
+    public required List<PlanItem> PlanItems { get; init; }
 }
 
 public class PlanItem
 {
-    public int StepNumber { get; set; }
-    public decimal PlannedValue { get; set; }
-    public string PlannedValueTypeCode { get; set; }
-    public long? ExpenseItemId { get; set; }
-    public string? NewExpenseItemName { get; set; }
+    public int StepNumber { get; init; }
+    public decimal PlannedValue { get; init; }
+    public string PlannedValueTypeCode { get; init; } = string.Empty;
+    public long? ExpenseItemId { get; init; }
+    public string? NewExpenseItemName { get; init; }
 }

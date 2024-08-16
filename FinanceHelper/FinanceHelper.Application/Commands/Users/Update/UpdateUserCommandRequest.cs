@@ -5,8 +5,8 @@ namespace FinanceHelper.Application.Commands.Users.Update;
 
 public class UpdateUserCommandRequest : IRequest<UpdateUserCommandResponse>
 {
-    public long Id { get; set; }
-    public string Email { get; set; } = string.Empty;
-    public string PreferredLocalizationCode { get; set; } = string.Empty;
-    public JwtDescriptorDetails JwtDescriptorDetails { get; set; } = null!;
+    public long Id { get; init; }
+    public required string Email { get; init; } = string.Empty;
+    public required string PreferredLocalizationCode { get; init; } = string.Empty;
+    public JwtDescriptorDetails JwtDescriptorDetails { get; init; } = null!;
 }

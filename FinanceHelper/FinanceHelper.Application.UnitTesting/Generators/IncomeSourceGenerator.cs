@@ -30,7 +30,7 @@ public static class IncomeSourceGenerator
         var owner = user ?? await applicationDbContext.SeedOneUserAsync();
         var targetIncomeSourceType = incomeSourceType ?? await applicationDbContext.SeedOneIncomeSourceTypeAsync();
 
-        var entities = Enumerable.Range(0, count).Select(x => new IncomeSource
+        var entities = Enumerable.Range(0, count).Select(_ => new IncomeSource
             {
                 Name = Guid.NewGuid().ToString(),
                 IncomeSourceType = targetIncomeSourceType,

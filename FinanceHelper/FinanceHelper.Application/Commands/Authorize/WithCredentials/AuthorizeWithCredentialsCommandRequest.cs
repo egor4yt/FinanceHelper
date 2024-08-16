@@ -5,7 +5,7 @@ namespace FinanceHelper.Application.Commands.Authorize.WithCredentials;
 
 public class AuthorizeWithCredentialsCommandRequest : IRequest<AuthorizeWithCredentialsCommandResponse>
 {
-    public string Email { get; set; } = string.Empty;
-    public string PasswordHash { get; set; } = string.Empty;
-    public JwtDescriptorDetails JwtDescriptorDetails { get; set; } = null!;
+    public required string Email { get; init; }
+    public required string PasswordHash { get; init; } 
+    public required JwtDescriptorDetails JwtDescriptorDetails { get; init; } 
 }

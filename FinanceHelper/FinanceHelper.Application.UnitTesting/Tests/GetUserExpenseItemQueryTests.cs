@@ -11,7 +11,7 @@ public class GetUserExpenseItemQueryTests : TestBase<GetUserExpenseItemQueryHand
 
     public GetUserExpenseItemQueryTests()
     {
-        _handler = new GetUserExpenseItemQueryHandler(ApplicationDbContext, Localizer);
+        _handler = new GetUserExpenseItemQueryHandler(ApplicationDbContext);
     }
 
     [Fact]

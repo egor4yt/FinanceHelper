@@ -8,15 +8,15 @@ public class CreateIncomeSourceBody
     /// <summary>
     ///     Income source name
     /// </summary>
-    public string Name { get; set; }
+    public required string Name { get; init; } = string.Empty;
 
     /// <summary>
     ///     Income source color in HEX-format
     /// </summary>
-    public string Color { get; set; }
+    public required string Color { get; init; } = string.Empty;
 
     /// <summary>
     ///     Income source type code
     /// </summary>
-    public string IncomeSourceTypeCode { get; set; }
+    public required string IncomeSourceTypeCode { get; init; } = string.Empty;
 }

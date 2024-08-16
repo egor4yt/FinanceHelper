@@ -1,11 +1,10 @@
-﻿using FinanceHelper.Application.Services.Interfaces;
-using FinanceHelper.Persistence;
+﻿using FinanceHelper.Persistence;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace FinanceHelper.Application.Queries.IncomeSources.GetUser;
 
-public class GetUserIncomeSourceQueryHandler(ApplicationDbContext applicationDbContext, IStringLocalizer<GetUserIncomeSourceQueryHandler> stringLocalizer) : IRequestHandler<GetUserIncomeSourceQueryRequest, GetUserIncomeSourceQueryResponse>
+public class GetUserIncomeSourceQueryHandler(ApplicationDbContext applicationDbContext) : IRequestHandler<GetUserIncomeSourceQueryRequest, GetUserIncomeSourceQueryResponse>
 {
     public async Task<GetUserIncomeSourceQueryResponse> Handle(GetUserIncomeSourceQueryRequest request, CancellationToken cancellationToken)
     {
@@ -14,7 +13,7 @@ public class GetUserIncomeSourceQueryHandler(ApplicationDbContext applicationDbC
         var incomeSources = await applicationDbContext.IncomeSources
             .OrderBy(x => x.Name)
             .Join(applicationDbContext.MetadataLocalizations,
-                x => x.IncomeSourceType!.LocalizationKeyword,
+                x => x.IncomeSourceType.LocalizationKeyword,
                 y => y.LocalizationKeyword,
                 (item, localization) => new
                 {
@@ -40,7 +39,7 @@ public class GetUserIncomeSourceQueryHandler(ApplicationDbContext applicationDbC
             IncomeSourceType = new GetUserIncomeSourceQueryResponseItemTypeDto
             {
                 Name = x.LocalizedValue,
-                Code = x.IncomeSourceTypeCode!
+                Code = x.IncomeSourceTypeCode
             }
         }).ToList();
 

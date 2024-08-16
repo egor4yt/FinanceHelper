@@ -1,5 +1,4 @@
 using System.Globalization;
-using System.Reflection;
 using System.Text.Json;
 using FinanceHelper.Application.Models;
 using Serilog;
@@ -9,7 +8,7 @@ namespace FinanceHelper.Application.Services.Localization;
 /// <summary>
 ///     Includes all localizations of the one object
 /// </summary>
-internal class LocalizationManager(Assembly assembly, string localizationFileDirectory)
+internal class LocalizationManager(string localizationFileDirectory)
 {
     private const string LocalizationFileExtension = "json";
 

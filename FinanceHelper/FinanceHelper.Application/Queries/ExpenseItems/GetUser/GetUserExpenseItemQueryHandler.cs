@@ -1,11 +1,10 @@
-﻿using FinanceHelper.Application.Services.Interfaces;
-using FinanceHelper.Persistence;
+﻿using FinanceHelper.Persistence;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace FinanceHelper.Application.Queries.ExpenseItems.GetUser;
 
-public class GetUserExpenseItemQueryHandler(ApplicationDbContext applicationDbContext, IStringLocalizer<GetUserExpenseItemQueryHandler> stringLocalizer) : IRequestHandler<GetUserExpenseItemQueryRequest, GetUserExpenseItemQueryResponse>
+public class GetUserExpenseItemQueryHandler(ApplicationDbContext applicationDbContext) : IRequestHandler<GetUserExpenseItemQueryRequest, GetUserExpenseItemQueryResponse>
 {
     public async Task<GetUserExpenseItemQueryResponse> Handle(GetUserExpenseItemQueryRequest request, CancellationToken cancellationToken)
     {

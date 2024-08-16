@@ -10,7 +10,7 @@ public class GetUserFinanceDistributionPlanQueryTests : TestBase<GetUserFinanceD
 
     public GetUserFinanceDistributionPlanQueryTests()
     {
-        _handler = new GetUserFinanceDistributionPlanQueryHandler(ApplicationDbContext, Localizer);
+        _handler = new GetUserFinanceDistributionPlanQueryHandler(ApplicationDbContext);
     }
 
     [Fact]

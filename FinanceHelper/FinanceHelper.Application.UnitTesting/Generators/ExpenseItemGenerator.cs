@@ -32,7 +32,7 @@ public static class ExpenseItemGenerator
         var owner = user ?? await applicationDbContext.SeedOneUserAsync();
         var targetExpenseItemType = expenseItemType ?? await applicationDbContext.SeedOneExpenseItemTypeAsync();
 
-        var entities = Enumerable.Range(0, count).Select(x => new ExpenseItem
+        var entities = Enumerable.Range(0, count).Select(_ => new ExpenseItem
             {
                 Name = Guid.NewGuid().ToString(),
                 ExpenseItemType = targetExpenseItemType,

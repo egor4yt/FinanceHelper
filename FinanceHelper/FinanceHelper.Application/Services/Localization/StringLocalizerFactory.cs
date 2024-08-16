@@ -16,7 +16,7 @@ internal class StringLocalizerFactory : IStringLocalizerFactory
             var typeInfo = objectToLocalizationType.GetTypeInfo();
             var baseName = GetLocalizationFilePrefix(typeInfo);
 
-            localizer = CreateLocalizationManagerStringLocalizer(typeInfo.Assembly, baseName);
+            localizer = CreateLocalizationManagerStringLocalizer(baseName);
 
             _localizerCache.TryAdd(objectToLocalizationType.AssemblyQualifiedName!, localizer);
         }
@@ -26,12 +26,11 @@ internal class StringLocalizerFactory : IStringLocalizerFactory
     }
 
     /// <summary>Creates a <see cref="LocalizationManager" /></summary>
-    /// <param name="assembly">The assembly to create a <see cref="LocalizationManager" /> for.</param>
     /// <param name="baseName">The base name of the localization file to search for.</param>
-    /// <returns>A <see cref="LocalizationManager" /> for the given <paramref name="assembly" /> and <paramref name="baseName" />.</returns>
-    private static LocalizationManagerStringLocalizer CreateLocalizationManagerStringLocalizer(Assembly assembly, string baseName)
+    /// <returns>A <see cref="LocalizationManager" /> for the given and <paramref name="baseName" />.</returns>
+    private static LocalizationManagerStringLocalizer CreateLocalizationManagerStringLocalizer(string baseName)
     {
-        var localizationManager = new LocalizationManager(assembly, baseName);
+        var localizationManager = new LocalizationManager(baseName);
         return new LocalizationManagerStringLocalizer(localizationManager);
     }
 
@@ -48,7 +47,7 @@ internal class StringLocalizerFactory : IStringLocalizerFactory
         if (typeInfo == null) throw new NullReferenceException($"{nameof(typeInfo)} was null");
         if (string.IsNullOrWhiteSpace(localizationRelativePath)) return typeInfo.FullName!;
 
-        return Path.Combine(baseNamespace, localizationRelativePath, TrimPrefix(typeInfo.Name!, baseNamespace + "."));
+        return Path.Combine(baseNamespace, localizationRelativePath, TrimPrefix(typeInfo.Name, baseNamespace + "."));
     }
 
     private static string TrimPrefix(string name, string prefix)

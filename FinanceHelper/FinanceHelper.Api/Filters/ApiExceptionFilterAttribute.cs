@@ -153,7 +153,7 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
     {
         var exception = context.Exception as ValidationException;
 
-        var details = new ValidationProblemDetails(exception!.Errors!)
+        var details = new ValidationProblemDetails(exception!.Errors)
         {
             Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1"
         };
