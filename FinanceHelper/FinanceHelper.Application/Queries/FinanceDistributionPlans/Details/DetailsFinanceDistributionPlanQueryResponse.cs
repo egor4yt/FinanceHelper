@@ -19,6 +19,7 @@ public class StepGroup
 {
     public int StepNumber { get; set; }
     public List<StepItem> Items { get; set; }
+    public Dictionary<string, decimal> TagsSum { get; set; }
 }
 
 public class StepItem

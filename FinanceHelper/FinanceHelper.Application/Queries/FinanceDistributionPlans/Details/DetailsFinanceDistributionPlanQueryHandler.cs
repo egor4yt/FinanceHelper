@@ -20,7 +20,7 @@ public class DetailsFinanceDistributionPlanQueryHandler(ApplicationDbContext app
                 x.Id == request.FinanceDistributionPlanId
                 && x.OwnerId == request.OwnerId, cancellationToken);
         if (plan == null) throw new NotFoundException(stringLocalizer["NotFound", request.FinanceDistributionPlanId]);
-
+        
         var expenseItemsIds = plan.FinanceDistributionPlanItems.Select(e => e.ExpenseItemId).Distinct();
         var expenseItemsTags = await applicationDbContext.TagsMap
             .Join(applicationDbContext.Tags,
@@ -63,41 +63,48 @@ public class DetailsFinanceDistributionPlanQueryHandler(ApplicationDbContext app
             var stepFixedExpenses = 0M;
             responseStepGroup.StepNumber = grouping.Key;
             responseStepGroup.Items = [];
-
+            responseStepGroup.TagsSum = new Dictionary<string, decimal>();
+            
             // We need to calculate fixed values before floating values
             foreach (var stepItem in grouping.OrderBy(x => x.ValueTypeCode == Domain.Metadata.FinancesDistributionItemValueType.Floating.Code))
             {
                 var responseStepItem = new StepItem();
                 responseStepItem.PlannedValue = Math.Round(stepItem.PlannedValue, 2);
+                
+                var factValue = 0M;
 
                 if (stepItem.ValueTypeCode == Domain.Metadata.FinancesDistributionItemValueType.Fixed.Code)
                 {
-                    var value = stepItem.PlannedValue * budgetFactor;
-                    responseStepItem.FactFixedValue = Math.Round(value, 2);
-                    factBudgetRemaining -= value;
-                    stepFixedExpenses += value;
+                    factValue = stepItem.PlannedValue * budgetFactor;
+                    stepFixedExpenses += factValue;
                 }
                 else if (stepItem.ValueTypeCode == Domain.Metadata.FinancesDistributionItemValueType.Floating.Code)
                 {
-                    var value = stepItem.PlannedValue / 100 * (stepBudget - stepFixedExpenses);
-                    responseStepItem.FactFixedValue = Math.Round(value, 2);
-                    factBudgetRemaining -= value;
+                    factValue = stepItem.PlannedValue / 100 * (stepBudget - stepFixedExpenses);
                     responseStepItem.PlannedValuePostfix = "%";
                 }
                 else if (stepItem.ValueTypeCode == Domain.Metadata.FinancesDistributionItemValueType.FixedIndivisible.Code)
                 {
-                    var value = stepItem.PlannedValue;
-                    responseStepItem.FactFixedValue = Math.Round(value, 2);
-                    factBudgetRemaining -= value;
-                    stepFixedExpenses += value;
+                    factValue = stepItem.PlannedValue;
+                    stepFixedExpenses += factValue;
                 }
                 else throw new InvalidOperationException("Unknown finances distribution item value type");
 
+                responseStepItem.FactFixedValue = Math.Round(factValue, 2);
+                factBudgetRemaining -= factValue;
+
+                var responseItemTags = expenseItemsTags.Where(x => x.EntityId == stepItem.ExpenseItemId).Select(x => x.Name).ToList();
+                foreach (var tag in responseItemTags)
+                {
+                    if (responseStepGroup.TagsSum.TryAdd(tag, factValue) == false)
+                        responseStepGroup.TagsSum[tag] += factValue;
+                }
+                
                 responseStepItem.ExpenseItem = new ExpenseItem
                 {
                     Id = stepItem.ExpenseItemId,
                     Name = stepItem.ExpenseItem.Name,
-                    Tags = expenseItemsTags.Where(x => x.EntityId == stepItem.ExpenseItemId).Select(x => x.Name).ToList()
+                    Tags = responseItemTags
                 };
 
                 responseStepGroup.Items.Add(responseStepItem);
