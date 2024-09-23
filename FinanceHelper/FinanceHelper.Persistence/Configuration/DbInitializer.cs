@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -16,13 +17,25 @@ public static class DbInitializer
     public static IHost UseInitializeDatabase(this IHost application)
     {
         using var serviceScope = application.Services.CreateScope();
-        var dbContext = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-        // // only call this method when there are pending migrations
-        if (dbContext.Database.GetPendingMigrations().Any())
+        try
         {
-            Log.Information("Applying  Migrations");
-            dbContext.Database.Migrate();
+            var dbContext = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            var pendingMigrations = dbContext.Database.GetPendingMigrations().ToList();
+            
+            if (pendingMigrations.Count != 0)
+            {
+                Log.Information("Applying migrations");
+
+                // only call this method when there are pending migrations
+                dbContext.Database.Migrate();
+
+                Log.Information("Applyed {Count} migrations", pendingMigrations.Count);
+            }
+        }
+        catch (Exception e)
+        {
+            Log.Error(e, "Error while applying migrations");
         }
 
         return application;
