@@ -695,3 +695,7 @@ fabric.properties
 # Android studio 3.1+ serialized cache file
 
 # End of https://www.toptal.com/developers/gitignore/api/rider,jetbrains,aspnetcore,dotnetcore,csharp
+
+# Docker files
+.env
+docker-compose.yaml
