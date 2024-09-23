@@ -71,9 +71,9 @@ services:
 
 <!--Environment-->
 ## Environment configuration
-If you need to edit configuration you can do it with environment variables.
 
-Environment variables is variables which application use while working. All environment variables must be located in the same directory with the docker compose file.
+Before you start application you need to create environment variables file.
+Environment variables is variables which application use while working. Environment variables file must be located in the same directory with the docker compose file and have name '.env'.
 
 ### Description of all variables
 
