@@ -25,7 +25,7 @@ Telegram: [@egor4yt](https://t.me/egor4yt)
    ```docker-compose up -d```
 
 
-6. Application will available at http://localhost:5173/swagger or http://127.0.0.1:5173/swagger.
+6. If you used example of '.env' file, application will be available at http://localhost:5719/swagger or http://127.0.0.1:5719/swagger.
 
 <!--Docker compose file-->
 ## Docker compose file configuration
