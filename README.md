@@ -67,6 +67,7 @@ services:
       - SwaggerDocOptions:Description=Application to help people manage their finances
       - SwaggerDocOptions:Organization=Ermakov Egor
       - Email:Organization=egor4yt@gmail.com
+      - CorsOrigins=${CORS_ORIGINS}
 ```
 
 <!--Environment-->
@@ -77,13 +78,14 @@ Environment variables is variables which application use while working. Environm
 
 ### Description of all variables
 
-| Variable            | Description                                   |
-|:--------------------|:----------------------------------------------|
-| DB_NAME             | Database name                                 |
-| DB_USER             | Database default user name                    |
-| DB_PASSWORD         | Database default user password                |
-| DB_PUBLIC_PORT      | Database port to access from local network    |
-| WEBAPI_PUBLIC_PORT  | Application port to access from local network |
+| Variable           | Description                                   |
+|:-------------------|:----------------------------------------------|
+| DB_NAME            | Database name                                 |
+| DB_USER            | Database default user name                    |
+| DB_PASSWORD        | Database default user password                |
+| DB_PUBLIC_PORT     | Database port to access from local network    |
+| WEBAPI_PUBLIC_PORT | Application port to access from local network |
+| CORS_ORIGINS       | Allowed origin for CORS requests              |
 
 ### Example of the '.env' file
 
@@ -93,5 +95,6 @@ DB_USER=admin
 DB_PASSWORD=admin
 DB_PUBLIC_PORT=5718
 WEBAPI_PUBLIC_PORT=5719
+CORS_ORIGINS=http://localhost:2000
 ```
 

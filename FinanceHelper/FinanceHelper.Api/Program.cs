@@ -39,6 +39,14 @@ try
         };
     });
 
+    var corsOrigin = builder.Configuration.GetSection("CorsOrigins");
+    if (string.IsNullOrWhiteSpace(corsOrigin.Value) == false)
+        app.UseCors(x =>
+            x.AllowAnyHeader()
+                .AllowAnyMethod()
+                .WithOrigins(corsOrigin.Value)
+                .AllowCredentials());
+
     app.UseSwagger();
     app.UseSwaggerUI();
 
