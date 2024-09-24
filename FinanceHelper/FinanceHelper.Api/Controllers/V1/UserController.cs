@@ -50,7 +50,9 @@ public class UserController(IOptions<JwtOptions> jwtOptions) : ApiControllerBase
             Id = CurrentUserService.UserId,
             Email = body.Email,
             PreferredLocalizationCode = body.PreferredLocalization,
-            JwtDescriptorDetails = jwtOptions.Value.ToJwtDescriptorDetails()
+            JwtDescriptorDetails = jwtOptions.Value.ToJwtDescriptorDetails(),
+            FirstName = body.FirstName,
+            LastName = body.LastName
         };
 
         var response = await Mediator.Send(command);

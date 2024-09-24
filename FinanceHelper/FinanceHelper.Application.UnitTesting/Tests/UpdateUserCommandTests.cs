@@ -25,7 +25,9 @@ public class UpdateUserCommandHandlerTests : TestBase<UpdateUserCommandHandler>
             Id = newUser.Id,
             Email = Guid.NewGuid().ToString(),
             PreferredLocalizationCode = Guid.NewGuid().ToString(),
-            JwtDescriptorDetails = JwtDescriptorDetails
+            JwtDescriptorDetails = JwtDescriptorDetails,
+            FirstName = Guid.NewGuid().ToString(),
+            LastName = Guid.NewGuid().ToString()
         };
 
         // Act
@@ -50,7 +52,9 @@ public class UpdateUserCommandHandlerTests : TestBase<UpdateUserCommandHandler>
             Id = -1,
             Email = Guid.NewGuid().ToString(),
             PreferredLocalizationCode = Guid.NewGuid().ToString(),
-            JwtDescriptorDetails = JwtDescriptorDetails
+            JwtDescriptorDetails = JwtDescriptorDetails,
+            FirstName = Guid.NewGuid().ToString(),
+            LastName = Guid.NewGuid().ToString()
         };
 
         // Assert
@@ -68,7 +72,9 @@ public class UpdateUserCommandHandlerTests : TestBase<UpdateUserCommandHandler>
             Id = user1.Id,
             PreferredLocalizationCode = Guid.NewGuid().ToString(),
             Email = user2.Email,
-            JwtDescriptorDetails = JwtDescriptorDetails
+            JwtDescriptorDetails = JwtDescriptorDetails,
+            FirstName = Guid.NewGuid().ToString(),
+            LastName = Guid.NewGuid().ToString()
         };
 
         // Assert

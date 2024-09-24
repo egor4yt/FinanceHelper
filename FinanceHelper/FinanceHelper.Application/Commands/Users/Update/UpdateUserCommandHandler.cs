@@ -24,6 +24,8 @@ public class UpdateUserCommandHandler(ApplicationDbContext applicationDbContext,
 
         user.Email = request.Email;
         user.PreferredLocalizationCode = request.PreferredLocalizationCode;
+        user.FirstName = request.FirstName;
+        user.LastName = request.LastName;
 
         applicationDbContext.Users.Update(user);
         await applicationDbContext.SaveChangesAsync(cancellationToken);
