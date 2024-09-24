@@ -14,7 +14,7 @@ namespace FinanceHelper.Api.Controllers.V1;
 ///     Authorization controller
 /// </summary>
 [AllowAnonymous]
-[Route("Authorization")]
+[Route("authorization")]
 public class AuthorizationController(IOptions<JwtOptions> jwtOptions) : ApiControllerBase
 {
     /// <summary>
