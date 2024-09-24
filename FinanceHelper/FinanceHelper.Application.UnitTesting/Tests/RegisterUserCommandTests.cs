@@ -26,7 +26,9 @@ public class RegisterUserCommandTests : TestBase<RegisterUserCommandHandler>
             PreferredLocalizationCode = preferredLanguage.Code,
             Email = Guid.NewGuid().ToString(),
             PasswordHash = SecurityHelper.ComputeSha256Hash(Guid.NewGuid().ToString()),
-            JwtDescriptorDetails = JwtDescriptorDetails
+            JwtDescriptorDetails = JwtDescriptorDetails,
+            FirstName = Guid.NewGuid().ToString(),
+            LastName = Guid.NewGuid().ToString(),
         };
 
         // Act
@@ -35,7 +37,9 @@ public class RegisterUserCommandTests : TestBase<RegisterUserCommandHandler>
             .SingleOrDefaultAsync(x => x.Id == response.UserId
                                        && x.PasswordHash == request.PasswordHash
                                        && x.Email == request.Email
-                                       && x.PreferredLocalization.Code == request.PreferredLocalizationCode);
+                                       && x.PreferredLocalization.Code == request.PreferredLocalizationCode
+                                       && x.FirstName == request.FirstName
+                                       && x.LastName == request.LastName);
 
         // Assert
         Assert.Multiple(
@@ -53,7 +57,9 @@ public class RegisterUserCommandTests : TestBase<RegisterUserCommandHandler>
             PreferredLocalizationCode = Guid.NewGuid().ToString(),
             Email = user.Email,
             PasswordHash = SecurityHelper.ComputeSha256Hash(Guid.NewGuid().ToString()),
-            JwtDescriptorDetails = JwtDescriptorDetails
+            JwtDescriptorDetails = JwtDescriptorDetails,
+            FirstName = Guid.NewGuid().ToString(),
+            LastName = Guid.NewGuid().ToString(),
         };
 
         // Assert

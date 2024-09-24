@@ -17,6 +17,16 @@ public class RegisterUserCommandValidator : AbstractValidator<RegisterUserComman
         RuleFor(x => x.PasswordHash)
             .NotEmpty();
 
+        RuleFor(x => x.FirstName)
+            .NotEmpty()
+            .MaximumLength(32)
+            .MinimumLength(2);
+
+        RuleFor(x => x.LastName)
+            .NotEmpty()
+            .MaximumLength(32)
+            .MinimumLength(2);
+
         RuleFor(x => x.PreferredLocalizationCode)
             .Matches($"^({string.Join('|', supportedLocalizations)})$");
 

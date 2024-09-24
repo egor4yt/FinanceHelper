@@ -20,6 +20,16 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .HasColumnType("varchar(2)");
 
         builder
+            .Property(x => x.FirstName)
+            .IsRequired()
+            .HasColumnType("varchar(32)");
+        
+        builder
+            .Property(x => x.LastName)
+            .IsRequired()
+            .HasColumnType("varchar(32)");
+        
+        builder
             .Property(x => x.Email)
             .IsRequired()
             .HasColumnType("varchar(32)");

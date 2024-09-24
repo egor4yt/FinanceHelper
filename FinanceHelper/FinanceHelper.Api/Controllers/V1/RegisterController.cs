@@ -39,7 +39,9 @@ public class RegisterController(IOptions<RequestLocalizationOptions> localizatio
             Email = body.Email.Trim().ToLower(),
             PasswordHash = SecurityHelper.ComputeSha256Hash(body.Password.Trim()),
             PreferredLocalizationCode = preferredLocalizationCode,
-            JwtDescriptorDetails = jwtOptions.Value.ToJwtDescriptorDetails()
+            JwtDescriptorDetails = jwtOptions.Value.ToJwtDescriptorDetails(),
+            FirstName = body.FirstName,
+            LastName = body.LastName
         };
 
         var response = await Mediator.Send(command);

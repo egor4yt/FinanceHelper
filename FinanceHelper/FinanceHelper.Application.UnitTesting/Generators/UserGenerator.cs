@@ -18,7 +18,9 @@ public static class UserGenerator
         {
             Email = Guid.NewGuid().ToString(),
             PasswordHash = SecurityHelper.ComputeSha256Hash(Guid.NewGuid().ToString()),
-            PreferredLocalization = preferredLocalization ?? await applicationDbContext.SeedOneSupportedLanguageAsync()
+            PreferredLocalization = preferredLocalization ?? await applicationDbContext.SeedOneSupportedLanguageAsync(),
+            FirstName = Guid.NewGuid().ToString(),
+            LastName = Guid.NewGuid().ToString()
         };
 
         await applicationDbContext.AddAsync(entity);
