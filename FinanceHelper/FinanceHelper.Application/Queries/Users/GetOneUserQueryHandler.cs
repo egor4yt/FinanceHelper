@@ -18,6 +18,8 @@ public class GetOneUserQueryHandler(ApplicationDbContext applicationDbContext, I
         response.Id = user.Id;
         response.Email = user.Email;
         response.PreferredLocalizationCode = user.PreferredLocalizationCode;
+        response.FirstName = user.FirstName;
+        response.LastName = user.LastName;
 
         return response;
     }
