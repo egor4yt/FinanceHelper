@@ -1,4 +1,7 @@
-﻿namespace FinanceHelper.Domain.Entities;
+﻿// ReSharper disable PropertyCanBeMadeInitOnly.Global
+// ReSharper disable ClassWithVirtualMembersNeverInherited.Global
+
+namespace FinanceHelper.Domain.Entities;
 
 public class TagMap
 {

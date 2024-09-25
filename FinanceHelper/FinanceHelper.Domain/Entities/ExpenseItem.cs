@@ -1,4 +1,7 @@
-﻿using FinanceHelper.Domain.Common;
+﻿// ReSharper disable PropertyCanBeMadeInitOnly.Global
+// ReSharper disable ClassWithVirtualMembersNeverInherited.Global
+
+using FinanceHelper.Domain.Common;
 
 namespace FinanceHelper.Domain.Entities;
 
@@ -11,8 +14,8 @@ public class ExpenseItem : ISoftDeletable
     public long OwnerId { get; set; }
     public bool Hidden { get; set; }
 
-    public virtual User Owner { get; set; }
+    public virtual User Owner { get; set; } = null!;
     public virtual ExpenseItemType? ExpenseItemType { get; set; }
-    public virtual ICollection<FinanceDistributionPlanItem> FinanceDistributionPlanItems { get; set; }
+    public virtual ICollection<FinanceDistributionPlanItem> FinanceDistributionPlanItems { get; set; } = null!;
     public DateTime? DeletedAt { get; set; }
 }

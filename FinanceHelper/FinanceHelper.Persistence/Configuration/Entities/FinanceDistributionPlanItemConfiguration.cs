@@ -36,10 +36,6 @@ public class FinanceDistributionPlanItemConfiguration : IEntityTypeConfiguration
             .HasColumnType("money");
 
         builder
-            .Property(x => x.StepNumber)
-            .IsRequired();
-
-        builder
             .Property(x => x.FinanceDistributionPlanId)
             .IsRequired();
     }

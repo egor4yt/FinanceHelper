@@ -1,4 +1,7 @@
-﻿namespace FinanceHelper.Domain.Entities;
+﻿// ReSharper disable PropertyCanBeMadeInitOnly.Global
+// ReSharper disable ClassWithVirtualMembersNeverInherited.Global
+
+namespace FinanceHelper.Domain.Entities;
 
 public class FinanceDistributionPlan
 {
@@ -9,7 +12,7 @@ public class FinanceDistributionPlan
     public long OwnerId { get; set; }
     public long IncomeSourceId { get; set; }
 
-    public virtual ICollection<FinanceDistributionPlanItem> FinanceDistributionPlanItems { get; set; }
-    public virtual User Owner { get; set; }
-    public virtual IncomeSource IncomeSource { get; set; }
+    public virtual ICollection<FinanceDistributionPlanItem> FinanceDistributionPlanItems { get; set; } = null!;
+    public virtual User Owner { get; set; } = null!;
+    public virtual IncomeSource IncomeSource { get; set; } = null!;
 }
