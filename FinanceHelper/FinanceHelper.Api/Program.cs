@@ -39,7 +39,7 @@ try
         };
     });
 
-    var corsOrigin = builder.Configuration.GetSection("CorsOrigins"); 
+    var corsOrigin = builder.Configuration.GetSection("CorsOrigins");
     if (string.IsNullOrWhiteSpace(corsOrigin.Value) == false)
         app.UseCors(x =>
             x.AllowAnyHeader()
