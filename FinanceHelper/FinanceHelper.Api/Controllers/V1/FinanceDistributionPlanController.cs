@@ -32,12 +32,16 @@ public class FinanceDistributionPlanController : ApiControllerBase
             IncomeSourceId = body.IncomeSourceId,
             PlannedBudget = body.PlannedBudget,
             FactBudget = body.FactBudget,
-            PlanItems = body.PlanItems.Select(x => new PlanItem
+            FixedPlanItems = body.FixedPlanItems.Select(x => new FixedPlanItem
             {
-                StepNumber = x.StepNumber,
                 PlannedValue = x.PlannedValue,
                 ExpenseItemId = x.ExpenseItemId,
-                NewExpenseItemName = x.NewExpenseItemName
+                Indivisible = x.Indivisible
+            }).ToList(),
+            FloatingPlanItems = body.FloatingPlanItems.Select(x => new FloatingPlanItem
+            {
+                PlannedValue = x.PlannedValue,
+                ExpenseItemId = x.ExpenseItemId
             }).ToList()
         };
 

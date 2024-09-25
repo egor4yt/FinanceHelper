@@ -30,28 +30,27 @@ public class CreateFinanceDistributionPlanCommandTests : TestBase<CreateFinanceD
             PlannedBudget = new Random().Next(),
             FactBudget = new Random().Next(),
             IncomeSourceId = incomeSource.Id,
-            PlanItems =
+            FixedPlanItems =
             [
-                new PlanItem
+                new FixedPlanItem
                 {
-                    StepNumber = 1,
                     PlannedValue = new Random().Next(),
                     ExpenseItemId = expenseItem1.Id,
-                    PlannedValueTypeCode = Domain.Metadata.FinancesDistributionItemValueType.Fixed.Code
+                    Indivisible = false
                 },
-                new PlanItem
+                new FixedPlanItem
                 {
-                    StepNumber = 2,
                     PlannedValue = new Random().Next(),
                     ExpenseItemId = expenseItem2.Id,
-                    PlannedValueTypeCode = Domain.Metadata.FinancesDistributionItemValueType.FixedIndivisible.Code
-                },
-                new PlanItem
+                    Indivisible = false
+                }
+            ],
+            FloatingPlanItems =
+            [
+                new FloatingPlanItem
                 {
-                    StepNumber = 2,
                     PlannedValue = 100,
-                    ExpenseItemId = expenseItem3.Id,
-                    PlannedValueTypeCode = Domain.Metadata.FinancesDistributionItemValueType.Floating.Code
+                    ExpenseItemId = expenseItem3.Id
                 }
             ]
         };
@@ -71,74 +70,31 @@ public class CreateFinanceDistributionPlanCommandTests : TestBase<CreateFinanceD
         // Assert
         var planItemsAsserts = new List<Action>();
         planItemsAsserts.Add(() => Assert.NotNull(plan));
-        planItemsAsserts.Add(() => Assert.Equal(request.PlanItems.Count, plan!.FinanceDistributionPlanItems.Count));
+        planItemsAsserts.Add(() => Assert.Equal(request.FixedPlanItems.Count + request.FloatingPlanItems.Count, plan!.FinanceDistributionPlanItems.Count));
 
-        foreach (var requestPlanItem in request.PlanItems)
+        foreach (var requestPlanItem in request.FixedPlanItems)
         {
+            var type = FinanceHelper.Domain.Metadata.FinancesDistributionItemValueType.Fixed.Code;
+            if (requestPlanItem.Indivisible) type = FinanceHelper.Domain.Metadata.FinancesDistributionItemValueType.FixedIndivisible.Code;
+
             var storedPlanItems = plan?.FinanceDistributionPlanItems
-                .Where(x => x.StepNumber == requestPlanItem.StepNumber
-                            && x.PlannedValue == requestPlanItem.PlannedValue
+                .Where(x => x.PlannedValue == requestPlanItem.PlannedValue
                             && x.ExpenseItem.Id == requestPlanItem.ExpenseItemId
-                            && x.ValueType.Code == requestPlanItem.PlannedValueTypeCode)
+                            && x.ValueType.Code == type)
                 .ToList();
 
-            planItemsAsserts.Add(() => Assert.True(storedPlanItems?.Count == 1, "Plan item exception"));
+            planItemsAsserts.Add(() => Assert.True(storedPlanItems?.Count == 1, "Fixed plan item exception"));
         }
 
-        Assert.Multiple(planItemsAsserts.ToArray());
-    }
-
-    [Fact]
-    public async Task Success_NewExpenseItem()
-    {
-        // Arrange
-        var incomeSource = await ApplicationDbContext.SeedOneIncomeSourceAsync();
-        var request = new CreateFinanceDistributionPlanCommandRequest
-        {
-            OwnerId = incomeSource.OwnerId,
-            PlannedBudget = new Random().Next(),
-            FactBudget = new Random().Next(),
-            IncomeSourceId = incomeSource.Id,
-            PlanItems =
-            [
-                new PlanItem
-                {
-                    StepNumber = 1,
-                    PlannedValue = 100,
-                    ExpenseItemId = null,
-                    NewExpenseItemName = Guid.NewGuid().ToString(),
-                    PlannedValueTypeCode = Domain.Metadata.FinancesDistributionItemValueType.Floating.Code
-                }
-            ]
-        };
-
-        // Act
-        var response = await _handler.Handle(request, CancellationToken.None);
-
-        var plan = await ApplicationDbContext.FinanceDistributionPlans
-            .Include(x => x.FinanceDistributionPlanItems).ThenInclude(x => x.ExpenseItem)
-            .Include(x => x.FinanceDistributionPlanItems).ThenInclude(financeDistributionPlanItem => financeDistributionPlanItem.ValueType)
-            .SingleOrDefaultAsync(x => x.Id == response.Id
-                                       && x.Owner.Id == request.OwnerId
-                                       && x.PlannedBudget == request.PlannedBudget
-                                       && x.FactBudget == request.FactBudget
-                                       && x.IncomeSource.Id == request.IncomeSourceId);
-
-        // Assert
-        var planItemsAsserts = new List<Action>();
-        planItemsAsserts.Add(() => Assert.NotNull(plan));
-        planItemsAsserts.Add(() => Assert.Equal(request.PlanItems.Count, plan!.FinanceDistributionPlanItems.Count));
-
-        foreach (var requestPlanItem in request.PlanItems)
+        foreach (var requestPlanItem in request.FloatingPlanItems)
         {
             var storedPlanItems = plan?.FinanceDistributionPlanItems
-                .Where(x => x.StepNumber == requestPlanItem.StepNumber
-                            && x.PlannedValue == requestPlanItem.PlannedValue
-                            && x.ExpenseItem.Name == requestPlanItem.NewExpenseItemName
-                            && x.ValueType.Code == requestPlanItem.PlannedValueTypeCode)
+                .Where(x => x.PlannedValue == requestPlanItem.PlannedValue
+                            && x.ExpenseItem.Id == requestPlanItem.ExpenseItemId
+                            && x.ValueType.Code == FinanceHelper.Domain.Metadata.FinancesDistributionItemValueType.Floating.Code)
                 .ToList();
 
-            planItemsAsserts.Add(() => Assert.True(storedPlanItems?.Count == 1, "Plan item exception"));
+            planItemsAsserts.Add(() => Assert.True(storedPlanItems?.Count == 1, "Floating plan item exception"));
         }
 
         Assert.Multiple(planItemsAsserts.ToArray());
@@ -153,21 +109,21 @@ public class CreateFinanceDistributionPlanCommandTests : TestBase<CreateFinanceD
             OwnerId = new Random().Next(),
             PlannedBudget = new Random().Next(),
             FactBudget = new Random().Next(),
-            PlanItems =
+            FixedPlanItems =
             [
-                new PlanItem
+                new FixedPlanItem
                 {
-                    StepNumber = 1,
                     PlannedValue = 1000,
                     ExpenseItemId = 1,
-                    PlannedValueTypeCode = Domain.Metadata.FinancesDistributionItemValueType.Fixed.Code
-                },
-                new PlanItem
+                    Indivisible = false
+                }
+            ],
+            FloatingPlanItems =
+            [
+                new FloatingPlanItem
                 {
-                    StepNumber = 2,
                     PlannedValue = 50,
-                    ExpenseItemId = 1,
-                    PlannedValueTypeCode = Domain.Metadata.FinancesDistributionItemValueType.Floating.Code
+                    ExpenseItemId = 1
                 }
             ]
         };
@@ -185,16 +141,15 @@ public class CreateFinanceDistributionPlanCommandTests : TestBase<CreateFinanceD
             OwnerId = new Random().Next(),
             PlannedBudget = new Random().Next(),
             FactBudget = new Random().Next(),
-            PlanItems =
+            FloatingPlanItems =
             [
-                new PlanItem
+                new FloatingPlanItem
                 {
-                    StepNumber = new Random().Next(),
-                    PlannedValue = new Random().Next(),
-                    ExpenseItemId = new Random().Next(),
-                    PlannedValueTypeCode = Domain.Metadata.FinancesDistributionItemValueType.Fixed.Code
+                    PlannedValue = 50,
+                    ExpenseItemId = -1
                 }
-            ]
+            ],
+            FixedPlanItems = []
         };
 
         // Assert
@@ -212,21 +167,21 @@ public class CreateFinanceDistributionPlanCommandTests : TestBase<CreateFinanceD
             OwnerId = expenseItem1.OwnerId,
             PlannedBudget = new Random().Next(),
             FactBudget = new Random().Next(),
-            PlanItems =
+            FixedPlanItems =
             [
-                new PlanItem
+                new FixedPlanItem
                 {
-                    StepNumber = new Random().Next(),
                     PlannedValue = new Random().Next(),
                     ExpenseItemId = expenseItem1.Id,
-                    PlannedValueTypeCode = Domain.Metadata.FinancesDistributionItemValueType.Fixed.Code
-                },
-                new PlanItem
+                    Indivisible = false
+                }
+            ],
+            FloatingPlanItems =
+            [
+                new FloatingPlanItem
                 {
-                    StepNumber = new Random().Next(),
                     PlannedValue = new Random().Next(),
-                    ExpenseItemId = expenseItem2.Id,
-                    PlannedValueTypeCode = Domain.Metadata.FinancesDistributionItemValueType.Fixed.Code
+                    ExpenseItemId = expenseItem2.Id
                 }
             ]
         };

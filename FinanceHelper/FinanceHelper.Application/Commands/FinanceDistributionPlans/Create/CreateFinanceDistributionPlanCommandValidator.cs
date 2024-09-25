@@ -15,20 +15,30 @@ public class CreateFinanceDistributionPlanCommandValidator : AbstractValidator<C
         RuleFor(x => x.PlannedBudget)
             .GreaterThan(0);
 
-        RuleForEach(x => x.PlanItems)
+        RuleForEach(x => x.FixedPlanItems)
+            .NotNull()
             .ChildRules(c =>
                 {
                     c.RuleFor(x => x.ExpenseItemId)
                         .GreaterThan(0);
 
-                    c.RuleFor(x => x.NewExpenseItemName)
-                        .NotEmpty();
 
                     c.RuleFor(x => x.PlannedValue)
                         .NotEmpty()
                         .GreaterThan(0);
+                }
+            );
 
-                    c.RuleFor(x => x.StepNumber)
+        RuleForEach(x => x.FloatingPlanItems)
+            .NotNull()
+            .ChildRules(c =>
+                {
+                    c.RuleFor(x => x.ExpenseItemId)
+                        .GreaterThan(0);
+
+
+                    c.RuleFor(x => x.PlannedValue)
+                        .NotEmpty()
                         .GreaterThan(0);
                 }
             );

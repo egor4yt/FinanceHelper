@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿// ReSharper disable CollectionNeverUpdated.Global
+
+using MediatR;
 
 namespace FinanceHelper.Application.Commands.FinanceDistributionPlans.Create;
 
@@ -8,14 +10,19 @@ public class CreateFinanceDistributionPlanCommandRequest : IRequest<CreateFinanc
     public long IncomeSourceId { get; init; }
     public decimal PlannedBudget { get; init; }
     public decimal FactBudget { get; init; }
-    public required List<PlanItem> PlanItems { get; init; }
+    public required List<FixedPlanItem> FixedPlanItems { get; init; }
+    public required List<FloatingPlanItem> FloatingPlanItems { get; init; }
 }
 
-public class PlanItem
+public class FixedPlanItem
 {
-    public int StepNumber { get; init; }
     public decimal PlannedValue { get; init; }
-    public string PlannedValueTypeCode { get; init; } = string.Empty;
-    public long? ExpenseItemId { get; init; }
-    public string? NewExpenseItemName { get; init; }
+    public bool Indivisible { get; init; }
+    public long ExpenseItemId { get; init; }
+}
+
+public class FloatingPlanItem
+{
+    public decimal PlannedValue { get; init; }
+    public long ExpenseItemId { get; init; }
 }

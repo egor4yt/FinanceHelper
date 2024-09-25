@@ -23,33 +23,49 @@ public class CreateFinanceDistributionPlanBody
     public decimal FactBudget { get; set; }
 
     /// <summary>
-    ///     Planned items
+    ///     Planned items with fixed values
     /// </summary>
-    public required List<PlanItem> PlanItems { get; init; } = [];
+    public required List<CreateFinanceDistributionPlanBodyFixedPlanItem> FixedPlanItems { get; init; } = [];
+    
+    /// <summary>
+    ///     Planned items with floating values
+    /// </summary>
+    public required List<CreateFinanceDistributionPlanBodyFloatingPlanItem> FloatingPlanItems { get; init; } = [];
 
     /// <summary>
-    ///     Plan item
+    ///     Plan item with fixed value
     /// </summary>
-    public class PlanItem
+    public class CreateFinanceDistributionPlanBodyFixedPlanItem
     {
         /// <summary>
-        ///     Step number id
-        /// </summary>
-        public int StepNumber { get; set; }
-
-        /// <summary>
-        ///     Planned value as string. It must be number with optional '%' symbol as last character
+        ///     Planned value
         /// </summary>
         public decimal PlannedValue { get; set; }
 
         /// <summary>
-        ///     Expense item id or null if it is new expense item
+        ///     Expense item id
         /// </summary>
-        public long? ExpenseItemId { get; set; }
+        public long ExpenseItemId { get; set; }
 
         /// <summary>
-        ///     If expense item doesn't exist, new expense item created with that name
+        ///     Indicates that item is indivisible
         /// </summary>
-        public string? NewExpenseItemName { get; set; }
+        public bool Indivisible { get; set; }
+    }
+
+    /// <summary>
+    ///     Plan item with floating value
+    /// </summary>
+    public class CreateFinanceDistributionPlanBodyFloatingPlanItem
+    {
+        /// <summary>
+        ///     Planned value
+        /// </summary>
+        public decimal PlannedValue { get; set; }
+
+        /// <summary>
+        ///     Expense item id
+        /// </summary>
+        public long ExpenseItemId { get; set; }
     }
 }

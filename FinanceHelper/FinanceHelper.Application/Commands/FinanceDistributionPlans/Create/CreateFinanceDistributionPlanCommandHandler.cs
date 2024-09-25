@@ -12,38 +12,47 @@ public class CreateFinanceDistributionPlanCommandHandler(ApplicationDbContext ap
     public async Task<CreateFinanceDistributionPlanCommandResponse> Handle(CreateFinanceDistributionPlanCommandRequest request, CancellationToken cancellationToken)
     {
         var response = new CreateFinanceDistributionPlanCommandResponse();
-
-        var duplicatedExpenseItemsIds = request.PlanItems
-            .GroupBy(x => x.ExpenseItemId)
+        
+        var allExpenseItemsId = request.FixedPlanItems
+            .Select(x => x.ExpenseItemId)
+            .Concat(request.FloatingPlanItems.Select(x => x.ExpenseItemId))
+            .ToList();
+        var duplicatedExpenseItemsIds = allExpenseItemsId
+            .GroupBy(x => x)
             .Where(x => x.Count() > 1)
             .Select(x => x.Key)
             .ToList();
         if (duplicatedExpenseItemsIds.Count != 0) throw new BadRequestException(stringLocalizer["DuplicatedExpenseItems", string.Join(", ", duplicatedExpenseItemsIds)]);
 
-        var planItemsGroups = request.PlanItems.GroupBy(x => x.StepNumber);
-        var maxStepNumber = request.PlanItems.MaxBy(x => x.StepNumber)!.StepNumber;
+        var sumFloatedValues = request.FloatingPlanItems
+            .Sum(plaItem => plaItem.PlannedValue);
 
-        foreach (var planItemsGroup in planItemsGroups)
-        {
-            var sumFloatedValues = planItemsGroup
-                .Where(plaItem => plaItem.PlannedValueTypeCode == Domain.Metadata.FinancesDistributionItemValueType.Floating.Code)
-                .Sum(plaItem => plaItem.PlannedValue);
-
-            if ((sumFloatedValues > 90 && planItemsGroup.Key != maxStepNumber)
-                || (sumFloatedValues != 100 && planItemsGroup.Key == maxStepNumber)) throw new BadRequestException(stringLocalizer["InvalidFloatingValue"]);
-        }
+        if (sumFloatedValues != 100) throw new BadRequestException(stringLocalizer["InvalidFloatingValue"]);
 
         var existsExpenseItemsIds = await applicationDbContext.ExpenseItems
-            .Where(x => request.PlanItems.Select(p => p.ExpenseItemId).Contains(x.Id) && x.OwnerId == request.OwnerId)
+            .Where(x => allExpenseItemsId.Contains(x.Id) && x.OwnerId == request.OwnerId)
             .Select(x => x.Id)
             .ToListAsync(cancellationToken);
-        var notExistsExpenseItemsIds = request.PlanItems
-            .Where(x => x.ExpenseItemId.HasValue)
-            .Select(x => x.ExpenseItemId!.Value)
+        var notExistsExpenseItemsIds = allExpenseItemsId
             .Except(existsExpenseItemsIds)
             .ToList();
         if (notExistsExpenseItemsIds.Count != 0) throw new BadRequestException(stringLocalizer["ExpenseItemsDoesNotExists", string.Join(", ", notExistsExpenseItemsIds)]);
 
+        var planItems = new List<FinanceDistributionPlanItem>();
+        planItems.AddRange(request.FloatingPlanItems.Select(x => new FinanceDistributionPlanItem
+        {
+            PlannedValue = x.PlannedValue,
+            ValueTypeCode = FinanceHelper.Domain.Metadata.FinancesDistributionItemValueType.Floating.Code,
+            ExpenseItemId = x.ExpenseItemId
+        }));
+        planItems.AddRange(request.FixedPlanItems.Select(x => new FinanceDistributionPlanItem
+        {
+            PlannedValue = x.PlannedValue,
+            ValueTypeCode = x.Indivisible 
+                ? FinanceHelper.Domain.Metadata.FinancesDistributionItemValueType.FixedIndivisible.Code 
+                : FinanceHelper.Domain.Metadata.FinancesDistributionItemValueType.Fixed.Code,
+            ExpenseItemId = x.ExpenseItemId
+        }));
         var newFinanceDistributionPlan = new FinanceDistributionPlan
         {
             PlannedBudget = request.PlannedBudget,
@@ -51,30 +60,8 @@ public class CreateFinanceDistributionPlanCommandHandler(ApplicationDbContext ap
             CreatedAt = DateTime.UtcNow,
             OwnerId = request.OwnerId,
             IncomeSourceId = request.IncomeSourceId,
-            FinanceDistributionPlanItems = new List<FinanceDistributionPlanItem>()
+            FinanceDistributionPlanItems = planItems
         };
-
-        foreach (var planItem in request.PlanItems)
-        {
-            var newPlanItem = new FinanceDistributionPlanItem
-            {
-                StepNumber = planItem.StepNumber,
-                PlannedValue = planItem.PlannedValue,
-                ValueTypeCode = planItem.PlannedValueTypeCode
-            };
-            if (string.IsNullOrWhiteSpace(planItem.NewExpenseItemName)) newPlanItem.ExpenseItemId = planItem.ExpenseItemId!.Value;
-            else
-                newPlanItem.ExpenseItem = new ExpenseItem
-                {
-                    Name = planItem.NewExpenseItemName,
-                    ExpenseItemTypeCode = null,
-                    Color = null,
-                    OwnerId = request.OwnerId,
-                    Hidden = true
-                };
-
-            newFinanceDistributionPlan.FinanceDistributionPlanItems.Add(newPlanItem);
-        }
 
         await applicationDbContext.FinanceDistributionPlans.AddAsync(newFinanceDistributionPlan, cancellationToken);
         await applicationDbContext.SaveChangesAsync(cancellationToken);

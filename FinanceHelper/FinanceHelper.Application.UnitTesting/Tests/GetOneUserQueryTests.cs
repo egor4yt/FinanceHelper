@@ -23,7 +23,9 @@ public class GetOneUserQueryTests : TestBase<GetOneUserQueryHandler>
         {
             Id = user.Id,
             Email = user.Email,
-            PreferredLocalizationCode = user.PreferredLocalizationCode
+            PreferredLocalizationCode = user.PreferredLocalizationCode,
+            FirstName = user.FirstName,
+            LastName = user.LastName
         };
         var request = new GetOneUserQueryRequest
         {
