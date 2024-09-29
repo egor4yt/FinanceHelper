@@ -1,6 +1,7 @@
 ﻿using FinanceHelper.Application.Exceptions;
 using FinanceHelper.Application.Services.Interfaces;
 using FinanceHelper.Persistence;
+using FinanceHelper.Shared;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,110 +12,105 @@ public class DetailsFinanceDistributionPlanQueryHandler(ApplicationDbContext app
     public async Task<DetailsFinanceDistributionPlanQueryResponse> Handle(DetailsFinanceDistributionPlanQueryRequest request, CancellationToken cancellationToken)
     {
         var response = new DetailsFinanceDistributionPlanQueryResponse();
-        response.Steps = [];
-        //
-        // var plan = await applicationDbContext.FinanceDistributionPlans
-        //     .Include(x => x.IncomeSource)
-        //     .Include(x => x.FinanceDistributionPlanItems).ThenInclude(x => x.ExpenseItem)
-        //     .FirstOrDefaultAsync(x =>
-        //         x.Id == request.FinanceDistributionPlanId
-        //         && x.OwnerId == request.OwnerId, cancellationToken);
-        // if (plan == null) throw new NotFoundException(stringLocalizer["NotFound", request.FinanceDistributionPlanId]);
-        //
-        // var expenseItemsIds = plan.FinanceDistributionPlanItems.Select(e => e.ExpenseItemId).Distinct();
-        // var expenseItemsTags = await applicationDbContext.TagsMap
-        //     .Join(applicationDbContext.Tags,
-        //         x => x.TagId,
-        //         y => y.Id,
-        //         (map, tag) => new
-        //         {
-        //             tag.Id,
-        //             tag.Name,
-        //             tag.OwnerId,
-        //             map.EntityId,
-        //             tag.TagTypeCode
-        //         })
-        //     .OrderBy(x => x.Name)
-        //     .Where(x => x.OwnerId == request.OwnerId
-        //                 && x.TagTypeCode == Domain.Metadata.TagType.ExpenseItem.Code
-        //                 && expenseItemsIds.Contains(x.EntityId))
-        //     .ToListAsync(cancellationToken);
-        //
-        // response.FactBudget = Math.Round(plan.FactBudget, 2);
-        // response.PlannedBudget = Math.Round(plan.PlannedBudget, 2);
-        // response.CreatedAt = plan.CreatedAt;
-        // response.IncomeSource = new IncomeSource
-        // {
-        //     Id = plan.IncomeSourceId,
-        //     Name = plan.IncomeSource.Name
-        // };
-        //
-        // var budgetFactor = plan.FactBudget / plan.PlannedBudget;
-        // var factBudgetRemaining = plan.FactBudget;
-        //
-        // var groupedSteps = plan.FinanceDistributionPlanItems
-        //     .GroupBy(x => x.StepNumber)
-        //     .OrderBy(x => x.Key);
-        //
-        // foreach (var grouping in groupedSteps)
-        // {
-        //     var responseStepGroup = new StepGroup();
-        //     var stepBudget = factBudgetRemaining;
-        //     var stepFixedExpenses = 0M;
-        //     responseStepGroup.StepNumber = grouping.Key;
-        //     responseStepGroup.Items = [];
-        //     responseStepGroup.TagsSum = new Dictionary<string, decimal>();
-        //     
-        //     // We need to calculate fixed values before floating values
-        //     foreach (var stepItem in grouping.OrderBy(x => x.ValueTypeCode == Domain.Metadata.FinancesDistributionItemValueType.Floating.Code))
-        //     {
-        //         var responseStepItem = new StepItem();
-        //         responseStepItem.PlannedValue = Math.Round(stepItem.PlannedValue, 2);
-        //         
-        //         var factValue = 0M;
-        //
-        //         if (stepItem.ValueTypeCode == Domain.Metadata.FinancesDistributionItemValueType.Fixed.Code)
-        //         {
-        //             factValue = stepItem.PlannedValue * budgetFactor;
-        //             stepFixedExpenses += factValue;
-        //         }
-        //         else if (stepItem.ValueTypeCode == Domain.Metadata.FinancesDistributionItemValueType.Floating.Code)
-        //         {
-        //             factValue = stepItem.PlannedValue / 100 * (stepBudget - stepFixedExpenses);
-        //             responseStepItem.PlannedValuePostfix = "%";
-        //         }
-        //         else if (stepItem.ValueTypeCode == Domain.Metadata.FinancesDistributionItemValueType.FixedIndivisible.Code)
-        //         {
-        //             factValue = stepItem.PlannedValue;
-        //             stepFixedExpenses += factValue;
-        //         }
-        //         else throw new InvalidOperationException("Unknown finances distribution item value type");
-        //
-        //         responseStepItem.FactFixedValue = Math.Round(factValue, 2);
-        //         factBudgetRemaining -= factValue;
-        //
-        //         var responseItemTags = expenseItemsTags.Where(x => x.EntityId == stepItem.ExpenseItemId).Select(x => x.Name).ToList();
-        //         foreach (var tag in responseItemTags)
-        //         {
-        //             if (responseStepGroup.TagsSum.TryAdd(tag, factValue) == false)
-        //                 responseStepGroup.TagsSum[tag] += factValue;
-        //         }
-        //         
-        //         responseStepItem.ExpenseItem = new ExpenseItem
-        //         {
-        //             Id = stepItem.ExpenseItemId,
-        //             Name = stepItem.ExpenseItem.Name,
-        //             Tags = responseItemTags
-        //         };
-        //
-        //         responseStepGroup.Items.Add(responseStepItem);
-        //     }
-        //
-        //     response.Steps.Add(responseStepGroup);
-        // }
-        //
-        // response.Steps = response.Steps.OrderBy(x => x.StepNumber).ToList();
-        // response.Steps.ForEach(x => x.Items = x.Items.OrderBy(y => y.ExpenseItem.Name).ToList());
+        response.Items = [];
+        response.TagsSum = [];
+
+        var tagSum = new Dictionary<string, decimal>();
+
+        var plan = await applicationDbContext.FinanceDistributionPlans
+            .Include(x => x.IncomeSource)
+            .Include(x => x.FinanceDistributionPlanItems).ThenInclude(x => x.ExpenseItem)
+            .FirstOrDefaultAsync(x =>
+                x.Id == request.FinanceDistributionPlanId
+                && x.OwnerId == request.OwnerId, cancellationToken);
+        if (plan == null) throw new NotFoundException(stringLocalizer["NotFound", request.FinanceDistributionPlanId]);
+
+        var expenseItemsIds = plan.FinanceDistributionPlanItems.Select(e => e.ExpenseItemId).Distinct();
+        var expenseItemsTags = await applicationDbContext.TagsMap
+            .Join(applicationDbContext.Tags,
+                x => x.TagId,
+                y => y.Id,
+                (map, tag) => new
+                {
+                    tag.Id,
+                    tag.Name,
+                    tag.OwnerId,
+                    map.EntityId,
+                    tag.TagTypeCode
+                })
+            .OrderBy(x => x.Name)
+            .Where(x => x.OwnerId == request.OwnerId
+                        && x.TagTypeCode == Domain.Metadata.TagType.ExpenseItem.Code
+                        && expenseItemsIds.Contains(x.EntityId))
+            .ToListAsync(cancellationToken);
+
+        response.FactBudget = Math.Round(plan.FactBudget, 2);
+        response.PlannedBudget = Math.Round(plan.PlannedBudget, 2);
+        response.CreatedAt = plan.CreatedAt;
+        response.IncomeSource = new DetailsFinanceDistributionPlanQueryResponseIncomeSource
+        {
+            Id = plan.IncomeSourceId,
+            Name = plan.IncomeSource.Name
+        };
+
+        var budgetFactor = plan.FactBudget / plan.PlannedBudget;
+        var totalFixedExpenses = 0M;
+
+        // We need to calculate fixed values before floating values
+        foreach (var planItem in plan.FinanceDistributionPlanItems.OrderBy(x => x.ValueTypeCode == Domain.Metadata.FinancesDistributionItemValueType.Floating.Code))
+        {
+            var responseItem = new DetailsFinanceDistributionPlanQueryResponseItem();
+
+            decimal factValue;
+
+            if (planItem.ValueTypeCode == Domain.Metadata.FinancesDistributionItemValueType.Fixed.Code)
+            {
+                responseItem.PlannedValue = planItem.PlannedValue.ToUiString();
+
+                factValue = planItem.PlannedValue * budgetFactor;
+                totalFixedExpenses += factValue;
+            }
+            else if (planItem.ValueTypeCode == Domain.Metadata.FinancesDistributionItemValueType.Floating.Code)
+            {
+                responseItem.PlannedValue = planItem.PlannedValue.ToUiString() + "%";
+
+                factValue = planItem.PlannedValue / 100 * (plan.FactBudget - totalFixedExpenses);
+            }
+            else if (planItem.ValueTypeCode == Domain.Metadata.FinancesDistributionItemValueType.FixedIndivisible.Code)
+            {
+                responseItem.PlannedValue = planItem.PlannedValue.ToUiString();
+
+                factValue = planItem.PlannedValue;
+                totalFixedExpenses += factValue;
+            }
+            else throw new InvalidOperationException("Unknown finances distribution item value type");
+
+            responseItem.FactFixedValue = factValue.ToUiString();
+
+            var responseItemTags = expenseItemsTags.Where(x => x.EntityId == planItem.ExpenseItemId).Select(x => x.Name).ToList();
+
+            foreach (var tag in responseItemTags)
+            {
+                if (tagSum.TryAdd(tag, factValue) == false)
+                    tagSum[tag] += factValue;
+            }
+
+            responseItem.ExpenseItem = new ExpenseItem
+            {
+                Id = planItem.ExpenseItemId,
+                Name = planItem.ExpenseItem.Name,
+                Tags = responseItemTags
+            };
+
+            response.Items.Add(responseItem);
+        }
+
+        response.Items = response.Items
+            .OrderBy(x => x.ExpenseItem.Name)
+            .ToList();
+        response.TagsSum = tagSum
+            .OrderBy(x => x.Key)
+            .ToDictionary(x => x.Key, x => x.Value.ToUiString());
 
         return response;
     }

@@ -5,34 +5,27 @@ public class DetailsFinanceDistributionPlanQueryResponse
     public decimal PlannedBudget { get; set; }
     public decimal FactBudget { get; set; }
     public DateTime CreatedAt { get; set; }
-    public IncomeSource IncomeSource { get; set; }
-    public List<StepGroup> Steps { get; set; }
+    public DetailsFinanceDistributionPlanQueryResponseIncomeSource IncomeSource { get; set; } = null!;
+    public List<DetailsFinanceDistributionPlanQueryResponseItem> Items { get; set; } = null!;
+    public Dictionary<string, string> TagsSum { get; set; } = null!;
 }
 
-public class IncomeSource
+public class DetailsFinanceDistributionPlanQueryResponseIncomeSource
 {
     public long Id { get; set; }
-    public string Name { get; set; }
+    public string Name { get; set; } = null!;
 }
 
-public class StepGroup
+public class DetailsFinanceDistributionPlanQueryResponseItem
 {
-    public int StepNumber { get; set; }
-    public List<StepItem> Items { get; set; }
-    public Dictionary<string, decimal> TagsSum { get; set; }
-}
-
-public class StepItem
-{
-    public decimal PlannedValue { get; set; }
-    public string PlannedValuePostfix { get; set; }
-    public decimal FactFixedValue { get; set; }
-    public ExpenseItem ExpenseItem { get; set; }
+    public string PlannedValue { get; set; } = null!;
+    public string FactFixedValue { get; set; } = null!;
+    public ExpenseItem ExpenseItem { get; set; } = null!;
 }
 
 public class ExpenseItem
 {
     public long Id { get; set; }
-    public string Name { get; set; }
-    public List<string> Tags { get; set; }
+    public string Name { get; set; } = null!;
+    public List<string> Tags { get; set; } = null!;
 }
