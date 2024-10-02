@@ -10,7 +10,3 @@ This project is open-source backend application designed to help with finance ma
 # Contacts
 My name is Ermakov Egor nad you can contact on me with:
 - Telegram: [@egor4yt](https://t.me/egor4yt)
-
-<!--Starting application-->
-## Starting application
-
