@@ -85,7 +85,7 @@ public class DeleteExpenseItemCommandTests : TestBase<DeleteExpenseItemCommandHa
 
         var databaseObject = await ApplicationDbContext.ExpenseItems
             .SingleAsync(x => x.Id == expenseItem.Id
-                                      && x.OwnerId == expenseItem.OwnerId);
+                              && x.OwnerId == expenseItem.OwnerId);
 
         // Assert
         Assert.True(databaseObject.Hidden);
