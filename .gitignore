@@ -697,5 +697,5 @@ fabric.properties
 # End of https://www.toptal.com/developers/gitignore/api/rider,jetbrains,aspnetcore,dotnetcore,csharp
 
 # Docker files
-.env
-docker-compose.yaml
+src/*.env
+src/*docker-compose.yaml
