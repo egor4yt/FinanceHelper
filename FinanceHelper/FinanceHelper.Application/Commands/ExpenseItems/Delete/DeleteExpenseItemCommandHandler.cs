@@ -11,11 +11,36 @@ public class DeleteExpenseItemCommandHandler(ApplicationDbContext applicationDbC
     public async Task Handle(DeleteExpenseItemCommandRequest request, CancellationToken cancellationToken)
     {
         var expenseItem = await applicationDbContext.ExpenseItems
+            .Include(x => x.FinanceDistributionPlanItems)
             .FirstOrDefaultAsync(x => x.OwnerId == request.OwnerId
                                       && x.Id == request.ExpenseItemId, cancellationToken);
         if (expenseItem == null) throw new NotFoundException(stringLocalizer["ExpenseItemDoesNotExists", request.ExpenseItemId]);
 
-        applicationDbContext.Remove(expenseItem);
+        if (expenseItem.FinanceDistributionPlanItems.Count != 0)
+        {
+            expenseItem.Hidden = true;
+            applicationDbContext.ExpenseItems.Update(expenseItem);
+        }
+        else
+        {
+            var tagMapIdsToDelete = await applicationDbContext.TagsMap
+                .Join(applicationDbContext.Tags,
+                    x => x.TagId,
+                    y => y.Id,
+                    (x, y) => new
+                    {
+                        TagMap = x,
+                        Tag = y
+                    })
+                .Where(x => x.TagMap.EntityId == expenseItem.Id
+                            && x.Tag.TagTypeCode == Domain.Metadata.TagType.ExpenseItem.Code)
+                .Select(x => x.TagMap)
+                .ToListAsync(cancellationToken);
+
+            applicationDbContext.TagsMap.RemoveRange(tagMapIdsToDelete);
+            applicationDbContext.Remove(expenseItem);
+        }
+
         await applicationDbContext.SaveChangesAsync(cancellationToken);
     }
 }

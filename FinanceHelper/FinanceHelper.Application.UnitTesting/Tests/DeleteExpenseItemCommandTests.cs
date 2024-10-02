@@ -66,4 +66,28 @@ public class DeleteExpenseItemCommandTests : TestBase<DeleteExpenseItemCommandHa
         // Assert
         await Assert.ThrowsAsync<NotFoundException>(async () => await _handler.Handle(request, CancellationToken.None));
     }
+
+    [Fact]
+    public async Task ExpenseItemWithPlans()
+    {
+        // Arrange
+        var expenseItem = await ApplicationDbContext.SeedOneExpenseItemAsync();
+        var plan = await ApplicationDbContext.SeedOneFinanceDistributionPlanAsync();
+        var planItem = await ApplicationDbContext.SeedOneFinanceDistributionPlanItemAsync(plan, expenseItem);
+        var request = new DeleteExpenseItemCommandRequest
+        {
+            OwnerId = expenseItem.OwnerId,
+            ExpenseItemId = expenseItem.OwnerId
+        };
+
+        // Act
+        await _handler.Handle(request, CancellationToken.None);
+
+        var databaseObject = await ApplicationDbContext.ExpenseItems
+            .SingleAsync(x => x.Id == expenseItem.Id
+                                      && x.OwnerId == expenseItem.OwnerId);
+
+        // Assert
+        Assert.True(databaseObject.Hidden);
+    }
 }
