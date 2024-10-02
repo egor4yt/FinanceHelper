@@ -1,6 +1,6 @@
 ﻿namespace FinanceHelper.Application.Queries.SupportedLanguages;
 
-public class GetLocalizedSupportedLanguagesQueryResponse 
+public class GetLocalizedSupportedLanguagesQueryResponse
 {
     public List<GetLocalizedSupportedLanguagesQueryResponseItem> Items { get; set; }
 }

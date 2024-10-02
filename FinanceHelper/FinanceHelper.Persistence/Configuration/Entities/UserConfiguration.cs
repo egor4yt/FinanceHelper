@@ -23,12 +23,12 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .Property(x => x.FirstName)
             .IsRequired()
             .HasColumnType("varchar(32)");
-        
+
         builder
             .Property(x => x.LastName)
             .IsRequired()
             .HasColumnType("varchar(32)");
-        
+
         builder
             .Property(x => x.Email)
             .IsRequired()

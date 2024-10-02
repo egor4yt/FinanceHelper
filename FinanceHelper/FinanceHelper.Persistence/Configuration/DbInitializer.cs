@@ -22,7 +22,7 @@ public static class DbInitializer
         {
             var dbContext = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
             var pendingMigrations = dbContext.Database.GetPendingMigrations().ToList();
-            
+
             if (pendingMigrations.Count != 0)
             {
                 Log.Information("Applying migrations");

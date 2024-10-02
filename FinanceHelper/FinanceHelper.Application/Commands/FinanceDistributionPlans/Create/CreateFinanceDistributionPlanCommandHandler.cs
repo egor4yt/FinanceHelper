@@ -12,7 +12,7 @@ public class CreateFinanceDistributionPlanCommandHandler(ApplicationDbContext ap
     public async Task<CreateFinanceDistributionPlanCommandResponse> Handle(CreateFinanceDistributionPlanCommandRequest request, CancellationToken cancellationToken)
     {
         var response = new CreateFinanceDistributionPlanCommandResponse();
-        
+
         var allExpenseItemsId = request.FixedPlanItems
             .Select(x => x.ExpenseItemId)
             .Concat(request.FloatingPlanItems.Select(x => x.ExpenseItemId))
@@ -48,8 +48,8 @@ public class CreateFinanceDistributionPlanCommandHandler(ApplicationDbContext ap
         planItems.AddRange(request.FixedPlanItems.Select(x => new FinanceDistributionPlanItem
         {
             PlannedValue = x.PlannedValue,
-            ValueTypeCode = x.Indivisible 
-                ? FinanceHelper.Domain.Metadata.FinancesDistributionItemValueType.FixedIndivisible.Code 
+            ValueTypeCode = x.Indivisible
+                ? FinanceHelper.Domain.Metadata.FinancesDistributionItemValueType.FixedIndivisible.Code
                 : FinanceHelper.Domain.Metadata.FinancesDistributionItemValueType.Fixed.Code,
             ExpenseItemId = x.ExpenseItemId
         }));

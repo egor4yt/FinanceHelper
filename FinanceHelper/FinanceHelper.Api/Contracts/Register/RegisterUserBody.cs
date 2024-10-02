@@ -9,12 +9,12 @@ public class RegisterUserBody
     ///     User email
     /// </summary>
     public required string Email { get; init; } = string.Empty;
-    
+
     /// <summary>
     ///     User first name
     /// </summary>
     public required string FirstName { get; init; } = string.Empty;
-    
+
     /// <summary>
     ///     User last name
     /// </summary>

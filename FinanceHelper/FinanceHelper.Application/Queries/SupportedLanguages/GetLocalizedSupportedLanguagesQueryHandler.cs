@@ -18,7 +18,7 @@ public class GetLocalizedSupportedLanguagesQueryHandler(ApplicationDbContext app
                 Value = x.LocalizedValue
             })
             .ToListAsync(cancellationToken);
-        
+
         return response;
     }
 }

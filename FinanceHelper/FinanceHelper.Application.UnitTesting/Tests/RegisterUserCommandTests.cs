@@ -28,7 +28,7 @@ public class RegisterUserCommandTests : TestBase<RegisterUserCommandHandler>
             PasswordHash = SecurityHelper.ComputeSha256Hash(Guid.NewGuid().ToString()),
             JwtDescriptorDetails = JwtDescriptorDetails,
             FirstName = Guid.NewGuid().ToString(),
-            LastName = Guid.NewGuid().ToString(),
+            LastName = Guid.NewGuid().ToString()
         };
 
         // Act
@@ -59,7 +59,7 @@ public class RegisterUserCommandTests : TestBase<RegisterUserCommandHandler>
             PasswordHash = SecurityHelper.ComputeSha256Hash(Guid.NewGuid().ToString()),
             JwtDescriptorDetails = JwtDescriptorDetails,
             FirstName = Guid.NewGuid().ToString(),
-            LastName = Guid.NewGuid().ToString(),
+            LastName = Guid.NewGuid().ToString()
         };
 
         // Assert

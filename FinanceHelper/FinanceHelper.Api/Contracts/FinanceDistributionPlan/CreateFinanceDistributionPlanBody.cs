@@ -26,7 +26,7 @@ public class CreateFinanceDistributionPlanBody
     ///     Planned items with fixed values
     /// </summary>
     public required List<CreateFinanceDistributionPlanBodyFixedPlanItem> FixedPlanItems { get; init; } = [];
-    
+
     /// <summary>
     ///     Planned items with floating values
     /// </summary>
