@@ -39,10 +39,9 @@ public class DeleteExpenseItemCommandTests : TestBase<DeleteExpenseItemCommandHa
     [Fact]
     public async Task InvalidExpenseItemOwner()
     {
+        // Arrange
         var expenseItem1 = await ApplicationDbContext.SeedOneExpenseItemAsync();
         var expenseItem2 = await ApplicationDbContext.SeedOneExpenseItemAsync();
-        
-        // Arrange
         var request = new DeleteExpenseItemCommandRequest
         {
             OwnerId = expenseItem1.OwnerId,
@@ -56,9 +55,8 @@ public class DeleteExpenseItemCommandTests : TestBase<DeleteExpenseItemCommandHa
     [Fact]
     public async Task InvalidExpenseItemId()
     {
-        var expenseItem = await ApplicationDbContext.SeedOneExpenseItemAsync();
-        
         // Arrange
+        var expenseItem = await ApplicationDbContext.SeedOneExpenseItemAsync();
         var request = new DeleteExpenseItemCommandRequest
         {
             OwnerId = expenseItem.OwnerId,

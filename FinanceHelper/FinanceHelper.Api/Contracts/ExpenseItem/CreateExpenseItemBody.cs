@@ -1,7 +1,7 @@
 ﻿namespace FinanceHelper.Api.Contracts.ExpenseItem;
 
 /// <summary>
-///     Create Expense item body
+///     Create expense item body
 /// </summary>
 public class CreateExpenseItemBody
 {

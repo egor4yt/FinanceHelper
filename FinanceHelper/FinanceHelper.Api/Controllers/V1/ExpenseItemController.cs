@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using FinanceHelper.Api.Contracts.ExpenseItem;
 using FinanceHelper.Application.Commands.ExpenseItems.Create;
 using FinanceHelper.Application.Commands.ExpenseItems.Delete;
+using FinanceHelper.Application.Commands.ExpenseItems.Update;
 using FinanceHelper.Application.Commands.Tags.Attach;
 using FinanceHelper.Application.Queries.ExpenseItems.GetUser;
 using Microsoft.AspNetCore.Authorization;
@@ -81,13 +82,35 @@ public class ExpenseItemController : ApiControllerBase
     /// </summary>
     /// <param name="expenseItemId">Expense item id</param>
     [HttpDelete("{expenseItemId:long}")]
-    [ProducesResponseType(typeof(GetUserExpenseItemQueryResponse), StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> DeleteUserExpenseItem([FromRoute] long expenseItemId)
     {
         var request = new DeleteExpenseItemCommandRequest
         {
             OwnerId = CurrentUserService.UserId,
             ExpenseItemId = expenseItemId
+        };
+
+        await Mediator.Send(request);
+        return NoContent();
+    }
+
+    /// <summary>
+    ///     Update an authorized user's expense item
+    /// </summary>
+    /// <param name="expenseItemId">Expense item id</param>
+    /// <param name="body">New expense item information</param>
+    [HttpPut("{expenseItemId:long}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> UpdateUserExpenseItem([FromRoute] long expenseItemId, [FromBody] UpdateExpenseItemBody body)
+    {
+        var request = new UpdateExpenseItemCommandRequest
+        {
+            OwnerId = CurrentUserService.UserId,
+            ExpenseItemId = expenseItemId,
+            Name = body.Name,
+            Color = body.Color,
+            ExpenseItemTypeCode = body.ExpenseItemTypeCode
         };
 
         await Mediator.Send(request);
