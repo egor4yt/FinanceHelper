@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using FinanceHelper.Api.Contracts.ExpenseItem;
 using FinanceHelper.Application.Commands.ExpenseItems.Create;
+using FinanceHelper.Application.Commands.ExpenseItems.Delete;
 using FinanceHelper.Application.Commands.Tags.Attach;
 using FinanceHelper.Application.Queries.ExpenseItems.GetUser;
 using Microsoft.AspNetCore.Authorization;
@@ -73,5 +74,23 @@ public class ExpenseItemController : ApiControllerBase
 
         var response = await Mediator.Send(query);
         return Ok(response);
+    }
+
+    /// <summary>
+    ///     Delete an authorized user's expense item
+    /// </summary>
+    /// <param name="expenseItemId">Expense item id</param>
+    [HttpDelete("{expenseItemId:long}")]
+    [ProducesResponseType(typeof(GetUserExpenseItemQueryResponse), StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> DeleteUserExpenseItem([FromRoute] long expenseItemId)
+    {
+        var request = new DeleteExpenseItemCommandRequest
+        {
+            OwnerId = CurrentUserService.UserId,
+            ExpenseItemId = expenseItemId
+        };
+
+        await Mediator.Send(request);
+        return NoContent();
     }
 }
