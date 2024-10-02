@@ -26,7 +26,7 @@ Environment variables is variables which application using while working. Enviro
 | DB_NAME            | Database name                                 |
 | DB_USER            | Database default user name                    |
 | DB_PASSWORD        | Database default user password                |
-| DATABASE_HOST      | Database default host or container name       |
+| DB_HOST            | Database default host or container name       |
 | DB_PUBLIC_PORT     | Database port to access from local network    |
 | WEBAPI_PUBLIC_PORT | Application port to access from local network |
 | CORS_ORIGINS       | Allowed origin for CORS requests              |

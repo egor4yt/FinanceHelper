@@ -28,7 +28,7 @@ services:
       database:
         condition: service_healthy
     environment:
-      - ConnectionStrings:DatabaseConnection=host=${DATABASE_HOST};port=5432;database=${DB_NAME};username=${DB_USER};password=${DB_PASSWORD}
+      - ConnectionStrings:DatabaseConnection=host=${DB_HOST};port=5432;database=${DB_NAME};username=${DB_USER};password=${DB_PASSWORD}
       # Swagger
       - SwaggerDocOptions:Title=Finance-Helper API
       - SwaggerDocOptions:Description=Application to help people manage their finances
