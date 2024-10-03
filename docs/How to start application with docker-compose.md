@@ -8,7 +8,7 @@
 
 4. Create your version or copy example of the [docker-compose.yaml](Docker%20examples%2Fdocker-compose.yaml) in ./src directory
 
-5. Execute command to start application ``docker-compose up -d``
+5. Execute command to start application ``docker compose up -d``
 
 6. If you used example of '.env' and 'docker-compose.yaml' files, application will be available at http://localhost:5719/swagger or http://127.0.0.1:5719/swagger.
 
