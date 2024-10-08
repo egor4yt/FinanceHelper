@@ -24,10 +24,4 @@ public class RegisterUserBody
     ///     User password
     /// </summary>
     public required string Password { get; init; } = string.Empty;
-
-
-    /// <summary>
-    ///     Preferred localization code
-    /// </summary>
-    public required string? PreferredLocalizationCode { get; init; } = string.Empty;
 }

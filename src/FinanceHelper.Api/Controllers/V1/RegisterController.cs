@@ -18,7 +18,7 @@ namespace FinanceHelper.Api.Controllers.V1;
 /// </summary>
 [AllowAnonymous]
 [Route("register")]
-public class RegisterController(IOptions<RequestLocalizationOptions> localizationOptions, IOptions<JwtOptions> jwtOptions) : ApiControllerBase
+public class RegisterController(IOptions<JwtOptions> jwtOptions) : ApiControllerBase
 {
     /// <summary>
     ///     User registration
@@ -30,15 +30,11 @@ public class RegisterController(IOptions<RequestLocalizationOptions> localizatio
     [ProducesResponseType(typeof(RegisterUserCommandResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> Register([FromBody] RegisterUserBody body)
     {
-        var preferredLocalizationCode = body.PreferredLocalizationCode?.ToLower();
-        if (localizationOptions.Value.SupportedCultures!.Any(x => x.TwoLetterISOLanguageName == preferredLocalizationCode) == false) preferredLocalizationCode = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
-        if (string.IsNullOrWhiteSpace(preferredLocalizationCode)) preferredLocalizationCode = localizationOptions.Value.DefaultRequestCulture.UICulture.TwoLetterISOLanguageName;
-
         var command = new RegisterUserCommandRequest
         {
             Email = body.Email.Trim().ToLower(),
             PasswordHash = SecurityHelper.ComputeSha256Hash(body.Password.Trim()),
-            PreferredLocalizationCode = preferredLocalizationCode,
+            PreferredLocalizationCode = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName, // From localization header
             JwtDescriptorDetails = jwtOptions.Value.ToJwtDescriptorDetails(),
             FirstName = body.FirstName,
             LastName = body.LastName
