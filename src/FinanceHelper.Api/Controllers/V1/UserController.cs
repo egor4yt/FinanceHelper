@@ -3,6 +3,7 @@ using FinanceHelper.Api.Configuration.Options;
 using FinanceHelper.Api.Contracts.User;
 using FinanceHelper.Application.Commands.Users.Update;
 using FinanceHelper.Application.Queries.Users;
+using FinanceHelper.Application.Queries.Users.GetOne;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

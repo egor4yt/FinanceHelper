@@ -4,7 +4,7 @@ using FinanceHelper.Persistence;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace FinanceHelper.Application.Queries.Users;
+namespace FinanceHelper.Application.Queries.Users.GetOne;
 
 public class GetOneUserQueryHandler(ApplicationDbContext applicationDbContext, IStringLocalizer<GetOneUserQueryHandler> stringLocalizer) : IRequestHandler<GetOneUserQueryRequest, GetOneUserQueryResponse>
 {

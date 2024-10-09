@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace FinanceHelper.Application.Queries.Users;
+namespace FinanceHelper.Application.Queries.Users.GetOne;
 
 public class GetOneUserQueryValidator : AbstractValidator<GetOneUserQueryRequest>
 {
