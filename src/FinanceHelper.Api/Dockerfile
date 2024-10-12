@@ -22,4 +22,6 @@ RUN dotnet publish "FinanceHelper.Api.csproj" -c $BUILD_CONFIGURATION -o /app/pu
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+RUN rm appsettings.json
+RUN mv appsettings.Docker.json appsettings.json
 ENTRYPOINT ["dotnet", "FinanceHelper.Api.dll"]
