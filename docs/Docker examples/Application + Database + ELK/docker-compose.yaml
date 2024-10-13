@@ -1,0 +1,246 @@
+version: '3.9'
+
+volumes:
+  finance-helper-logs:
+    driver: local
+  elk-certs:
+    driver: local
+  elk-kibana:
+    driver: local
+  elk-es01:
+    driver: local
+  elk-logstash:
+    driver: local
+
+networks:
+  elk:
+    driver: bridge
+    external: false
+
+services:
+  # Database service
+  database:
+    image: postgres:latest
+    ports:
+      - "${DB_PUBLIC_PORT}:5432"
+    volumes:
+      - /var/lib/postgresql/data/
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
+  # Web API service
+  webapi:
+    build:
+      context: .
+      dockerfile: /FinanceHelper.Api/Dockerfile
+    ports:
+      - "${WEBAPI_PUBLIC_PORT}:8080"
+    depends_on:
+      database:
+        condition: service_healthy
+    environment:
+      - ConnectionStrings:DatabaseConnection=host=database;port=5432;database=${DB_NAME};username=${DB_USER};password=${DB_PASSWORD}
+      - CorsOrigins=${CORS_ORIGINS}
+    volumes:
+      - finance-helper-logs:/app/logs
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:8080/health || exit 1" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
+
+  # Preparing ELK stack
+  elk-setup:
+    image: docker.elastic.co/elasticsearch/elasticsearch:${ELK_VERSION}
+    volumes:
+      - elk-certs:/usr/share/elasticsearch/config/certs
+    networks:
+      - elk
+    user: "0"
+    command: >
+      bash -c '
+        if [ x${ELK_ELASTIC_PASSWORD} == x ]; then
+          echo "Set the ELK_ELASTIC_PASSWORD environment variable in the .env file";
+          exit 1;
+        elif [ x${ELK_KIBANA_PASSWORD} == x ]; then
+          echo "Set the ELK_KIBANA_PASSWORD environment variable in the .env file";
+          exit 1;
+        fi;
+        if [ ! -f config/certs/ca.zip ]; then
+          echo "Creating CA";
+          bin/elasticsearch-certutil ca --silent --pem -out config/certs/ca.zip;
+          unzip config/certs/ca.zip -d config/certs;
+        fi;
+        if [ ! -f config/certs/certs.zip ]; then
+          echo "Creating certs";
+          echo -ne \
+          "instances:\n"\
+          "  - name: elk-es01\n"\
+          "    dns:\n"\
+          "      - elk-es01\n"\
+          "      - localhost\n"\
+          "    ip:\n"\
+          "      - 127.0.0.1\n"\
+          "  - name: kibana\n"\
+          "    dns:\n"\
+          "      - kibana\n"\
+          "      - localhost\n"\
+          "    ip:\n"\
+          "      - 127.0.0.1\n"\
+          > config/certs/instances.yml;
+          bin/elasticsearch-certutil cert --silent --pem -out config/certs/certs.zip --in config/certs/instances.yml --ca-cert config/certs/ca/ca.crt --ca-key config/certs/ca/ca.key;
+          unzip config/certs/certs.zip -d config/certs;
+        fi;
+        echo "Setting file permissions"
+        chown -R root:root config/certs;
+        find . -type d -exec chmod 750 \{\} \;;
+        find . -type f -exec chmod 640 \{\} \;;
+        echo "Waiting for Elasticsearch availability";
+        until curl -s --cacert config/certs/ca/ca.crt https://elk-es01:9200 | grep -q "missing authentication credentials"; do sleep 30; done;
+        echo "Setting kibana_system password";
+        until curl -s -X POST --cacert config/certs/ca/ca.crt -u "elastic:${ELK_ELASTIC_PASSWORD}" -H "Content-Type: application/json" https://elk-es01:9200/_security/user/kibana_system/_password -d "{\"password\":\"${ELK_KIBANA_PASSWORD}\"}" | grep -q "^{}"; do sleep 10; done;
+        echo "All done!";
+      '
+    healthcheck:
+      test: [ "CMD-SHELL", "[ -f config/certs/elk-es01/elk-es01.crt ]" ]
+      interval: 1s
+      timeout: 5s
+      retries: 120
+      
+  
+  # Elasticsearch
+  elk-es01:
+    depends_on:
+      elk-setup:
+        condition: service_healthy
+    image: docker.elastic.co/elasticsearch/elasticsearch:${ELK_VERSION}
+    networks:
+      - elk
+    labels:
+      co.elastic.logs/module: elasticsearch
+    volumes:
+      - elk-certs:/usr/share/elasticsearch/config/certs
+      - elk-es01:/usr/share/elasticsearch/data
+    ports:
+      - ${ELK_ELASTIC_PORT}:9200
+    environment:
+      - node.name=elk-es01
+      - cluster.name=FinanceHelper
+      - discovery.type=single-node
+      - ELASTIC_PASSWORD=${ELK_ELASTIC_PASSWORD}
+      - bootstrap.memory_lock=true
+      - xpack.security.enabled=true
+      - xpack.security.http.ssl.enabled=true
+      - xpack.security.http.ssl.key=certs/elk-es01/elk-es01.key
+      - xpack.security.http.ssl.certificate=certs/elk-es01/elk-es01.crt
+      - xpack.security.http.ssl.certificate_authorities=certs/ca/ca.crt
+      - xpack.security.transport.ssl.enabled=true
+      - xpack.security.transport.ssl.key=certs/elk-es01/elk-es01.key
+      - xpack.security.transport.ssl.certificate=certs/elk-es01/elk-es01.crt
+      - xpack.security.transport.ssl.certificate_authorities=certs/ca/ca.crt
+      - xpack.security.transport.ssl.verification_mode=certificate
+      - xpack.license.self_generated.type=basic
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl -s --cacert config/certs/ca/ca.crt https://localhost:9200 | grep -q 'missing authentication credentials'",
+        ]
+      interval: 10s
+      timeout: 10s
+      retries: 120
+
+  # Kibana
+  elk-kibana:
+    depends_on:
+      elk-es01:
+        condition: service_healthy
+    image: docker.elastic.co/kibana/kibana:${ELK_VERSION}
+    networks:
+      - elk
+    labels:
+      co.elastic.logs/module: kibana
+    volumes:
+      - elk-certs:/usr/share/kibana/config/certs
+      - elk-kibana:/usr/share/kibana/data
+    ports:
+      - ${ELK_KIBANA_PORT}:5601
+    environment:
+      - SERVERNAME=FinanceHelper
+      - ELASTICSEARCH_HOSTS=https://elk-es01:9200
+      - ELASTICSEARCH_USERNAME=kibana_system
+      - ELASTICSEARCH_PASSWORD=${ELK_KIBANA_PASSWORD}
+      - ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES=config/certs/ca/ca.crt
+      - XPACK_SECURITY_ENCRYPTIONKEY=${ELK_ENCRYPTION_KEY}
+      - XPACK_ENCRYPTEDSAVEDOBJECTS_ENCRYPTIONKEY=${ELK_ENCRYPTION_KEY}
+      - XPACK_REPORTING_ENCRYPTIONKEY=${ELK_ENCRYPTION_KEY}
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl -s -I http://localhost:5601 | grep -q 'HTTP/1.1 302 Found'",
+        ]
+      interval: 10s
+      timeout: 10s
+      retries: 120
+
+  # Logstash
+  elk-logstash:
+    depends_on:
+      elk-es01:
+        condition: service_healthy
+      elk-kibana:
+        condition: service_healthy
+    image: docker.elastic.co/logstash/logstash:${ELK_VERSION}
+    networks:
+      - elk
+    ports:
+      - "5044:5044"
+    labels:
+      co.elastic.logs/module: logstash
+    user: root
+    volumes:
+      - elk-certs:/usr/share/logstash/certs
+      - elk-logstash:/usr/share/logstash/data
+      - "./ELK-config/logstash.conf:/usr/share/logstash/pipeline/logstash.conf:ro"
+    environment:
+      - xpack.monitoring.enabled=false
+      - ELASTIC_USER=elastic
+      - ELASTIC_PASSWORD=${ELK_ELASTIC_PASSWORD}
+      - ELASTIC_HOSTS=https://elk-es01:9200
+    healthcheck:
+      test: ["CMD-SHELL", "curl --silent --fail http://localhost:9600/ || exit 1"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 15s
+
+  # Filebeat
+  filebeat:
+    depends_on:
+      webapi:
+        condition: service_healthy
+      elk-logstash:
+        condition: service_healthy
+    image: docker.elastic.co/beats/filebeat:${ELK_VERSION}
+    networks:
+      - elk
+    user: root
+    volumes:
+      - elk-certs:/usr/share/filebeat/certs
+      - ./ELK-config/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      - finance-helper-logs:/app/finance-helper/logs
+    environment:
+      - ELASTIC_USER=elastic
+      - ELASTIC_PASSWORD=${ELK_ELASTIC_PASSWORD}
+      - KIBANA_HOSTS=http://elk-kibana:5601
+      - LOGSTASH_HOSTS=elk-logstash:5044

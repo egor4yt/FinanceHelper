@@ -1,0 +1,18 @@
+filebeat.inputs:
+  - type: log
+    id: finance-helper
+    enabled: true
+    paths:
+      - /app/finance-helper/logs/*.log
+    fields:
+      service: finance-helper
+    json.keys_under_root: true
+    json.add_error_key: true
+
+setup.kibana:
+  host: ${KIBANA_HOSTS}
+  username: ${ELASTIC_USER}
+  password: ${ELASTIC_PASSWORD}
+
+output.logstash:
+  hosts: ${LOGSTASH_HOSTS}

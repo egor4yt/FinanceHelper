@@ -1,5 +1,9 @@
 version: '3.9'
 
+volumes:
+  finance-helper-logs:
+    driver: local
+
 services:
   # Database service
   database:
@@ -21,17 +25,22 @@ services:
   
   # Web API service
   webapi:
-    image: finance-helper
+    build:
+      context: .
+      dockerfile: /FinanceHelper.Api/Dockerfile
     ports:
       - "${WEBAPI_PUBLIC_PORT}:8080"
     depends_on:
       database:
         condition: service_healthy
     environment:
-      - ConnectionStrings:DatabaseConnection=host=${DB_HOST};port=5432;database=${DB_NAME};username=${DB_USER};password=${DB_PASSWORD}
-      # Swagger
-      - SwaggerDocOptions:Title=Finance-Helper API
-      - SwaggerDocOptions:Description=Application to help people manage their finances
-      - SwaggerDocOptions:Organization=Ermakov Egor
-      - Email:Organization=egor4yt@gmail.com
+      - ConnectionStrings:DatabaseConnection=host=database;port=5432;database=${DB_NAME};username=${DB_USER};password=${DB_PASSWORD}
       - CorsOrigins=${CORS_ORIGINS}
+    volumes:
+      - finance-helper-logs:/app/logs
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:8080/health || exit 1" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
