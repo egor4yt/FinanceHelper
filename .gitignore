@@ -700,4 +700,4 @@ fabric.properties
 src/*.env
 src/*docker-compose.yaml
 src/*docker-compose.yml
-src/ELK-config/*
+src/ELK-config*
