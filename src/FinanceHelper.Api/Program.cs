@@ -16,6 +16,8 @@ try
     builder.Logging.ClearProviders();
 
     Log.Logger = new LoggerConfiguration()
+        .Enrich.FromLogContext()
+        .Enrich.WithMachineName()
         .ReadFrom.Configuration(builder.Configuration)
         .CreateLogger();
 

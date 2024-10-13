@@ -4,7 +4,7 @@ using FinanceHelper.Application.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Serilog;
+using Microsoft.Extensions.Logging;
 
 namespace FinanceHelper.Api.Filters;
 
@@ -14,12 +14,14 @@ namespace FinanceHelper.Api.Filters;
 public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
 {
     private readonly Dictionary<Type, Action<ExceptionContext>> _exceptionHandlers;
+    private readonly ILogger<ApiExceptionFilterAttribute> _logger;
 
     /// <summary>
     ///     Default constructor
     /// </summary>
-    public ApiExceptionFilterAttribute()
+    public ApiExceptionFilterAttribute(ILogger<ApiExceptionFilterAttribute> logger)
     {
+        _logger = logger;
         _exceptionHandlers = new Dictionary<Type, Action<ExceptionContext>>
         {
             { typeof(BadRequestException), HandleBadRequestException },
@@ -56,18 +58,7 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
         HandleUnknownException(context);
     }
 
-    private static void HandleInvalidModelStateException(ExceptionContext context)
-    {
-        var details = new ValidationProblemDetails(context.ModelState)
-        {
-            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1"
-        };
-
-        context.Result = new BadRequestObjectResult(details);
-        context.ExceptionHandled = true;
-    }
-
-    private static void HandleUnknownException(ExceptionContext context)
+    private void HandleUnknownException(ExceptionContext context)
     {
         var details = new ProblemDetails
         {
@@ -81,7 +72,18 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
             StatusCode = StatusCodes.Status500InternalServerError
         };
 
-        Log.Error(context.Exception, "An exception occurred while executing request");
+        _logger.LogError(context.Exception, "An exception occurred while executing request");
+        context.ExceptionHandled = true;
+    }
+
+    private static void HandleInvalidModelStateException(ExceptionContext context)
+    {
+        var details = new ValidationProblemDetails(context.ModelState)
+        {
+            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1"
+        };
+
+        context.Result = new BadRequestObjectResult(details);
         context.ExceptionHandled = true;
     }
 
