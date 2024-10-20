@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using FinanceHelper.Application.Queries.SupportedLanguages;
+using FinanceHelper.Application.Queries.SupportedLanguages.GetLocalized;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
