@@ -1,5 +1,4 @@
 ﻿using FinanceHelper.Application.Exceptions;
-using FinanceHelper.Application.Queries.Users;
 using FinanceHelper.Application.Queries.Users.GetOne;
 using FinanceHelper.Application.UnitTesting.Common;
 using FinanceHelper.Application.UnitTesting.Generators;

@@ -14,11 +14,11 @@ public class LoggingBehaviour<TRequest, TResponse>(ILogger<LoggingBehaviour<TReq
         var requestName = request.GetType().Name;
         var requestGuid = Guid.NewGuid().ToString();
         var requestDataAsJson = JsonSerializer.Serialize(request);
-        if (requestDataAsJson != "{}")LogContext.PushProperty("RequestData", requestDataAsJson);
-        
+        if (requestDataAsJson != "{}") LogContext.PushProperty("RequestData", requestDataAsJson);
+
         LogContext.PushProperty("RequestName", requestName);
         LogContext.PushProperty("RequestId", requestGuid);
-        
+
         TResponse response;
 
         try

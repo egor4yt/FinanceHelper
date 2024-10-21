@@ -1,12 +1,10 @@
 ﻿using System.Globalization;
-using System.Linq;
 using System.Threading.Tasks;
 using FinanceHelper.Api.Configuration.Options;
 using FinanceHelper.Api.Contracts.Register;
 using FinanceHelper.Application.Commands.Users.Register;
 using FinanceHelper.Shared;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
