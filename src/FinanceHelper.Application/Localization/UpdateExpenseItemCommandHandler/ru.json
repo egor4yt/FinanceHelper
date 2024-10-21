@@ -1,4 +1,0 @@
-{
-  "ExpenseItemDoesNotExists": "Категория трат с идентификатором '{0}' не существует.",
-  "ExpenseItemTypeDoesNotExists": "Тип статьи расхода '{0}' не существует."
-}

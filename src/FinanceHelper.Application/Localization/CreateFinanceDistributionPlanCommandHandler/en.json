@@ -1,5 +1,0 @@
-{
-  "DuplicatedExpenseItems": "Expense items with ids '{0}' have been added several times.",
-  "ExpenseItemsDoesNotExists": "Expense items with ids '{0}' does not exists.",
-  "InvalidFloatingValue": "Max floating values sum must be equal 100%"
-}

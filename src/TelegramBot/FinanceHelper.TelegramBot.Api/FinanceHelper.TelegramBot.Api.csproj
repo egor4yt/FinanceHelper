@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <AssemblyName>FinanceHelper.TelegramBot.Api</AssemblyName>
+        <RootNamespace>FinanceHelper.TelegramBot.Api</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.10"/>
+        <PackageReference Include="Serilog.AspNetCore" Version="8.0.3"/>
+        <PackageReference Include="Serilog.Enrichers.Context" Version="4.6.5"/>
+        <PackageReference Include="Serilog.Formatting.Compact" Version="3.0.0"/>
+        <PackageReference Include="Serilog.Sinks.File" Version="6.0.0"/>
+        <PackageReference Include="Telegram.Bot" Version="19.0.0"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\FinanceHelper.TelegramBot.Application\FinanceHelper.TelegramBot.Application.csproj"/>
+        <ProjectReference Include="..\FinanceHelper.TelegramBot.Shared\FinanceHelper.TelegramBot.Shared.csproj"/>
+    </ItemGroup>
+
+</Project>

@@ -1,6 +1,0 @@
-{
-  "DoesNotExistsTag": "Tag doesn't exists or deleted.",
-  "DoesNotExistsEntity": "Taggable item doesn't exists or deleted.",
-  "DoesNotExistsTagType": "Taggable item can't be tagged.",
-  "AlreadyExistsTagMap": "Taggable item already has selected tag."
-}
