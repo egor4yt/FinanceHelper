@@ -2,7 +2,6 @@
 using System.Text.Json;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using Serilog.Context;
 
 namespace FinanceHelper.Application.Behaviours;
 
@@ -14,10 +13,8 @@ public class LoggingBehaviour<TRequest, TResponse>(ILogger<LoggingBehaviour<TReq
         var requestName = request.GetType().Name;
         var requestGuid = Guid.NewGuid().ToString();
         var requestDataAsJson = JsonSerializer.Serialize(request);
-        if (requestDataAsJson != "{}") LogContext.PushProperty("RequestData", requestDataAsJson);
 
-        LogContext.PushProperty("RequestName", requestName);
-        LogContext.PushProperty("RequestId", requestGuid);
+        logger.LogInformation("Handling {RequestName} {RequestId} {JsonRequestData} Elapsed={Elapsed}", requestName, requestGuid, requestDataAsJson, stopwatch.ElapsedMilliseconds);
 
         TResponse response;
 
@@ -28,7 +25,7 @@ public class LoggingBehaviour<TRequest, TResponse>(ILogger<LoggingBehaviour<TReq
         finally
         {
             stopwatch.Stop();
-            LogContext.PushProperty("ElapsedMilliseconds", stopwatch.ElapsedMilliseconds);
+            logger.LogInformation("Handled {RequestName} {RequestId}, Execution time={ExecutionTime} ms", requestName, requestGuid, stopwatch.ElapsedMilliseconds);
         }
 
         return response;
