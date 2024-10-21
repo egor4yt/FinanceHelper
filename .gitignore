@@ -697,7 +697,7 @@ fabric.properties
 # End of https://www.toptal.com/developers/gitignore/api/rider,jetbrains,aspnetcore,dotnetcore,csharp
 
 # Properties files
-# /src/*/Properties/*
+/src/*/Properties/*.json
 
 # Docker files
 src/*.env
