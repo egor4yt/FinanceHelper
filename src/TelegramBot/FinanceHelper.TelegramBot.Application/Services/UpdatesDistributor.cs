@@ -9,7 +9,7 @@ public class UpdatesDistributor(IUpdatesListenerFactory factory, ILogger<Updates
     public async Task SendUpdateAsync(Update update)
     {
         if (update.Message == null) throw new NullReferenceException("update.Message was null");
-        logger.LogInformation("New message from chat @{ChatName} ({ChatId}): '{Message}'", update.Message.Chat.Username, update.Message.Chat.Id, update.Message.Text);
+        logger.LogInformation("New message from chat @{ChatName} ({FirstName} {LastName}, {ChatId}): '{Message}'", update.Message.Chat.Username, update.Message.Chat.FirstName, update.Message.Chat.LastName, update.Message.Chat.Id, update.Message.Text);
 
         var listener = factory.Create(update.Message.Chat.Id);
         await listener.SendUpdateAsync(update);
