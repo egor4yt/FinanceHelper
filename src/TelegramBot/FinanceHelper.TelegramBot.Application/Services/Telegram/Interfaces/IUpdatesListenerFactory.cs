@@ -1,4 +1,4 @@
-﻿namespace FinanceHelper.TelegramBot.Application.Services.Interfaces;
+﻿namespace FinanceHelper.TelegramBot.Application.Services.Telegram.Interfaces;
 
 /// <summary>
 ///     Factory to access to telegram updates listeners

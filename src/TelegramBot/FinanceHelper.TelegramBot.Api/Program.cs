@@ -1,7 +1,7 @@
 ﻿using FinanceHelper.TelegramBot.Api.Configuration;
 using FinanceHelper.TelegramBot.Api.Services;
 using FinanceHelper.TelegramBot.Application.Configuration;
-using FinanceHelper.TelegramBot.Application.Services.Interfaces;
+using FinanceHelper.TelegramBot.Application.Services.Telegram.Interfaces;
 using FinanceHelper.TelegramBot.Shared;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Serilog;

@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using FinanceHelper.Application.Behaviours;
-using FinanceHelper.Application.Services.Interfaces;
 using FinanceHelper.Application.Services.Localization;
+using FinanceHelper.Application.Services.Localization.Interfaces;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;

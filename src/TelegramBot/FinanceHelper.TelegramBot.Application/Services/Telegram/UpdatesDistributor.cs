@@ -1,8 +1,8 @@
-﻿using FinanceHelper.TelegramBot.Application.Services.Interfaces;
+﻿using FinanceHelper.TelegramBot.Application.Services.Telegram.Interfaces;
 using Microsoft.Extensions.Logging;
 using Telegram.Bot.Types;
 
-namespace FinanceHelper.TelegramBot.Application.Services;
+namespace FinanceHelper.TelegramBot.Application.Services.Telegram;
 
 public class UpdatesDistributor(IUpdatesListenerFactory factory, ILogger<UpdatesDistributor> logger) : IUpdatesDistributor
 {

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Concurrent;
-using FinanceHelper.TelegramBot.Application.Services.Interfaces;
+using FinanceHelper.TelegramBot.Application.Services.Telegram.Interfaces;
 using Telegram.Bot;
 
-namespace FinanceHelper.TelegramBot.Application.Services;
+namespace FinanceHelper.TelegramBot.Application.Services.Telegram;
 
 /// <inheritdoc />
 public class UpdatesListenerFactory(ITelegramBotClient botClient) : IUpdatesListenerFactory

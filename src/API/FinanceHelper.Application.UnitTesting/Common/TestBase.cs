@@ -1,4 +1,4 @@
-﻿using FinanceHelper.Application.Services.Interfaces;
+﻿using FinanceHelper.Application.Services.Localization.Interfaces;
 using FinanceHelper.Persistence;
 using FinanceHelper.Shared;
 

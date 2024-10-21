@@ -1,10 +1,10 @@
 ﻿using FinanceHelper.TelegramBot.Application.Commands;
 using FinanceHelper.TelegramBot.Application.Commands.Base;
-using FinanceHelper.TelegramBot.Application.Services.Interfaces;
+using FinanceHelper.TelegramBot.Application.Services.Telegram.Interfaces;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 
-namespace FinanceHelper.TelegramBot.Application.Services;
+namespace FinanceHelper.TelegramBot.Application.Services.Telegram;
 
 public class BaseUpdateListener(ITelegramBotClient botClient) : IUpdatesListener
 {

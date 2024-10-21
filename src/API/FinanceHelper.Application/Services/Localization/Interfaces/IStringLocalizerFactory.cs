@@ -1,4 +1,4 @@
-﻿namespace FinanceHelper.Application.Services.Interfaces;
+﻿namespace FinanceHelper.Application.Services.Localization.Interfaces;
 
 internal interface IStringLocalizerFactory
 {

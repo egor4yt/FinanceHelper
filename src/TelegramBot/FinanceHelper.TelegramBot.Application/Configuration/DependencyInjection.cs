@@ -1,5 +1,6 @@
 ﻿using FinanceHelper.TelegramBot.Application.Services;
-using FinanceHelper.TelegramBot.Application.Services.Interfaces;
+using FinanceHelper.TelegramBot.Application.Services.Telegram;
+using FinanceHelper.TelegramBot.Application.Services.Telegram.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
