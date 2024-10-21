@@ -3,7 +3,7 @@ using System.Text.Json;
 using FinanceHelper.Application.Models;
 using Serilog;
 
-namespace FinanceHelper.Application.Services.Localization;
+namespace FinanceHelper.TelegramBot.Application.Services.Localization;
 
 /// <summary>
 ///     Includes all localizations of the one object

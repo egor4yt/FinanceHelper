@@ -1,11 +1,12 @@
 ﻿using System.Collections.Concurrent;
+using FinanceHelper.TelegramBot.Application.Services.Localization.Interfaces;
 using FinanceHelper.TelegramBot.Application.Services.Telegram.Interfaces;
 using Telegram.Bot;
 
 namespace FinanceHelper.TelegramBot.Application.Services.Telegram;
 
 /// <inheritdoc />
-public class UpdatesListenerFactory(ITelegramBotClient botClient) : IUpdatesListenerFactory
+public class UpdatesListenerFactory(ITelegramBotClient botClient, IStringLocalizerFactory localizationFactory) : IUpdatesListenerFactory
 {
     /// <summary>
     ///     User id : listener
@@ -17,7 +18,7 @@ public class UpdatesListenerFactory(ITelegramBotClient botClient) : IUpdatesList
         var listener = _listenersCache.GetValueOrDefault(chatId);
         if (listener is null)
         {
-            listener = new BaseUpdateListener(botClient);
+            listener = new BaseUpdateListener(botClient, localizationFactory);
             _listenersCache.GetOrAdd(chatId, listener);
         }
 

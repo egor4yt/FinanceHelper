@@ -1,4 +1,5 @@
-﻿using FinanceHelper.TelegramBot.Application.Services;
+﻿using FinanceHelper.TelegramBot.Application.Services.Localization;
+using FinanceHelper.TelegramBot.Application.Services.Localization.Interfaces;
 using FinanceHelper.TelegramBot.Application.Services.Telegram;
 using FinanceHelper.TelegramBot.Application.Services.Telegram.Interfaces;
 using Microsoft.Extensions.Configuration;
@@ -23,6 +24,7 @@ public static class DependencyInjection
 
     private static void ConfigureInfrastructure(IServiceCollection services, IConfiguration configuration)
     {
+        services.AddSingleton<IStringLocalizerFactory, StringLocalizerFactory>();
         services.AddSingleton<IUpdatesListenerFactory, UpdatesListenerFactory>();
         services.AddTransient<IUpdatesDistributor, UpdatesDistributor>();
     }
