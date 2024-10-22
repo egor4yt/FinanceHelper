@@ -7,11 +7,11 @@ RUN apt-get update && apt-get install -y curl
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["API/FinanceHelper.Api/FinanceHelper.Api.csproj", "FinanceHelper.Api/"]
-COPY ["API/FinanceHelper.Application/FinanceHelper.Application.csproj", "FinanceHelper.Application/"]
-COPY ["API/FinanceHelper.Shared/FinanceHelper.Shared.csproj", "FinanceHelper.Shared/"]
-COPY ["API/FinanceHelper.Persistence/FinanceHelper.Persistence.csproj", "FinanceHelper.Persistence/"]
-COPY ["API/FinanceHelper.Domain/FinanceHelper.Domain.csproj", "FinanceHelper.Domain/"]
+COPY ["FinanceHelper.Api/FinanceHelper.Api.csproj", "FinanceHelper.Api/"]
+COPY ["FinanceHelper.Application/FinanceHelper.Application.csproj", "FinanceHelper.Application/"]
+COPY ["FinanceHelper.Shared/FinanceHelper.Shared.csproj", "FinanceHelper.Shared/"]
+COPY ["FinanceHelper.Persistence/FinanceHelper.Persistence.csproj", "FinanceHelper.Persistence/"]
+COPY ["FinanceHelper.Domain/FinanceHelper.Domain.csproj", "FinanceHelper.Domain/"]
 RUN dotnet restore "FinanceHelper.Api/FinanceHelper.Api.csproj"
 COPY . .
 WORKDIR "/src/FinanceHelper.Api"
