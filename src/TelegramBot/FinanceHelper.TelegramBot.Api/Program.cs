@@ -2,6 +2,9 @@
 using FinanceHelper.TelegramBot.Api.Services;
 using FinanceHelper.TelegramBot.Application.Configuration;
 using FinanceHelper.TelegramBot.Application.Services.Telegram.Interfaces;
+using FinanceHelper.TelegramBot.MessageBroker.Configuration;
+using FinanceHelper.TelegramBot.MessageBroker.MessageBrokers.Base;
+using FinanceHelper.TelegramBot.MessageBroker.Messages.Registration;
 using FinanceHelper.TelegramBot.Shared;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Serilog;
@@ -22,12 +25,13 @@ try
     Log.Information("Starting web application");
     builder.ConfigureApi();
     builder.ConfigureApplication();
+    builder.ConfigureMessageBroker();
     builder.Services.AddControllers().AddNewtonsoftJson();
     builder.Services.AddSerilog();
 
     var app = builder.Build();
+    
     var telegramBot = app.Services.GetRequiredService<ITelegramBotClient>();
-
     var telegramWebhookUrl = app.Configuration.GetSection(ConfigurationKeys.TelegramBotWebhookUrl);
     if (string.IsNullOrWhiteSpace(telegramWebhookUrl.Value)) throw new NullReferenceException($"Environment variable '{ConfigurationKeys.TelegramBotWebhookUrl}' was null");
     await telegramBot.DeleteWebhookAsync();
@@ -47,7 +51,7 @@ try
     {
         using var bodyReader = new StreamReader(context.Request.Body);
         var json = await bodyReader.ReadToEndAsync();
-        var update = Newtonsoft.Json.JsonConvert.DeserializeObject<Update>(json);
+        var update = Newtonsoft.Json.JsonConvert.DeserializeObject<Update>(json); // it is required to use Newtonsoft.Json here
         if (update == null) return;
 
         var distributor = context.RequestServices.GetRequiredService<IUpdatesDistributor>();

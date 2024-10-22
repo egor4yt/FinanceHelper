@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 using System.Text.Json;
-using FinanceHelper.Application.Models;
+using FinanceHelper.TelegramBot.Application.Models;
 using Serilog;
 
 namespace FinanceHelper.TelegramBot.Application.Services.Localization;

@@ -1,11 +1,12 @@
 ﻿using FinanceHelper.TelegramBot.Application.Commands.Base;
 using FinanceHelper.TelegramBot.Application.Services.Localization.Interfaces;
+using FinanceHelper.TelegramBot.MessageBroker.MessageBrokers.Base;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 
 namespace FinanceHelper.TelegramBot.Application.Commands;
 
-public class UnknownCommand(ITelegramBotClient botClient) : BaseCommand(botClient)
+public class UnknownCommand(ITelegramBotClient botClient, IMessageBroker messageBroker) : BaseCommand(botClient, messageBroker)
 {
     public override string? Command => null;
 

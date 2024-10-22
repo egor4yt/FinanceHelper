@@ -1,4 +1,4 @@
-﻿namespace FinanceHelper.Application.Models;
+﻿namespace FinanceHelper.TelegramBot.Application.Models;
 
 internal class LocalizedString(string keyword, string value)
 {

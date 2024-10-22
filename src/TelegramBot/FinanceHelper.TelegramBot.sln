@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinanceHelper.TelegramBot.S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinanceHelper.TelegramBot.Application", "FinanceHelper.TelegramBot.Application\FinanceHelper.TelegramBot.Application.csproj", "{B8CC5730-2FE6-4B42-81E2-9762F7C4D5FA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinanceHelper.TelegramBot.MessageBroker", "FinanceHelper.TelegramBot.MessageBroker\FinanceHelper.TelegramBot.MessageBroker.csproj", "{7D370355-0183-4BEE-8FE0-904F1DD30CE6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{B8CC5730-2FE6-4B42-81E2-9762F7C4D5FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B8CC5730-2FE6-4B42-81E2-9762F7C4D5FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B8CC5730-2FE6-4B42-81E2-9762F7C4D5FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D370355-0183-4BEE-8FE0-904F1DD30CE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D370355-0183-4BEE-8FE0-904F1DD30CE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D370355-0183-4BEE-8FE0-904F1DD30CE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D370355-0183-4BEE-8FE0-904F1DD30CE6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -1,12 +1,13 @@
 ﻿using FinanceHelper.TelegramBot.Application.Commands.Base;
 using FinanceHelper.TelegramBot.Application.Services.Localization.Interfaces;
+using FinanceHelper.TelegramBot.MessageBroker.MessageBrokers.Base;
 using FinanceHelper.TelegramBot.Shared;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 
 namespace FinanceHelper.TelegramBot.Application.Commands;
 
-public class AdminCommand(ITelegramBotClient botClient) : BaseCommand(botClient)
+public class AdminCommand(ITelegramBotClient botClient, IMessageBroker messageBroker) : BaseCommand(botClient, messageBroker)
 {
     public override string? Command => "/admin";
 
