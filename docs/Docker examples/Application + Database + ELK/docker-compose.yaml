@@ -39,8 +39,8 @@ services:
   # Web API service
   webapi:
     build:
-      context: .
-      dockerfile: /API/FinanceHelper.Api/Dockerfile
+      context: /API
+      dockerfile: FinanceHelper.Api/Dockerfile
     ports:
       - "${WEBAPI_PUBLIC_PORT}:8080"
     depends_on:
