@@ -2,7 +2,7 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace FinanceHelper.Application.Queries.SupportedLanguages;
+namespace FinanceHelper.Application.Queries.SupportedLanguages.GetLocalized;
 
 public class GetLocalizedSupportedLanguagesQueryHandler(ApplicationDbContext applicationDbContext) : IRequestHandler<GetLocalizedSupportedLanguagesQueryRequest, GetLocalizedSupportedLanguagesQueryResponse>
 {

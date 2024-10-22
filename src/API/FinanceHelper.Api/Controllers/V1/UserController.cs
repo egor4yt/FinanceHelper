@@ -27,12 +27,12 @@ public class UserController(IOptions<JwtOptions> jwtOptions) : ApiControllerBase
     [ProducesResponseType(typeof(GetOneUserQueryResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetMe()
     {
-        var command = new GetOneUserQueryRequest
+        var query = new GetOneUserQueryRequest
         {
             Id = CurrentUserService.UserId
         };
 
-        var response = await Mediator.Send(command);
+        var response = await Mediator.Send(query);
         return Ok(response);
     }
 
