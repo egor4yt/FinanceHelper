@@ -21,8 +21,8 @@ public class GetLocalizedExpenseItemTypesQueryHandler(ApplicationDbContext appli
                     localization.MetadataTypeCode,
                     localization.LocalizedValue
                 })
-            .Where(x => x.SupportedLanguageCode == request.LanguageCode)
-            .Select(x =>  new GetLocalizedExpenseItemTypesQueryResponseItem
+            .Where(x => x.SupportedLanguageCode == request.LanguageCode && x.MetadataTypeCode == Domain.Metadata.MetadataType.ExpenseItemType.Code)
+            .Select(x => new GetLocalizedExpenseItemTypesQueryResponseItem
             {
                 Code = x.Code,
                 Value = x.LocalizedValue
