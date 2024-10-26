@@ -1,0 +1,4 @@
+﻿{
+  "IncomeSourceDoesNotExists": "Источник дохода с идентификатором '{0}' не существует.",
+  "IncomeSourceTypeDoesNotExists": "Тип источника дохода '{0}' не существует."
+}

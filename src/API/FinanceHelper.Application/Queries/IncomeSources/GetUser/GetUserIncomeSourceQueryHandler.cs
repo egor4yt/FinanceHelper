@@ -22,12 +22,14 @@ public class GetUserIncomeSourceQueryHandler(ApplicationDbContext applicationDbC
                     item.OwnerId,
                     item.IncomeSourceTypeCode,
                     item.Name,
+                    item.DeletedAt,
                     localization.SupportedLanguageCode,
                     localization.MetadataTypeCode,
                     localization.LocalizedValue
                 })
             .Where(x => x.OwnerId == request.OwnerId
                         && x.SupportedLanguageCode == request.LocalizationCode
+                        && x.DeletedAt == null
                         && x.MetadataTypeCode == Domain.Metadata.MetadataType.IncomeSourceType.Code)
             .ToListAsync(cancellationToken);
 
