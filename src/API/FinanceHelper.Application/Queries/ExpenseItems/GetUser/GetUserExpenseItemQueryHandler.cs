@@ -22,6 +22,7 @@ public class GetUserExpenseItemQueryHandler(ApplicationDbContext applicationDbCo
                     item.OwnerId,
                     item.ExpenseItemTypeCode,
                     item.Name,
+                    item.DeletedAt,
                     localization.SupportedLanguageCode,
                     localization.MetadataTypeCode,
                     localization.LocalizedValue
@@ -29,6 +30,7 @@ public class GetUserExpenseItemQueryHandler(ApplicationDbContext applicationDbCo
             .Where(x => x.OwnerId == request.OwnerId
                         && x.ExpenseItemTypeCode != null
                         && x.SupportedLanguageCode == request.LocalizationCode
+                        && x.DeletedAt == null
                         && x.MetadataTypeCode == Domain.Metadata.MetadataType.ExpenseItemType.Code)
             .ToListAsync(cancellationToken);
 

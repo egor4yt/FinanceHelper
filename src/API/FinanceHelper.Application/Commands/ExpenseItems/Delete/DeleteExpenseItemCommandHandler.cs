@@ -18,7 +18,7 @@ public class DeleteExpenseItemCommandHandler(ApplicationDbContext applicationDbC
 
         if (expenseItem.FinanceDistributionPlanItems.Count != 0)
         {
-            expenseItem.Hidden = true;
+            expenseItem.DeletedAt = DateTime.UtcNow;
             applicationDbContext.ExpenseItems.Update(expenseItem);
         }
         else

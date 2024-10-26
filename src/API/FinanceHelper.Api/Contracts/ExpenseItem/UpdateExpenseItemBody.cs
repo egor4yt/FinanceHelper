@@ -6,7 +6,7 @@
 public class UpdateExpenseItemBody
 {
     /// <summary>
-    ///     Nes expense item name
+    ///     New expense item name
     /// </summary>
     public string Name { get; init; } = string.Empty!;
 
