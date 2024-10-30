@@ -6,7 +6,7 @@
 
 3. Create your version or copy example of the [docker-compose.yaml](Docker%20examples%2FApplication%20%2B%20Database%2Fdocker-compose.yaml) in ./src directory
 
-4. Execute command to start application ``docker compose up -d --build``
+4. Execute command to start application ``docker compose up -d --build --force-recreate``
 
 5. If you used example of '.env' and 'docker-compose.yaml' files, application will be available at http://localhost:5719/swagger or http://127.0.0.1:5719/swagger.
 
