@@ -3,6 +3,8 @@ version: '3.9'
 volumes:
   finance-helper-logs:
     driver: local
+  database:
+    driver: local
 
 services:
   # Database service
@@ -11,7 +13,7 @@ services:
     ports:
       - "${DB_PUBLIC_PORT}:5432"
     volumes:
-      - /var/lib/postgresql/data/
+      - database:/var/lib/postgresql/data/
     environment:
       - POSTGRES_DB=${DB_NAME}
       - POSTGRES_USER=${DB_USER}

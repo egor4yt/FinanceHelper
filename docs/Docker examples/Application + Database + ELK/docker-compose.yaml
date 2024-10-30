@@ -3,6 +3,8 @@ version: '3.9'
 volumes:
   finance-helper-logs:
     driver: local
+  database:
+    driver: local
   elk-certs:
     driver: local
   elk-kibana:
@@ -24,7 +26,7 @@ services:
     ports:
       - "${DB_PUBLIC_PORT}:5432"
     volumes:
-      - /var/lib/postgresql/data/
+      - database:/var/lib/postgresql/data/
     environment:
       - POSTGRES_DB=${DB_NAME}
       - POSTGRES_USER=${DB_USER}
@@ -109,6 +111,8 @@ services:
         echo "Setting kibana_system password";
         until curl -s -X POST --cacert config/certs/ca/ca.crt -u "elastic:${ELK_ELASTIC_PASSWORD}" -H "Content-Type: application/json" https://elk-es01:9200/_security/user/kibana_system/_password -d "{\"password\":\"${ELK_KIBANA_PASSWORD}\"}" | grep -q "^{}"; do sleep 10; done;
         echo "All done!";
+        sleep 30;
+        echo "Turning container off!";
       '
     healthcheck:
       test: [ "CMD-SHELL", "[ -f config/certs/elk-es01/elk-es01.crt ]" ]

@@ -88,6 +88,6 @@ public class DeleteExpenseItemCommandTests : TestBase<DeleteExpenseItemCommandHa
                               && x.OwnerId == expenseItem.OwnerId);
 
         // Assert
-        Assert.True(databaseObject.Hidden);
+        Assert.NotNull(databaseObject.DeletedAt);
     }
 }
