@@ -19,7 +19,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\FinanceHelper.TelegramBot.Application\FinanceHelper.TelegramBot.Application.csproj"/>
-        <ProjectReference Include="..\FinanceHelper.TelegramBot.MessageBroker\FinanceHelper.TelegramBot.MessageBroker.csproj" />
+        <ProjectReference Include="..\FinanceHelper.TelegramBot.MessageBroker\FinanceHelper.TelegramBot.MessageBroker.csproj"/>
         <ProjectReference Include="..\FinanceHelper.TelegramBot.Shared\FinanceHelper.TelegramBot.Shared.csproj"/>
     </ItemGroup>
 

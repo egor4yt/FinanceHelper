@@ -3,8 +3,6 @@ using FinanceHelper.TelegramBot.Api.Services;
 using FinanceHelper.TelegramBot.Application.Configuration;
 using FinanceHelper.TelegramBot.Application.Services.Telegram.Interfaces;
 using FinanceHelper.TelegramBot.MessageBroker.Configuration;
-using FinanceHelper.TelegramBot.MessageBroker.MessageBrokers.Base;
-using FinanceHelper.TelegramBot.MessageBroker.Messages.Registration;
 using FinanceHelper.TelegramBot.Shared;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Serilog;
@@ -30,7 +28,7 @@ try
     builder.Services.AddSerilog();
 
     var app = builder.Build();
-    
+
     var telegramBot = app.Services.GetRequiredService<ITelegramBotClient>();
     var telegramWebhookUrl = app.Configuration.GetSection(ConfigurationKeys.TelegramBotWebhookUrl);
     if (string.IsNullOrWhiteSpace(telegramWebhookUrl.Value)) throw new NullReferenceException($"Environment variable '{ConfigurationKeys.TelegramBotWebhookUrl}' was null");
