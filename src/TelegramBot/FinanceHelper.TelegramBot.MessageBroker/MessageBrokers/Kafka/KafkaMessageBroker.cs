@@ -1,5 +1,6 @@
 ﻿using Confluent.Kafka;
 using FinanceHelper.TelegramBot.MessageBroker.MessageBrokers.Base;
+using FinanceHelper.TelegramBot.MessageBroker.MessageBrokers.Kafka.Serializers;
 using FinanceHelper.TelegramBot.MessageBroker.Messages.Registration;
 using Microsoft.Extensions.Logging;
 

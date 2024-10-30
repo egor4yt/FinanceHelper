@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using Confluent.Kafka;
 
-namespace FinanceHelper.TelegramBot.MessageBroker.MessageBrokers.Kafka;
+namespace FinanceHelper.TelegramBot.MessageBroker.MessageBrokers.Kafka.Serializers;
 
 public class KafkaJsonSerializer<T> : ISerializer<T>
 {
