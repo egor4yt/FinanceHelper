@@ -14,6 +14,7 @@ public class User
 
     public virtual SupportedLanguage PreferredLocalization { get; set; } = null!;
     public virtual ICollection<FinanceDistributionPlan> FinanceDistributionPlans { get; set; } = null!;
+    public virtual ICollection<FinanceDistributionPlanTemplate> FinanceDistributionPlanTemplates { get; set; } = null!;
     public virtual ICollection<ExpenseItem> ExpenseItems { get; set; } = null!;
     public virtual ICollection<IncomeSource> IncomeSources { get; set; } = null!;
     public virtual ICollection<Tag> Tags { get; set; } = null!;

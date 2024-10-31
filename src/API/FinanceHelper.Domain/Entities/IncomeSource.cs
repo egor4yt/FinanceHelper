@@ -16,5 +16,6 @@ public class IncomeSource : ISoftDeletable
     public virtual User Owner { get; set; } = null!;
     public virtual IncomeSourceType IncomeSourceType { get; set; } = null!;
     public virtual ICollection<FinanceDistributionPlan> FinanceDistributionPlans { get; set; } = null!;
+    public virtual ICollection<FinanceDistributionPlanTemplate> FinanceDistributionPlanTemplates { get; set; } = null!;
     public DateTime? DeletedAt { get; set; }
 }

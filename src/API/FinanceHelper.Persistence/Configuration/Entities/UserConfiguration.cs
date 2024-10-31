@@ -33,7 +33,11 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .Property(x => x.Email)
             .IsRequired()
             .HasColumnType("varchar(32)");
-
+        
+        builder
+            .HasIndex(x => x.Email)
+            .IsUnique();
+        
         builder
             .Property(x => x.PasswordHash)
             .IsRequired();
