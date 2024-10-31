@@ -35,7 +35,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .HasColumnType("varchar(32)");
         
         builder
-            .HasIndex(x => x.Email)
+            .HasIndex(x => x.Email, "UX_Users_Email")
             .IsUnique();
         
         builder

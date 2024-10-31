@@ -193,7 +193,7 @@ namespace FinanceHelper.Persistence.Migrations
 
                     b.HasIndex("OwnerId");
 
-                    b.ToTable("FinanceDistributionPlanTemplate");
+                    b.ToTable("FinanceDistributionPlanTemplates");
                 });
 
             modelBuilder.Entity("FinanceHelper.Domain.Entities.FinanceDistributionPlanTemplateItem", b =>
@@ -225,7 +225,7 @@ namespace FinanceHelper.Persistence.Migrations
 
                     b.HasIndex("ValueTypeCode");
 
-                    b.ToTable("FinanceDistributionPlanTemplateItem");
+                    b.ToTable("FinanceDistributionPlanTemplateItems");
                 });
 
             modelBuilder.Entity("FinanceHelper.Domain.Entities.FinancesDistributionItemValueType", b =>
@@ -704,10 +704,10 @@ namespace FinanceHelper.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Email")
-                        .IsUnique();
-
                     b.HasIndex("PreferredLocalizationCode");
+
+                    b.HasIndex(new[] { "Email" }, "UX_Users_Email")
+                        .IsUnique();
 
                     b.ToTable("Users");
                 });

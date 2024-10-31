@@ -20,7 +20,7 @@ namespace FinanceHelper.Persistence.Migrations
                 table: "FinanceDistributionPlans");
 
             migrationBuilder.CreateTable(
-                name: "FinanceDistributionPlanTemplate",
+                name: "FinanceDistributionPlanTemplates",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
@@ -31,7 +31,7 @@ namespace FinanceHelper.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FinanceDistributionPlanTemplate", x => x.Id);
+                    table.PrimaryKey("PK_FinanceDistributionPlanTemplates", x => x.Id);
                     table.ForeignKey(
                         name: "FK_FinanceDistributionPlanTemplate_IncomeSource",
                         column: x => x.IncomeSourceId,
@@ -47,7 +47,7 @@ namespace FinanceHelper.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "FinanceDistributionPlanTemplateItem",
+                name: "FinanceDistributionPlanTemplateItems",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
@@ -59,7 +59,7 @@ namespace FinanceHelper.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FinanceDistributionPlanTemplateItem", x => x.Id);
+                    table.PrimaryKey("PK_FinanceDistributionPlanTemplateItems", x => x.Id);
                     table.ForeignKey(
                         name: "FK_FinanceDistributionPlanTemplateItem_ExpenseItem",
                         column: x => x.ExpenseItemId,
@@ -69,7 +69,7 @@ namespace FinanceHelper.Persistence.Migrations
                     table.ForeignKey(
                         name: "FK_FinanceDistributionPlanTemplateItem_FinanceDistributionPlanTemplate",
                         column: x => x.FinanceDistributionPlanTemplateId,
-                        principalTable: "FinanceDistributionPlanTemplate",
+                        principalTable: "FinanceDistributionPlanTemplates",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -81,35 +81,35 @@ namespace FinanceHelper.Persistence.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_Email",
+                name: "UX_Users_Email",
                 table: "Users",
                 column: "Email",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_FinanceDistributionPlanTemplate_IncomeSourceId",
-                table: "FinanceDistributionPlanTemplate",
-                column: "IncomeSourceId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_FinanceDistributionPlanTemplate_OwnerId",
-                table: "FinanceDistributionPlanTemplate",
-                column: "OwnerId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_FinanceDistributionPlanTemplateItem_ExpenseItemId",
-                table: "FinanceDistributionPlanTemplateItem",
+                name: "IX_FinanceDistributionPlanTemplateItems_ExpenseItemId",
+                table: "FinanceDistributionPlanTemplateItems",
                 column: "ExpenseItemId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FinanceDistributionPlanTemplateItem_FinanceDistributionPlan~",
-                table: "FinanceDistributionPlanTemplateItem",
+                name: "IX_FinanceDistributionPlanTemplateItems_FinanceDistributionPla~",
+                table: "FinanceDistributionPlanTemplateItems",
                 column: "FinanceDistributionPlanTemplateId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FinanceDistributionPlanTemplateItem_ValueTypeCode",
-                table: "FinanceDistributionPlanTemplateItem",
+                name: "IX_FinanceDistributionPlanTemplateItems_ValueTypeCode",
+                table: "FinanceDistributionPlanTemplateItems",
                 column: "ValueTypeCode");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FinanceDistributionPlanTemplates_IncomeSourceId",
+                table: "FinanceDistributionPlanTemplates",
+                column: "IncomeSourceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FinanceDistributionPlanTemplates_OwnerId",
+                table: "FinanceDistributionPlanTemplates",
+                column: "OwnerId");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_FinanceDistributionPlanItem_ExpenseItem",
@@ -140,13 +140,13 @@ namespace FinanceHelper.Persistence.Migrations
                 table: "FinanceDistributionPlans");
 
             migrationBuilder.DropTable(
-                name: "FinanceDistributionPlanTemplateItem");
+                name: "FinanceDistributionPlanTemplateItems");
 
             migrationBuilder.DropTable(
-                name: "FinanceDistributionPlanTemplate");
+                name: "FinanceDistributionPlanTemplates");
 
             migrationBuilder.DropIndex(
-                name: "IX_Users_Email",
+                name: "UX_Users_Email",
                 table: "Users");
 
             migrationBuilder.AddForeignKey(

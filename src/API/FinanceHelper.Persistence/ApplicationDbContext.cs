@@ -19,6 +19,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<ExpenseItem> ExpenseItems { get; set; }
     public DbSet<FinanceDistributionPlanItem> FinanceDistributionPlanItems { get; set; }
     public DbSet<FinanceDistributionPlan> FinanceDistributionPlans { get; set; }
+    public DbSet<FinanceDistributionPlanTemplate> FinanceDistributionPlanTemplates { get; set; }
+    public DbSet<FinanceDistributionPlanTemplateItem> FinanceDistributionPlanTemplateItems { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

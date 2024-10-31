@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FinanceHelper.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241031124017_AddedFinancePlanTemplates")]
+    [Migration("20241031130300_AddedFinancePlanTemplates")]
     partial class AddedFinancePlanTemplates
     {
         /// <inheritdoc />
@@ -196,7 +196,7 @@ namespace FinanceHelper.Persistence.Migrations
 
                     b.HasIndex("OwnerId");
 
-                    b.ToTable("FinanceDistributionPlanTemplate");
+                    b.ToTable("FinanceDistributionPlanTemplates");
                 });
 
             modelBuilder.Entity("FinanceHelper.Domain.Entities.FinanceDistributionPlanTemplateItem", b =>
@@ -228,7 +228,7 @@ namespace FinanceHelper.Persistence.Migrations
 
                     b.HasIndex("ValueTypeCode");
 
-                    b.ToTable("FinanceDistributionPlanTemplateItem");
+                    b.ToTable("FinanceDistributionPlanTemplateItems");
                 });
 
             modelBuilder.Entity("FinanceHelper.Domain.Entities.FinancesDistributionItemValueType", b =>
@@ -707,10 +707,10 @@ namespace FinanceHelper.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Email")
-                        .IsUnique();
-
                     b.HasIndex("PreferredLocalizationCode");
+
+                    b.HasIndex(new[] { "Email" }, "UX_Users_Email")
+                        .IsUnique();
 
                     b.ToTable("Users");
                 });
