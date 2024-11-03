@@ -9,7 +9,7 @@ namespace FinanceHelper.TelegramBot.MessageBroker.MessageBrokers.Kafka;
 /// <summary>
 ///     Kafka message broker
 /// </summary>
-public class KafkaMessageBroker(ILogger<KafkaMessageBroker> logger, ProducerConfig config) : IMessageBroker
+public class KafkaMessageBroker(ILogger<KafkaMessageBroker> logger, ProducerConfig producerConfig) : IMessageBroker
 {
     /// <summary>
     ///     Message type : target topics
@@ -19,10 +19,10 @@ public class KafkaMessageBroker(ILogger<KafkaMessageBroker> logger, ProducerConf
         { typeof(RegisterUser), [KafkaTopic.TelegramRegistration] }
     };
 
-    public async Task SendAsync<T>(T data)
+    public async Task ProduceAsync<T>(T data)
     {
         var topics = GetTopicsForMessage<T>();
-        using var producer = new ProducerBuilder<Null, T>(config)
+        using var producer = new ProducerBuilder<Null, T>(producerConfig)
             .SetValueSerializer(new KafkaJsonSerializer<T>())
             .Build();
 
@@ -36,7 +36,7 @@ public class KafkaMessageBroker(ILogger<KafkaMessageBroker> logger, ProducerConf
             }
             catch (Exception e)
             {
-                logger.LogError(e, "Kafka can't send message of type '{Type}' to topic '{Topic}'", typeof(T).ToString(), topic);
+                logger.LogError(e, "Kafka couldn't send message of type '{Type}' to topic '{Topic}'", typeof(T).ToString(), topic);
             }
         }
     }

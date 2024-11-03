@@ -1,4 +1,5 @@
-﻿using FinanceHelper.TelegramBot.Application.Commands.Base;
+﻿using System.Globalization;
+using FinanceHelper.TelegramBot.Application.Commands.Base;
 using FinanceHelper.TelegramBot.Application.Services.Localization.Interfaces;
 using FinanceHelper.TelegramBot.MessageBroker.MessageBrokers.Base;
 using FinanceHelper.TelegramBot.MessageBroker.Messages.Registration;
@@ -24,7 +25,9 @@ public class StartCommand(ITelegramBotClient botClient, IMessageBroker messageBr
         registerUser.ChatId = from.Id;
         registerUser.FirstName = from.FirstName;
         registerUser.LastName = from.LastName;
+        if (string.IsNullOrWhiteSpace(from.LanguageCode) == false)
+            registerUser.PreferredLocalizationCode = new CultureInfo(from.LanguageCode).TwoLetterISOLanguageName;
 
-        await MessageBroker.SendAsync(registerUser);
+        await MessageBroker.ProduceAsync(registerUser);
     }
 }

@@ -1,4 +1,5 @@
-﻿using Confluent.Kafka;
+﻿using System.Net;
+using Confluent.Kafka;
 using FinanceHelper.TelegramBot.MessageBroker.MessageBrokers.Base;
 using FinanceHelper.TelegramBot.MessageBroker.MessageBrokers.Kafka;
 using FinanceHelper.TelegramBot.Shared;
@@ -33,9 +34,11 @@ public static class DependencyInjection
                 var config = new ProducerConfig
                 {
                     BootstrapServers = connectionString.Value,
+                    ClientId = Dns.GetHostName(),
                     AllowAutoCreateTopics = true,
                     Acks = Acks.All,
                     EnableIdempotence = true,
+                    MessageSendMaxRetries = 3,
                     MaxInFlight = 5
                 };
                 services.AddSingleton(config);
