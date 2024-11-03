@@ -9,6 +9,17 @@ filebeat.inputs:
     json.keys_under_root: true
     json.add_error_key: true
 
+filebeat.inputs:
+  - type: log
+    id: finance-helper-telegram-bot
+    enabled: true
+    paths:
+      - /app/finance-helper-telegram-bot/logs/*.log
+    fields:
+      service: finance-helper-telegram-bot
+    json.keys_under_root: true
+    json.add_error_key: true
+
 setup.kibana:
   host: ${KIBANA_HOSTS}
   username: ${ELASTIC_USER}

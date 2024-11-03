@@ -3,6 +3,8 @@ version: '3.9'
 volumes:
   finance-helper-logs:
     driver: local
+  finance-helper-telegram-bot-logs:
+    driver: local
   database:
     driver: local
   elk-certs:
@@ -12,6 +14,8 @@ volumes:
   elk-es01:
     driver: local
   elk-logstash:
+    driver: local
+  kafka:
     driver: local
 
 networks:
@@ -51,8 +55,34 @@ services:
     environment:
       - ConnectionStrings:DatabaseConnection=host=database;port=5432;database=${DB_NAME};username=${DB_USER};password=${DB_PASSWORD}
       - CorsOrigins=${CORS_ORIGINS}
+      - ConnectionStrings:Kafka=kafka01:9092
+      - MessageBroker=kafka
     volumes:
       - finance-helper-logs:/app/logs
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:8080/health || exit 1" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
+
+  # Telegram bot service
+  telegram-bot:
+    build:
+      context: /TelegramBot
+      dockerfile: FinanceHelper.TelegramBot.Api/Dockerfile
+    ports:
+      - "${TELEGRAM_BOT_PUBLIC_PORT}:8080"
+    depends_on:
+      kafka01:
+        condition: service_healthy
+    environment:
+      - ConnectionStrings:Kafka=kafka01:9092
+      - MessageBroker=kafka
+      - TelegramBot:WebhookUrl=${TELEGRAM_BOT_WEBHOOK_URL}
+      - TelegramBot:ApiKey=${TELEGRAM_BOT_API_KEY}
+    volumes:
+      - finance-helper-telegram-bot-logs:/app/logs
     healthcheck:
       test: [ "CMD-SHELL", "curl -f http://localhost:8080/health || exit 1" ]
       interval: 30s
@@ -119,7 +149,6 @@ services:
       interval: 1s
       timeout: 5s
       retries: 120
-      
   
   # Elasticsearch
   elk-es01:
@@ -231,8 +260,6 @@ services:
   # Filebeat
   filebeat:
     depends_on:
-      webapi:
-        condition: service_healthy
       elk-logstash:
         condition: service_healthy
     image: docker.elastic.co/beats/filebeat:${ELK_VERSION}
@@ -243,8 +270,30 @@ services:
       - elk-certs:/usr/share/filebeat/certs
       - ./ELK-config/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
       - finance-helper-logs:/app/finance-helper/logs
+      - finance-helper-telegram-bot-logs:/app/finance-helper-telegram-bot/logs
     environment:
       - ELASTIC_USER=elastic
       - ELASTIC_PASSWORD=${ELK_ELASTIC_PASSWORD}
       - KIBANA_HOSTS=http://elk-kibana:5601
       - LOGSTASH_HOSTS=elk-logstash:5044
+  
+  # Message broker service
+  kafka01:
+    image: bitnami/kafka:latest
+    volumes:
+      - kafka:/bitnami/kafka
+    environment:
+      - KAFKA_CFG_NODE_ID=1
+      - KAFKA_KRAFT_CLUSTER_ID=default-cluster
+      - KAFKA_CFG_PROCESS_ROLES=controller,broker
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@kafka01:9091
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9090,CONTROLLER://:9091,EXTERNAL://:9092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka01:9090,EXTERNAL://kafka01:9092
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
+    healthcheck:
+      test: /opt/bitnami/kafka/bin/kafka-cluster.sh cluster-id --bootstrap-server kafka01:9092 || exit 1
+      interval: 2s
+      timeout: 2s
+      retries: 15

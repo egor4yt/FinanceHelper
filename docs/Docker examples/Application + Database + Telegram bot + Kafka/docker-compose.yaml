@@ -1,0 +1,99 @@
+version: '3.9'
+
+volumes:
+  finance-helper-logs:
+    driver: local
+  finance-helper-telegram-bot-logs:
+    driver: local
+  database:
+    driver: local
+  kafka:
+    driver: local
+
+services:
+  # Database service
+  database:
+    image: postgres:latest
+    ports:
+      - "${DB_PUBLIC_PORT}:5432"
+    volumes:
+      - database:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+  
+  # Web API service
+  webapi:
+    build:
+      context: /API
+      dockerfile: FinanceHelper.Api/Dockerfile
+    ports:
+      - "${WEBAPI_PUBLIC_PORT}:8080"
+    depends_on:
+      database:
+        condition: service_healthy
+    environment:
+      - ConnectionStrings:DatabaseConnection=host=database;port=5432;database=${DB_NAME};username=${DB_USER};password=${DB_PASSWORD}
+      - CorsOrigins=${CORS_ORIGINS}
+      - ConnectionStrings:Kafka=kafka01:9092
+      - MessageBroker=kafka
+    volumes:
+      - finance-helper-logs:/app/logs
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:8080/health || exit 1" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
+
+  # Telegram bot service
+  telegram-bot:
+    build:
+      context: /TelegramBot
+      dockerfile: FinanceHelper.TelegramBot.Api/Dockerfile
+    ports:
+      - "${TELEGRAM_BOT_PUBLIC_PORT}:8080"
+    depends_on:
+      kafka01:
+        condition: service_healthy
+    environment:
+      - ConnectionStrings:Kafka=kafka01:9092
+      - MessageBroker=kafka
+      - TelegramBot:WebhookUrl=${TELEGRAM_BOT_WEBHOOK_URL}
+      - TelegramBot:ApiKey=${TELEGRAM_BOT_API_KEY}
+    volumes:
+      - finance-helper-telegram-bot-logs:/app/logs
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:8080/health || exit 1" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
+  
+  # Message broker service
+  kafka01:
+    image: bitnami/kafka:latest
+    volumes:
+      - kafka:/bitnami/kafka
+    environment:
+      - KAFKA_CFG_NODE_ID=1
+      - KAFKA_KRAFT_CLUSTER_ID=default-cluster
+      - KAFKA_CFG_PROCESS_ROLES=controller,broker
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@kafka01:9091
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9090,CONTROLLER://:9091,EXTERNAL://:9092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka01:9090,EXTERNAL://kafka01:9092
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
+    healthcheck:
+      test: /opt/bitnami/kafka/bin/kafka-cluster.sh cluster-id --bootstrap-server kafka01:9092 || exit 1
+      interval: 2s
+      timeout: 2s
+      retries: 15
