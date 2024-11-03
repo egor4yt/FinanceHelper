@@ -3,5 +3,5 @@
 public class RegisterUserCommandResponse
 {
     public long UserId { get; set; }
-    public string BearerToken { get; set; } = null!;
+    public string? BearerToken { get; set; }
 }

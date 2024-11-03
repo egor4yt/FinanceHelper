@@ -10,6 +10,12 @@ public class RegisterUserCommandValidator : AbstractValidator<RegisterUserComman
     {
         var supportedLocalizations = localizationOptions.Value.SupportedCultures!.Select(x => x.TwoLetterISOLanguageName).ToList();
 
+        When(x => x.TelegramChatId.HasValue == false, () => FromApiValidation(supportedLocalizations))
+            .Otherwise(FromTelegramValidation);
+    }
+
+    private void FromApiValidation(IEnumerable<string> supportedLocalizations)
+    {
         RuleFor(x => x.Email)
             .NotEmpty()
             .EmailAddress();
@@ -32,5 +38,12 @@ public class RegisterUserCommandValidator : AbstractValidator<RegisterUserComman
 
         RuleFor(x => x.JwtDescriptorDetails)
             .NotNull();
+    }
+
+    private void FromTelegramValidation()
+    {
+        RuleFor(x => x.TelegramChatId)
+            .NotNull()
+            .GreaterThan(0);
     }
 }

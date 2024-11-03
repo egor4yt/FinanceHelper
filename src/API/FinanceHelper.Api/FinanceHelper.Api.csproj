@@ -28,6 +28,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\FinanceHelper.Application\FinanceHelper.Application.csproj"/>
+        <ProjectReference Include="..\FinanceHelper.MessageBroker\FinanceHelper.MessageBroker.csproj" />
         <ProjectReference Include="..\FinanceHelper.Persistence\FinanceHelper.Persistence.csproj"/>
     </ItemGroup>
 

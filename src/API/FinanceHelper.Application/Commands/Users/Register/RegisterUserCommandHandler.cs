@@ -13,23 +13,41 @@ public class RegisterUserCommandHandler(ApplicationDbContext applicationDbContex
     public async Task<RegisterUserCommandResponse> Handle(RegisterUserCommandRequest request, CancellationToken cancellationToken)
     {
         var response = new RegisterUserCommandResponse();
-        var userExists = await applicationDbContext.Users.AnyAsync(x => x.Email == request.Email, cancellationToken);
-        if (userExists) throw new ConflictException(stringLocalizer["UserAlreadyExists", request.Email]);
+
+        if (string.IsNullOrWhiteSpace(request.Email) == false)
+        {
+            var userExists = await applicationDbContext.Users.AnyAsync(x => x.Email == request.Email, cancellationToken);
+            if (userExists) throw new ConflictException(stringLocalizer["UserAlreadyExists", request.Email]);
+        }
+
+        if (request.TelegramChatId.HasValue)
+        {
+            var userExists = await applicationDbContext.Users.AnyAsync(x => x.TelegramChatId == request.TelegramChatId.Value, cancellationToken);
+            if (userExists) throw new ConflictException(stringLocalizer["UserAlreadyExists", request.TelegramChatId.Value]);
+        }
 
         var newUser = new User
         {
             Email = request.Email,
-            PreferredLocalizationCode = request.PreferredLocalizationCode,
             PasswordHash = request.PasswordHash,
             FirstName = request.FirstName,
-            LastName = request.LastName
+            LastName = request.LastName,
+            TelegramChatId = request.TelegramChatId
         };
+
+        if (string.IsNullOrWhiteSpace(request.PreferredLocalizationCode) == false)
+        {
+            var languageExists = await applicationDbContext.SupportedLanguages.AnyAsync(x => x.Code == request.PreferredLocalizationCode, cancellationToken);
+            if (languageExists) newUser.PreferredLocalizationCode = request.PreferredLocalizationCode;
+        }
 
         await applicationDbContext.Users.AddAsync(newUser, cancellationToken);
         await applicationDbContext.SaveChangesAsync(cancellationToken);
 
         response.UserId = newUser.Id;
-        response.BearerToken = SecurityHelper.GenerateJwtToken(request.JwtDescriptorDetails, new UserJwtDetails(newUser));
+
+        if (request.JwtDescriptorDetails != null)
+            response.BearerToken = SecurityHelper.GenerateJwtToken(request.JwtDescriptorDetails, new UserJwtDetails(newUser));
 
         return response;
     }

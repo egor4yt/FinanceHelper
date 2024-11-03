@@ -2,6 +2,7 @@
 using FinanceHelper.Api.Configuration;
 using FinanceHelper.Api.Services;
 using FinanceHelper.Application.Configuration;
+using FinanceHelper.MessageBroker.Configuration;
 using FinanceHelper.Persistence.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -26,6 +27,7 @@ try
     builder.ConfigureApi();
     builder.ConfigurePersistence();
     builder.ConfigureApplication();
+    builder.ConfigureMessageBroker();
 
     builder.Services.AddSerilog();
 
