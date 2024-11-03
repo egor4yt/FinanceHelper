@@ -12,7 +12,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\FinanceHelper.Application\FinanceHelper.Application.csproj" />
+        <ProjectReference Include="..\FinanceHelper.Application\FinanceHelper.Application.csproj"/>
         <ProjectReference Include="..\FinanceHelper.Shared\FinanceHelper.Shared.csproj"/>
     </ItemGroup>
 </Project>
