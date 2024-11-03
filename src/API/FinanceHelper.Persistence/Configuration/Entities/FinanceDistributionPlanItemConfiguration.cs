@@ -12,7 +12,8 @@ public class FinanceDistributionPlanItemConfiguration : IEntityTypeConfiguration
             .HasOne(x => x.ExpenseItem)
             .WithMany(x => x.FinanceDistributionPlanItems)
             .HasForeignKey(x => x.ExpenseItemId)
-            .HasConstraintName("FK_FinanceDistributionPlanItem_ExpenseItem");
+            .HasConstraintName("FK_FinanceDistributionPlanItem_ExpenseItem")
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder
             .HasOne(x => x.ValueType)

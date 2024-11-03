@@ -9,4 +9,5 @@ public class FinancesDistributionItemValueType
     public string LocalizationKeyword { get; set; } = null!;
 
     public virtual ICollection<FinanceDistributionPlanItem> FinanceDistributionPlanItems { get; set; } = null!;
+    public virtual ICollection<FinanceDistributionPlanTemplateItem> FinanceDistributionPlanTemplateItems { get; set; } = null!;
 }

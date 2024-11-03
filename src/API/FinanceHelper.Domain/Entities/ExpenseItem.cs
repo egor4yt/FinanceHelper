@@ -17,5 +17,6 @@ public class ExpenseItem : ISoftDeletable
     public virtual User Owner { get; set; } = null!;
     public virtual ExpenseItemType? ExpenseItemType { get; set; }
     public virtual ICollection<FinanceDistributionPlanItem> FinanceDistributionPlanItems { get; set; } = null!;
+    public virtual ICollection<FinanceDistributionPlanTemplateItem> FinanceDistributionPlanTemplateItems { get; set; } = null!;
     public DateTime? DeletedAt { get; set; }
 }

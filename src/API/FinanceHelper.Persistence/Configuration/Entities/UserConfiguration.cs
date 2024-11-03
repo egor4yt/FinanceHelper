@@ -29,7 +29,11 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder
             .Property(x => x.Email)
             .HasColumnType("varchar(32)");
-
+        
+        builder
+            .HasIndex(x => x.Email, "UX_Users_Email")
+            .IsUnique();
+        
         builder
             .Property(x => x.PasswordHash)
             .HasColumnType("varchar(64)");

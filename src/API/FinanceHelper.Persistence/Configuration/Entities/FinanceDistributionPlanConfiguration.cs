@@ -18,7 +18,8 @@ public class FinanceDistributionPlanConfiguration : IEntityTypeConfiguration<Fin
             .HasOne(x => x.IncomeSource)
             .WithMany(x => x.FinanceDistributionPlans)
             .HasForeignKey(x => x.IncomeSourceId)
-            .HasConstraintName("FK_FinanceDistributionPlan_IncomeSource");
+            .HasConstraintName("FK_FinanceDistributionPlan_IncomeSource")
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder
             .Property(x => x.CreatedAt)
