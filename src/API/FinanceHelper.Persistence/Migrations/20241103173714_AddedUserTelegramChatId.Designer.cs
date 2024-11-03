@@ -3,6 +3,7 @@ using System;
 using FinanceHelper.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FinanceHelper.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241103173714_AddedUserTelegramChatId")]
+    partial class AddedUserTelegramChatId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -708,17 +711,10 @@ namespace FinanceHelper.Persistence.Migrations
                     b.HasIndex(new[] { "Email" }, "UX_Users_Email")
                         .IsUnique();
 
-                    NpgsqlIndexBuilderExtensions.AreNullsDistinct(b.HasIndex(new[] { "Email" }, "UX_Users_Email"), true);
-
                     b.HasIndex(new[] { "TelegramChatId" }, "UX_Users_TelegramChatId")
                         .IsUnique();
 
-                    NpgsqlIndexBuilderExtensions.AreNullsDistinct(b.HasIndex(new[] { "TelegramChatId" }, "UX_Users_TelegramChatId"), true);
-
-                    b.ToTable("Users", t =>
-                        {
-                            t.HasCheckConstraint("C_User_EmailOrTelegram_NotNull", "\"Email\" IS NOT NULL OR \"TelegramChatId\" IS NOT NULL");
-                        });
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("FinanceHelper.Domain.Entities.ExpenseItem", b =>

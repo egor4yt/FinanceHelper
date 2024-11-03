@@ -22,8 +22,12 @@ public class RegisterUserCommandHandler(ApplicationDbContext applicationDbContex
 
         if (request.TelegramChatId.HasValue)
         {
-            var userExists = await applicationDbContext.Users.AnyAsync(x => x.TelegramChatId == request.TelegramChatId.Value, cancellationToken);
-            if (userExists) throw new ConflictException(stringLocalizer["UserAlreadyExists", request.TelegramChatId.Value]);
+            var user = await applicationDbContext.Users.FirstOrDefaultAsync(x => x.TelegramChatId == request.TelegramChatId.Value, cancellationToken);
+            if (user != null)
+            {
+                response.UserId = user.Id;
+                return response;
+            }
         }
 
         var newUser = new User

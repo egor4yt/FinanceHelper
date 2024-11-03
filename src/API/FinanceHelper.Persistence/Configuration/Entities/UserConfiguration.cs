@@ -29,11 +29,12 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder
             .Property(x => x.Email)
             .HasColumnType("varchar(32)");
-        
+
         builder
             .HasIndex(x => x.Email, "UX_Users_Email")
-            .IsUnique();
-        
+            .IsUnique()
+            .AreNullsDistinct();
+
         builder
             .Property(x => x.PasswordHash)
             .HasColumnType("varchar(64)");
@@ -43,7 +44,11 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .HasComment("Unique telegram chat identifier")
             .HasColumnType("bigint");
 
-        builder.HasIndex(x => x.TelegramChatId, "UX_Users_TelegramChatId")
-            .IsUnique();
+        builder
+            .HasIndex(x => x.TelegramChatId, "UX_Users_TelegramChatId")
+            .IsUnique()
+            .AreNullsDistinct();
+
+        builder.ToTable(x => { x.HasCheckConstraint("C_User_EmailOrTelegram_NotNull", $"\"{nameof(User.Email)}\" IS NOT NULL OR \"{nameof(User.TelegramChatId)}\" IS NOT NULL"); });
     }
 }
