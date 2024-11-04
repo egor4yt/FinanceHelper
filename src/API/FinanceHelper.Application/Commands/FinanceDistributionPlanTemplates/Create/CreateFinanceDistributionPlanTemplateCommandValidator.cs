@@ -11,6 +11,9 @@ public class CreateFinanceDistributionPlanTemplateCommandValidator : AbstractVal
 
         RuleFor(x => x.PlannedBudget)
             .GreaterThan(0);
+        
+        RuleFor(x => x.Name)
+            .NotEmpty();
 
         RuleForEach(x => x.FixedPlanItems)
             .NotNull()

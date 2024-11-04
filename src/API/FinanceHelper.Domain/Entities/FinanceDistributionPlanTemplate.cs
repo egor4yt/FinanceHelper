@@ -7,6 +7,7 @@ public class FinanceDistributionPlanTemplate
 {
     public long Id { get; set; }
     public decimal PlannedBudget { get; set; }
+    public string Name { get; set; } = null!;
     public long OwnerId { get; set; }
     public long IncomeSourceId { get; set; }
 

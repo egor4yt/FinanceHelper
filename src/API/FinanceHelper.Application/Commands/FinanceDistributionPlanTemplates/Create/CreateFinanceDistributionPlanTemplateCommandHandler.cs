@@ -58,7 +58,8 @@ public class CreateFinanceDistributionPlanTemplateCommandHandler(ApplicationDbCo
             PlannedBudget = request.PlannedBudget,
             OwnerId = request.OwnerId,
             IncomeSourceId = request.IncomeSourceId,
-            FinanceDistributionPlanTemplateItems = planItems
+            FinanceDistributionPlanTemplateItems = planItems,
+            Name = request.Name
         };
 
         await applicationDbContext.FinanceDistributionPlanTemplates.AddAsync(newFinanceDistributionPlanTemplate, cancellationToken);

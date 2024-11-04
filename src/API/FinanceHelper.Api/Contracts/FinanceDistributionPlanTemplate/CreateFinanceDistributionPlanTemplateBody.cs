@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 
+// ReSharper disable CollectionNeverUpdated.Global
+
 namespace FinanceHelper.Api.Contracts.FinanceDistributionPlanTemplate;
 
 /// <summary>
@@ -16,6 +18,11 @@ public class CreateFinanceDistributionPlanTemplateBody
     ///     Income source id
     /// </summary>
     public long IncomeSourceId { get; set; }
+
+    /// <summary>
+    ///     Template name
+    /// </summary>
+    public string Name { get; set; } = string.Empty;
 
     /// <summary>
     ///     Planned items with fixed values
