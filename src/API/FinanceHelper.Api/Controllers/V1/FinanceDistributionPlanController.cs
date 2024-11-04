@@ -50,9 +50,9 @@ public class FinanceDistributionPlanController : ApiControllerBase
     }
 
     /// <summary>
-    ///     Get all user finance distribution plans
+    ///     Get a finance distribution plan details
     /// </summary>
-    /// <returns>Finance distribution plans</returns>
+    /// <returns>Finance distribution plan details</returns>
     [HttpGet("details/{planId:long}")]
     [ProducesResponseType(typeof(DetailsFinanceDistributionPlanQueryResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> Details([FromRoute] long planId)
@@ -68,9 +68,9 @@ public class FinanceDistributionPlanController : ApiControllerBase
     }
 
     /// <summary>
-    ///     Get a finance distribution plan details
+    ///     Get all user finance distribution plans
     /// </summary>
-    /// <returns>Finance distribution plan details</returns>
+    /// <returns>Finance distribution plans</returns>
     [HttpGet("my")]
     [ProducesResponseType(typeof(GetUserFinanceDistributionPlanQueryResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetUserPlans()

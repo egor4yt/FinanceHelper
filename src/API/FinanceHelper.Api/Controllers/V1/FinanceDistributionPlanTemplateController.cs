@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using FinanceHelper.Api.Contracts.FinanceDistributionPlanTemplate;
 using FinanceHelper.Application.Commands.FinanceDistributionPlanTemplates.Create;
+using FinanceHelper.Application.Queries.FinanceDistributionPlansTemplates.GetUser;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -44,6 +45,23 @@ public class FinanceDistributionPlanTemplateController : ApiControllerBase
         };
 
         var response = await Mediator.Send(command);
+        return Ok(response);
+    }
+
+    /// <summary>
+    ///     Get a finance distribution plan details
+    /// </summary>
+    /// <returns>Finance distribution plan details</returns>
+    [HttpGet("my")]
+    [ProducesResponseType(typeof(GetUserFinanceDistributionPlanTemplateQueryResponse), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetUserPlans()
+    {
+        var query = new GetUserFinanceDistributionPlanTemplateQueryRequest
+        {
+            OwnerId = CurrentUserService.UserId
+        };
+
+        var response = await Mediator.Send(query);
         return Ok(response);
     }
 }
