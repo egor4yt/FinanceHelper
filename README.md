@@ -33,9 +33,11 @@ Technologies used in application development
 - Elasticsearch (logs analysis engine)
 
 ## Third-party integration
-- Kibana (Logs visualization)
+- Filebeat (logs collector)
+- Logstash (logs processor)
+- Kibana (logs visualization)
 - Telegram bot (messenger)
-- Telegram mini app (React webb application - [GitHub](https://github.com/officer04/finance-helper))
+- Telegram mini app (react webb application - [GitHub](https://github.com/officer04/finance-helper))
 
 # Infrastructure of the FinanceHelper
 
