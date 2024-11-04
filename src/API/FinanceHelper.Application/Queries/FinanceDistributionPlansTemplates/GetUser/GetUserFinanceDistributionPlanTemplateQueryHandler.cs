@@ -20,6 +20,7 @@ public class GetUserFinanceDistributionPlanTemplateQueryHandler(ApplicationDbCon
         {
             TemplateId = x.Id,
             PlannedBudget = Math.Round(x.PlannedBudget, 2),
+            Name = x.Name,
             IncomeSource = new GetUserFinanceDistributionPlanTemplateQueryIncomeSource
             {
                 Id = x.IncomeSource.Id,

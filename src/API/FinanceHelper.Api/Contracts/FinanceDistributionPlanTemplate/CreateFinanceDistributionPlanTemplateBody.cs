@@ -27,7 +27,7 @@ public class CreateFinanceDistributionPlanTemplateBody
     /// <summary>
     ///     Planned items with fixed values
     /// </summary>
-    public required List<CreateFinanceDistributionPlanTemplateBodyFixedPlanItem> FixedPlanItems { get; init; } = [];
+    public List<CreateFinanceDistributionPlanTemplateBodyFixedPlanItem>? FixedPlanItems { get; init; } = [];
 
     /// <summary>
     ///     Planned items with floating values

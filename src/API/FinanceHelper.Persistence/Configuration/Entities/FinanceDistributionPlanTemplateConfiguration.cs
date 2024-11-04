@@ -23,7 +23,7 @@ public class FinanceDistributionPlanTemplateConfiguration : IEntityTypeConfigura
         builder
             .Property(x => x.OwnerId)
             .IsRequired();
-        
+
         builder
             .Property(x => x.Name)
             .HasColumnType("varchar(128)")

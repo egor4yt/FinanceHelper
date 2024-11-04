@@ -49,9 +49,9 @@ public class FinanceDistributionPlanTemplateController : ApiControllerBase
     }
 
     /// <summary>
-    ///     Get a finance distribution plan details
+    ///     Get all user finance distribution plans templates
     /// </summary>
-    /// <returns>Finance distribution plan details</returns>
+    /// <returns>Finance distribution plans templates</returns>
     [HttpGet("my")]
     [ProducesResponseType(typeof(GetUserFinanceDistributionPlanTemplateQueryResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetUserPlans()

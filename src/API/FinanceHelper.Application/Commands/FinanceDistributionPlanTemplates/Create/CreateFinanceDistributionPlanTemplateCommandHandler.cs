@@ -45,14 +45,17 @@ public class CreateFinanceDistributionPlanTemplateCommandHandler(ApplicationDbCo
             ValueTypeCode = FinanceHelper.Domain.Metadata.FinancesDistributionItemValueType.Floating.Code,
             ExpenseItemId = x.ExpenseItemId
         }));
-        planItems.AddRange(request.FixedPlanItems.Select(x => new FinanceDistributionPlanTemplateItem
-        {
-            PlannedValue = x.PlannedValue,
-            ValueTypeCode = x.Indivisible
-                ? FinanceHelper.Domain.Metadata.FinancesDistributionItemValueType.FixedIndivisible.Code
-                : FinanceHelper.Domain.Metadata.FinancesDistributionItemValueType.Fixed.Code,
-            ExpenseItemId = x.ExpenseItemId
-        }));
+
+        if (request.FixedPlanItems.Count != 0)
+            planItems.AddRange(request.FixedPlanItems.Select(x => new FinanceDistributionPlanTemplateItem
+            {
+                PlannedValue = x.PlannedValue,
+                ValueTypeCode = x.Indivisible
+                    ? FinanceHelper.Domain.Metadata.FinancesDistributionItemValueType.FixedIndivisible.Code
+                    : FinanceHelper.Domain.Metadata.FinancesDistributionItemValueType.Fixed.Code,
+                ExpenseItemId = x.ExpenseItemId
+            }));
+
         var newFinanceDistributionPlanTemplate = new FinanceDistributionPlanTemplate
         {
             PlannedBudget = request.PlannedBudget,
