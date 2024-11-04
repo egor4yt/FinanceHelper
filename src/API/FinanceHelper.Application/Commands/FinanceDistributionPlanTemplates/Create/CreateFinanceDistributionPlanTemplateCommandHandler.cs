@@ -46,7 +46,7 @@ public class CreateFinanceDistributionPlanTemplateCommandHandler(ApplicationDbCo
             ExpenseItemId = x.ExpenseItemId
         }));
 
-        if (request.FixedPlanItems.Count != 0)
+        if (request.FixedPlanItems is { Count: > 0 })
             planItems.AddRange(request.FixedPlanItems.Select(x => new FinanceDistributionPlanTemplateItem
             {
                 PlannedValue = x.PlannedValue,

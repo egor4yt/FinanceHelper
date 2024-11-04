@@ -10,7 +10,7 @@ public class CreateFinanceDistributionPlanTemplateCommandRequest : IRequest<Crea
     public long IncomeSourceId { get; init; }
     public decimal PlannedBudget { get; init; }
     public required string Name { get; init; }
-    public required List<FixedPlanTemplateItem> FixedPlanItems { get; init; }
+    public List<FixedPlanTemplateItem>? FixedPlanItems { get; init; }
     public required List<FloatingPlanTemplateItem> FloatingPlanItems { get; init; }
 }
 

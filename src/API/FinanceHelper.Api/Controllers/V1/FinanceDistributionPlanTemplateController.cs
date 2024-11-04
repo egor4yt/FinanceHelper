@@ -31,7 +31,7 @@ public class FinanceDistributionPlanTemplateController : ApiControllerBase
             IncomeSourceId = body.IncomeSourceId,
             PlannedBudget = body.PlannedBudget,
             Name = body.Name,
-            FixedPlanItems = body.FixedPlanItems.Select(x => new FixedPlanTemplateItem
+            FixedPlanItems = body.FixedPlanItems?.Select(x => new FixedPlanTemplateItem
             {
                 PlannedValue = x.PlannedValue,
                 ExpenseItemId = x.ExpenseItemId,
