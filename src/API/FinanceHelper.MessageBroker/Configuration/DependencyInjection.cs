@@ -36,6 +36,7 @@ public static class DependencyInjection
                     Log.Warning("Message broker disabled: environment variable '{ConnectionString}' was null", ConfigurationKeys.KafkaConnectionString);
                     break;
                 }
+
                 var producerConfig = new ProducerConfig
                 {
                     BootstrapServers = connectionString.Value,

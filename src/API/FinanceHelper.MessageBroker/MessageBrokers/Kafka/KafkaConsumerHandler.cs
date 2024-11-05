@@ -9,7 +9,11 @@ using Microsoft.Extensions.Logging;
 
 namespace FinanceHelper.MessageBroker.MessageBrokers.Kafka;
 
-public class KafkaConsumerHandler(ILogger<KafkaConsumerHandler> logger, ConsumerConfig consumerConfig, IServiceProvider serviceProvider) : IHostedService
+public class KafkaConsumerHandler(
+    ILogger<KafkaConsumerHandler> logger,
+    ConsumerConfig consumerConfig,
+    IHostApplicationLifetime applicationLifetime,
+    IServiceProvider serviceProvider) : IHostedService
 {
     private static readonly Dictionary<string, Type> MessagesToTopicsMap = new Dictionary<string, Type>
     {
@@ -24,6 +28,7 @@ public class KafkaConsumerHandler(ILogger<KafkaConsumerHandler> logger, Consumer
     public Task StartAsync(CancellationToken cancellationToken)
     {
         _ = ConsumeMessages(cancellationToken);
+        _ = WaitForAppStartup(cancellationToken);
         return Task.CompletedTask;
     }
 
@@ -38,6 +43,8 @@ public class KafkaConsumerHandler(ILogger<KafkaConsumerHandler> logger, Consumer
 
     private async Task ConsumeMessages(CancellationToken cancellationToken)
     {
+        if (await WaitForAppStartup(cancellationToken) == false) return;
+
         var topics = MessagesToTopicsMap.Keys.Distinct().ToList();
         if (topics.Count == 0) return;
 
@@ -45,8 +52,6 @@ public class KafkaConsumerHandler(ILogger<KafkaConsumerHandler> logger, Consumer
 
         while (!cancellationToken.IsCancellationRequested)
         {
-            await Task.Delay(TimeSpan.FromMilliseconds(1000), cancellationToken);
-
             try
             {
                 var consumedResult = _consumer.Consume(cancellationToken);
@@ -71,8 +76,25 @@ public class KafkaConsumerHandler(ILogger<KafkaConsumerHandler> logger, Consumer
             {
                 logger.LogError(exception, "Kafka consuming error");
             }
+            finally
+            {
+                await Task.Delay(TimeSpan.FromMilliseconds(1000), cancellationToken);
+            }
         }
 
         _consumer.Close();
+    }
+
+    private async Task<bool> WaitForAppStartup(CancellationToken cancellationToken)
+    {
+        var startedSource = new TaskCompletionSource();
+        await using var applicationStarted = applicationLifetime.ApplicationStarted.Register(() => startedSource.SetResult());
+
+        var cancelledSource = new TaskCompletionSource();
+        await using var applicationStopped = cancellationToken.Register(() => cancelledSource.SetResult());
+
+        var completedTask = await Task.WhenAny(startedSource.Task, cancelledSource.Task).ConfigureAwait(false);
+
+        return completedTask == startedSource.Task;
     }
 }
