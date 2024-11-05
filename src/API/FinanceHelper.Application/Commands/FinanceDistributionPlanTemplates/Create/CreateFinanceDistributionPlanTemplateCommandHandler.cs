@@ -13,21 +13,14 @@ public class CreateFinanceDistributionPlanTemplateCommandHandler(ApplicationDbCo
     {
         var response = new CreateFinanceDistributionPlanTemplateCommandResponse();
 
-        var allExpenseItemsId = request.FixedPlanItems
+        var allExpenseItemsId = request.FloatingPlanItems
             .Select(x => x.ExpenseItemId)
-            .Concat(request.FloatingPlanItems.Select(x => x.ExpenseItemId))
             .ToList();
-        var duplicatedExpenseItemsIds = allExpenseItemsId
-            .GroupBy(x => x)
-            .Where(x => x.Count() > 1)
-            .Select(x => x.Key)
-            .ToList();
-        if (duplicatedExpenseItemsIds.Count != 0) throw new BadRequestException(stringLocalizer["DuplicatedExpenseItems", string.Join(", ", duplicatedExpenseItemsIds)]);
 
-        var sumFloatedValues = request.FloatingPlanItems
-            .Sum(plaItem => plaItem.PlannedValue);
-
-        if (sumFloatedValues != 100) throw new BadRequestException(stringLocalizer["InvalidFloatingValue"]);
+        if (request.FixedPlanItems is { Count: > 0 })
+            allExpenseItemsId = allExpenseItemsId
+                .Concat(request.FixedPlanItems.Select(y => y.ExpenseItemId))
+                .ToList();
 
         var existsExpenseItemsIds = await applicationDbContext.ExpenseItems
             .Where(x => allExpenseItemsId.Contains(x.Id) && x.OwnerId == request.OwnerId)

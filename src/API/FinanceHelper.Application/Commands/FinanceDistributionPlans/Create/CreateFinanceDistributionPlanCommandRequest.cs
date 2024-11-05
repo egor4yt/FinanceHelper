@@ -10,7 +10,7 @@ public class CreateFinanceDistributionPlanCommandRequest : IRequest<CreateFinanc
     public long IncomeSourceId { get; init; }
     public decimal PlannedBudget { get; init; }
     public decimal FactBudget { get; init; }
-    public required List<FixedPlanItem> FixedPlanItems { get; init; }
+    public required List<FixedPlanItem>? FixedPlanItems { get; init; }
     public required List<FloatingPlanItem> FloatingPlanItems { get; init; }
 }
 

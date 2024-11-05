@@ -1,5 +1,6 @@
 ﻿{
   "DuplicatedExpenseItems": "Expense items with ids '{0}' have been added several times.",
   "ExpenseItemsDoesNotExists": "Expense items with ids '{0}' does not exists.",
-  "InvalidFloatingValue": "Floating values sum must be equal 100%"
+  "InvalidFloatingValue": "Floating values sum must be equal 100%.",
+  "InvalidFixedValue": "Fixed values sum must be less than planned budget."
 }
