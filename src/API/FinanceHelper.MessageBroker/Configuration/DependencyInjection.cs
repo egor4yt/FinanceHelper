@@ -31,7 +31,11 @@ public static class DependencyInjection
         {
             case "kafka":
                 var connectionString = configuration.GetSection(ConfigurationKeys.KafkaConnectionString);
-                if (string.IsNullOrWhiteSpace(connectionString.Value)) throw new NullReferenceException($"Environment variable '{ConfigurationKeys.KafkaConnectionString}' was null");
+                if (string.IsNullOrWhiteSpace(connectionString.Value))
+                {
+                    Log.Warning("Message broker disabled: environment variable '{ConnectionString}' was null", ConfigurationKeys.KafkaConnectionString);
+                    break;
+                }
                 var producerConfig = new ProducerConfig
                 {
                     BootstrapServers = connectionString.Value,
@@ -52,16 +56,15 @@ public static class DependencyInjection
                     EnableAutoCommit = false,
                     EnableAutoOffsetStore = false
                 };
+
                 services.AddSingleton(consumerConfig);
 
                 services.AddSingleton<IMessageBroker, KafkaMessageBroker>();
                 services.AddHostedService<KafkaConsumerHandler>();
                 break;
-            case null or "":
-                Log.Warning("Message broker disabled");
-                break;
             default:
-                throw new InvalidOperationException("Unsupported message broker");
+                Log.Warning("Message broker disabled: unsupported message broker '{MessageBroker}'", messageBroker.Value);
+                break;
         }
     }
 }

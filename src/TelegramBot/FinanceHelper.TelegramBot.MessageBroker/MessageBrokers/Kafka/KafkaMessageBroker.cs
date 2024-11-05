@@ -24,8 +24,8 @@ public class KafkaMessageBroker(ILogger<KafkaMessageBroker> logger, ProducerConf
         var topics = GetTopicsForMessage<T>();
         using var producer = new ProducerBuilder<Null, T>(producerConfig)
             .SetValueSerializer(new KafkaJsonSerializer<T>())
-            .SetLogHandler((_, msg) => logger.LogInformation("Kafka sent ({KafkaLevel}): {Message}", msg.Message, msg.Level.ToString()))
-            .SetErrorHandler((_, error) => logger.LogError("Kafka thrown error ({KafkaErrorCode}): {Message}", error.Code, error.Reason))
+            .SetLogHandler((_, msg) => logger.LogDebug("Kafka sent a message with status {KafkaLevel}/{KafkaFacility}. Message: '{Message}'", msg.Level.ToString(), msg.Facility, msg.Message))
+            .SetErrorHandler((_, error) => logger.LogError("Kafka couldn't send a message, error code: {KafkaErrorCode}. Reason: '{Reason}'", error.Code, error.Reason))
             .Build();
 
         foreach (var topic in topics)
