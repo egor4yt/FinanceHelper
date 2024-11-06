@@ -23,10 +23,15 @@ public class GetUserFinanceDistributionPlanTemplateQueryIncomeSource
 
 public class GetUserFinanceDistributionPlanTemplateQueryFixedExpenseItem
 {
-    // TODO: Add properties
+    public long Id { get; init; }
+    public string Name { get; init; }
+    public bool Indivisible { get; init; }
+    public decimal PlannedValue { get; init; }
 }
 
 public class GetUserFinanceDistributionPlanTemplateQueryFloatedExpenseItem
 {
-    // TODO: Add properties
+    public long Id { get; init; }
+    public string Name { get; init; }
+    public decimal PlannedValue { get; init; }
 }

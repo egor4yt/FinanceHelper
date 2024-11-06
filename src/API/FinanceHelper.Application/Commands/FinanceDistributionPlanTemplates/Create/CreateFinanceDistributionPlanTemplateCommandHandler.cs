@@ -14,12 +14,12 @@ public class CreateFinanceDistributionPlanTemplateCommandHandler(ApplicationDbCo
         var response = new CreateFinanceDistributionPlanTemplateCommandResponse();
 
         var allExpenseItemsId = request.FloatingPlanItems
-            .Select(x => x.ExpenseItemId)
+            .Select(x => x.Id)
             .ToList();
 
         if (request.FixedPlanItems is { Count: > 0 })
             allExpenseItemsId = allExpenseItemsId
-                .Concat(request.FixedPlanItems.Select(y => y.ExpenseItemId))
+                .Concat(request.FixedPlanItems.Select(y => y.Id))
                 .ToList();
 
         var existsExpenseItemsIds = await applicationDbContext.ExpenseItems
@@ -36,7 +36,7 @@ public class CreateFinanceDistributionPlanTemplateCommandHandler(ApplicationDbCo
         {
             PlannedValue = x.PlannedValue,
             ValueTypeCode = FinanceHelper.Domain.Metadata.FinancesDistributionItemValueType.Floating.Code,
-            ExpenseItemId = x.ExpenseItemId
+            ExpenseItemId = x.Id
         }));
 
         if (request.FixedPlanItems is { Count: > 0 })
@@ -46,7 +46,7 @@ public class CreateFinanceDistributionPlanTemplateCommandHandler(ApplicationDbCo
                 ValueTypeCode = x.Indivisible
                     ? FinanceHelper.Domain.Metadata.FinancesDistributionItemValueType.FixedIndivisible.Code
                     : FinanceHelper.Domain.Metadata.FinancesDistributionItemValueType.Fixed.Code,
-                ExpenseItemId = x.ExpenseItemId
+                ExpenseItemId = x.Id
             }));
 
         var newFinanceDistributionPlanTemplate = new FinanceDistributionPlanTemplate

@@ -34,13 +34,13 @@ public class FinanceDistributionPlanTemplateController : ApiControllerBase
             FixedPlanItems = body.FixedPlanItems?.Select(x => new FixedPlanTemplateItem
             {
                 PlannedValue = x.PlannedValue,
-                ExpenseItemId = x.ExpenseItemId,
+                Id = x.ExpenseItemId,
                 Indivisible = x.Indivisible
             }).ToList(),
             FloatingPlanItems = body.FloatingPlanItems.Select(x => new FloatingPlanTemplateItem
             {
                 PlannedValue = x.PlannedValue,
-                ExpenseItemId = x.ExpenseItemId
+                Id = x.ExpenseItemId
             }).ToList()
         };
 

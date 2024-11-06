@@ -26,7 +26,7 @@ public class CreateFinanceDistributionPlanTemplateCommandValidator : AbstractVal
             RuleForEach(x => x.FixedPlanItems)
                 .ChildRules(c =>
                     {
-                        c.RuleFor(x => x.ExpenseItemId)
+                        c.RuleFor(x => x.Id)
                             .GreaterThan(0);
 
 
@@ -37,8 +37,8 @@ public class CreateFinanceDistributionPlanTemplateCommandValidator : AbstractVal
         });
 
         RuleFor(x => x.FloatingPlanItems
-                .Select(y => y.ExpenseItemId) // select floating expense items
-                .Concat(x.FixedPlanItems != null ? x.FixedPlanItems.Select(y => y.ExpenseItemId) : Array.Empty<long>()) // select fixed expense items
+                .Select(y => y.Id) // select floating expense items
+                .Concat(x.FixedPlanItems != null ? x.FixedPlanItems.Select(y => y.Id) : Array.Empty<long>()) // select fixed expense items
                 .GroupBy(y => y) // group by expense item id
                 .Where(g => g.Count() > 1) // find duplicates
                 .Select(g => g.Key) // get duplicates
@@ -51,7 +51,7 @@ public class CreateFinanceDistributionPlanTemplateCommandValidator : AbstractVal
             .NotNull()
             .ChildRules(c =>
                 {
-                    c.RuleFor(x => x.ExpenseItemId)
+                    c.RuleFor(x => x.Id)
                         .GreaterThan(0);
 
 

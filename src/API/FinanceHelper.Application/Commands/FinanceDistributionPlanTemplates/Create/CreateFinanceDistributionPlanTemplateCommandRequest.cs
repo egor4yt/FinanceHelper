@@ -18,11 +18,11 @@ public class FixedPlanTemplateItem
 {
     public decimal PlannedValue { get; init; }
     public bool Indivisible { get; init; }
-    public long ExpenseItemId { get; init; }
+    public long Id { get; init; }
 }
 
 public class FloatingPlanTemplateItem
 {
     public decimal PlannedValue { get; init; }
-    public long ExpenseItemId { get; init; }
+    public long Id { get; init; }
 }
