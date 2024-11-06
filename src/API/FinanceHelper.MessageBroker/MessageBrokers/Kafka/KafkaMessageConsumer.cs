@@ -9,8 +9,8 @@ using Microsoft.Extensions.Logging;
 
 namespace FinanceHelper.MessageBroker.MessageBrokers.Kafka;
 
-public class KafkaConsumerHandler(
-    ILogger<KafkaConsumerHandler> logger,
+public class KafkaMessageConsumer(
+    ILogger<KafkaMessageConsumer> logger,
     ConsumerConfig consumerConfig,
     IHostApplicationLifetime applicationLifetime,
     IServiceProvider serviceProvider) : IHostedService

@@ -6,7 +6,7 @@ using Telegram.Bot.Types;
 
 namespace FinanceHelper.TelegramBot.Application.Commands;
 
-public class UnknownCommand(ITelegramBotClient botClient, IMessageBroker messageBroker) : BaseCommand(botClient, messageBroker)
+public class UnknownCommand(ITelegramBotClient botClient, IMessageProducer messageProducer) : BaseCommand(botClient, messageProducer)
 {
     public override string? Command => null;
 

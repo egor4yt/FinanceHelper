@@ -8,7 +8,7 @@ using Telegram.Bot.Types;
 
 namespace FinanceHelper.TelegramBot.Application.Commands;
 
-public class StartCommand(ITelegramBotClient botClient, IMessageBroker messageBroker) : BaseCommand(botClient, messageBroker)
+public class StartCommand(ITelegramBotClient botClient, IMessageProducer messageProducer) : BaseCommand(botClient, messageProducer)
 {
     public override string Command => "/start";
 
@@ -28,6 +28,6 @@ public class StartCommand(ITelegramBotClient botClient, IMessageBroker messageBr
         if (string.IsNullOrWhiteSpace(from.LanguageCode) == false)
             registerUser.PreferredLocalizationCode = new CultureInfo(from.LanguageCode).TwoLetterISOLanguageName;
 
-        await MessageBroker.ProduceAsync(registerUser);
+        await MessageProducer.ProduceAsync(registerUser);
     }
 }

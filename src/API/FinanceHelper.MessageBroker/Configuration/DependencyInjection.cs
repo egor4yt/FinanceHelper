@@ -60,8 +60,8 @@ public static class DependencyInjection
 
                 services.AddSingleton(consumerConfig);
 
-                services.AddSingleton<IMessageBroker, KafkaMessageBroker>();
-                services.AddHostedService<KafkaConsumerHandler>();
+                services.AddSingleton<IMessageProducer, KafkaMessageProducer>();
+                services.AddHostedService<KafkaMessageConsumer>();
                 break;
             default:
                 Log.Warning("Message broker disabled: unsupported message broker '{MessageBroker}'", messageBroker.Value);

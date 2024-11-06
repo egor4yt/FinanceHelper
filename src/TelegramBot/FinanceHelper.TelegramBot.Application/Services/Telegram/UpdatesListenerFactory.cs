@@ -7,7 +7,7 @@ using Telegram.Bot;
 namespace FinanceHelper.TelegramBot.Application.Services.Telegram;
 
 /// <inheritdoc />
-public class UpdatesListenerFactory(ITelegramBotClient botClient, IStringLocalizerFactory localizationFactory, IMessageBroker messageBroker) : IUpdatesListenerFactory
+public class UpdatesListenerFactory(ITelegramBotClient botClient, IStringLocalizerFactory localizationFactory, IMessageProducer messageProducer) : IUpdatesListenerFactory
 {
     /// <summary>
     ///     User id : listener
@@ -19,7 +19,7 @@ public class UpdatesListenerFactory(ITelegramBotClient botClient, IStringLocaliz
         var listener = _listenersCache.GetValueOrDefault(chatId);
         if (listener is null)
         {
-            listener = new BaseUpdateListener(botClient, localizationFactory, messageBroker);
+            listener = new BaseUpdateListener(botClient, localizationFactory, messageProducer);
             _listenersCache.GetOrAdd(chatId, listener);
         }
 

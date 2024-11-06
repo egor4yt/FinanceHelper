@@ -1,9 +1,9 @@
-﻿namespace FinanceHelper.MessageBroker.MessageBrokers.Base;
+﻿namespace FinanceHelper.TelegramBot.MessageBroker.MessageBrokers.Base;
 
 /// <summary>
-///     Message broker provider
+///     Async message provider
 /// </summary>
-public interface IMessageBroker
+public interface IMessageProducer
 {
     /// <summary>
     ///     Produce message

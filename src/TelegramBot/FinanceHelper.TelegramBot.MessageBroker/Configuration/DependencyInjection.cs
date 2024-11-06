@@ -42,7 +42,7 @@ public static class DependencyInjection
                     MaxInFlight = 5
                 };
                 services.AddSingleton(config);
-                services.AddSingleton<IMessageBroker, KafkaMessageBroker>();
+                services.AddSingleton<IMessageProducer, KafkaMessageProducer>();
                 break;
             default:
                 throw new InvalidOperationException("Unsupported message broker");

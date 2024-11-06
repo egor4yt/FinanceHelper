@@ -7,7 +7,7 @@ using Telegram.Bot.Types;
 
 namespace FinanceHelper.TelegramBot.Application.Commands;
 
-public class AdminCommand(ITelegramBotClient botClient, IMessageBroker messageBroker) : BaseCommand(botClient, messageBroker)
+public class AdminCommand(ITelegramBotClient botClient, IMessageProducer messageProducer) : BaseCommand(botClient, messageProducer)
 {
     public override string? Command => "/admin";
 

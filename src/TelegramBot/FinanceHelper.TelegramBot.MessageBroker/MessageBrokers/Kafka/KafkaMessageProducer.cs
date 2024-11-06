@@ -1,19 +1,23 @@
 ﻿using Confluent.Kafka;
-using FinanceHelper.MessageBroker.MessageBrokers.Base;
-using FinanceHelper.MessageBroker.MessageBrokers.Kafka.Serialization;
+using FinanceHelper.TelegramBot.MessageBroker.MessageBrokers.Base;
+using FinanceHelper.TelegramBot.MessageBroker.MessageBrokers.Kafka.Serializers;
+using FinanceHelper.TelegramBot.MessageBroker.Messages.Registration;
 using Microsoft.Extensions.Logging;
 
-namespace FinanceHelper.MessageBroker.MessageBrokers.Kafka;
+namespace FinanceHelper.TelegramBot.MessageBroker.MessageBrokers.Kafka;
 
 /// <summary>
 ///     Kafka message broker
 /// </summary>
-public class KafkaMessageBroker(ILogger<KafkaMessageBroker> logger, ProducerConfig producerConfig) : IMessageBroker
+public class KafkaMessageProducer(ILogger<KafkaMessageProducer> logger, ProducerConfig producerConfig) : IMessageProducer
 {
     /// <summary>
     ///     Message type : target topics
     /// </summary>
-    private readonly Dictionary<Type, string[]> _messagesToTopicsMap = new Dictionary<Type, string[]>();
+    private readonly Dictionary<Type, string[]> _messagesToTopicsMap = new Dictionary<Type, string[]>
+    {
+        { typeof(RegisterUser), [KafkaTopic.TelegramRegistration] }
+    };
 
     public async Task ProduceAsync<T>(T data)
     {
