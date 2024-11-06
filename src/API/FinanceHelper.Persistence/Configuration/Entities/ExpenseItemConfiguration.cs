@@ -37,5 +37,8 @@ public class ExpenseItemConfiguration : IEntityTypeConfiguration<ExpenseItem>
         builder
             .Property(x => x.ExpenseItemTypeCode)
             .HasColumnType("varchar(32)");
+
+        builder.HasIndex(x => new { x.OwnerId, x.Name }, "UX_ExpenseItems_OwnerId_Name")
+            .IsUnique();
     }
 }

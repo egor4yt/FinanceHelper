@@ -1,4 +1,5 @@
-﻿using FinanceHelper.Application.Exceptions;
+﻿using System.Diagnostics.CodeAnalysis;
+using FinanceHelper.Application.Exceptions;
 using FinanceHelper.Application.Services.Localization.Interfaces;
 using FinanceHelper.Domain.Entities;
 using FinanceHelper.Persistence;
@@ -7,11 +8,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FinanceHelper.Application.Commands.FinanceDistributionPlanTemplates.Create;
 
+[SuppressMessage("Performance", "CA1862")]
 public class CreateFinanceDistributionPlanTemplateCommandHandler(ApplicationDbContext applicationDbContext, IStringLocalizer<CreateFinanceDistributionPlanTemplateCommandHandler> stringLocalizer) : IRequestHandler<CreateFinanceDistributionPlanTemplateCommandRequest, CreateFinanceDistributionPlanTemplateCommandResponse>
 {
     public async Task<CreateFinanceDistributionPlanTemplateCommandResponse> Handle(CreateFinanceDistributionPlanTemplateCommandRequest request, CancellationToken cancellationToken)
     {
         var response = new CreateFinanceDistributionPlanTemplateCommandResponse();
+
+        var isExists = await applicationDbContext.FinanceDistributionPlanTemplates
+            .AnyAsync(x => x.Name.ToLower() == request.Name.ToLower()
+                           && x.OwnerId == request.OwnerId, cancellationToken);
+        if (isExists) throw new BadRequestException(stringLocalizer["AlreadyExists", request.Name]);
 
         var allExpenseItemsId = request.FloatingPlanItems
             .Select(x => x.Id)

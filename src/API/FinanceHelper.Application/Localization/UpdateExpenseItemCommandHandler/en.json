@@ -1,4 +1,5 @@
 ﻿{
   "ExpenseItemDoesNotExists": "Expense item with id '{0}' doesn't exists.",
-  "ExpenseItemTypeDoesNotExists": "Expense item type '{0}' doesn't exists."
+  "ExpenseItemTypeDoesNotExists": "Expense item type '{0}' doesn't exists.",
+  "ExpenseItemExists": "Expense item '{0}' already exists."
 }

@@ -37,5 +37,8 @@ public class FinanceDistributionPlanTemplateConfiguration : IEntityTypeConfigura
             .Property(x => x.PlannedBudget)
             .IsRequired()
             .HasColumnType("money");
+
+        builder.HasIndex(x => new { x.OwnerId, x.Name }, "UX_FinanceDistributionPlanTemplates_OwnerId_Name")
+            .IsUnique();
     }
 }

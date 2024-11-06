@@ -1,4 +1,5 @@
 ﻿{
   "IncomeSourceDoesNotExists": "Income source with id '{0}' doesn't exists.",
-  "IncomeSourceTypeDoesNotExists": "Income source type '{0}' doesn't exists."
+  "IncomeSourceTypeDoesNotExists": "Income source type '{0}' doesn't exists.",
+  "AlreadyExists": "Income source '{0}' already exists."
 }

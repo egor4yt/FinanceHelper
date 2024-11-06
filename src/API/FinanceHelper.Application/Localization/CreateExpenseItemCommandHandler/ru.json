@@ -1,3 +1,4 @@
 ﻿{
-  "ExpenseItemTypeDoesNotExists": "Тип статьи расхода '{0}' не существует."
+  "ExpenseItemTypeDoesNotExists": "Тип статьи расхода '{0}' не существует.",
+  "ExpenseItemExists": "Статья расхода '{0}' уже существует."
 }

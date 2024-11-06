@@ -43,5 +43,8 @@ public class IncomeSourceConfiguration : IEntityTypeConfiguration<IncomeSource>
         builder
             .Property(x => x.OwnerId)
             .IsRequired();
+
+        builder.HasIndex(x => new { x.OwnerId, x.Name }, "UX_IncomeSources_OwnerId_Name")
+            .IsUnique();
     }
 }
