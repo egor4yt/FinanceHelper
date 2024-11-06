@@ -21,8 +21,7 @@ public class CreateExpenseItemCommandHandler(ApplicationDbContext applicationDbC
             Name = request.Name,
             ExpenseItemTypeCode = request.ExpenseItemTypeCode,
             Color = request.Color,
-            OwnerId = request.OwnerId,
-            Hidden = false
+            OwnerId = request.OwnerId
         };
 
         await applicationDbContext.ExpenseItems.AddAsync(newExpenseItem, cancellationToken);

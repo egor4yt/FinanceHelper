@@ -26,12 +26,6 @@ public class ExpenseItemConfiguration : IEntityTypeConfiguration<ExpenseItem>
             .HasColumnType("varchar(7)");
 
         builder
-            .Property(x => x.Hidden)
-            .IsRequired()
-            .HasComment("Indicates that the expense item created while user creating a finance distribution plan or other automated way")
-            .HasColumnType("boolean");
-
-        builder
             .Property(x => x.Name)
             .IsRequired()
             .HasColumnType("varchar(32)");

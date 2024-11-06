@@ -37,8 +37,7 @@ public class CreateExpenseItemCommandTests : TestBase<CreateExpenseItemCommandHa
                                        && x.ExpenseItemType!.Code == request.ExpenseItemTypeCode
                                        && x.Color == request.Color
                                        && x.Owner.Id == request.OwnerId
-                                       && x.Name == request.Name
-                                       && x.Hidden == false);
+                                       && x.Name == request.Name);
 
         // Assert
         Assert.NotNull(databaseObject);
